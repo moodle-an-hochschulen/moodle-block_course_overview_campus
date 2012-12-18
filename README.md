@@ -47,7 +47,7 @@ To make meaningfully use of the term filter, you have to configure it according 
 
 3. Appearance
 -------------
-In this section, you can enable the displaying of the course's short name in the course list. Additionally, you can change the display names for each filter which are shown in the block view (multilang strings are supported, see http://docs.moodle.org/23/en/Multi-language_content_filter for details).
+In this section, you can enable the displaying of the course's short name and of the teachers' names in the course list. Additionally, you can change the display names for each filter which are shown in the block view (multilang strings are supported, see http://docs.moodle.org/23/en/Multi-language_content_filter for details).
 
 
 Data sources

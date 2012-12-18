@@ -97,6 +97,9 @@ if ($ADMIN->fulltree) {
 	$settings->add(new admin_setting_configcheckbox('block_course_overview_campus_showshortname', get_string('showshortname', 'block_course_overview_campus'),
 						get_string('showshortnamedescription', 'block_course_overview_campus'), 0));
 
+	$settings->add(new admin_setting_configcheckbox('block_course_overview_campus_showteachername', get_string('showteachername', 'block_course_overview_campus'),
+						get_string('showteachernamedescription', 'block_course_overview_campus'), 0));
+
 	$settings->add(new admin_setting_configtext('block_course_overview_campus_categorycoursefilterdisplayname', get_string('categorycoursefilterdisplayname', 'block_course_overview_campus'), 
 						get_string('categorycoursefilterdisplaynamedescription', 'block_course_overview_campus'), get_string('category', 'block_course_overview_campus'), PARAM_TEXT));
 

@@ -865,9 +865,17 @@ class block_course_overview_campus extends block_base {
 					$attributes['class'] = 'dimmed';
 				}
 
-				// Output course link (show shortname if configured)
-				if ($CFG->block_course_overview_campus_showshortname == true)
-					echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-shortname">('.$c->shortname.')</span>', $attributes), 3);
+				// Get teachers' names for use with course link
+				$teachernames = get_teachername_string($c->teachers);
+
+
+				// Output course link (show shortname and teacher name if configured)
+				if ($CFG->block_course_overview_campus_showshortname == true && $CFG->block_course_overview_campus_showteachername == true && $teachernames != '')
+					echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.$c->shortname.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$teachernames.')</span>', $attributes), 3);
+				elseif ($CFG->block_course_overview_campus_showshortname == true)
+					echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.$c->shortname.')</span>', $attributes), 3);
+				elseif ($CFG->block_course_overview_campus_showteachername == true && $teachernames != '')
+					echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.$teachernames.')</span>', $attributes), 3);
 				else
 					echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname), $attributes), 3);
 

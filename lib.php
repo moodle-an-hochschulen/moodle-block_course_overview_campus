@@ -40,3 +40,40 @@ function check_term_config() {
 		return false;
 	}
 }
+
+
+// Take array of teacher objects and return a string of names, sorted by relevance and name
+function get_teachername_string($teachers) {
+	// Sort all teachers by relevance and name, return empty string when sorting fails
+	$success = usort($teachers, "compare_teachers");
+	if (!$success)
+		return '';
+	
+	// Get all teachers' names as an array
+	$teachernames = array_map(function($obj) { return $obj->lastname; }, $teachers);
+	
+	// Implode teachers' names to a single string
+	$teachernames = implode(", ", $teachernames);
+
+	return $teachernames;
+}
+
+
+// Helper function
+function compare_teachers($a, $b) {
+	// compare relevance of teachers' roles
+	if ($a->sortorder < $b->sortorder) {
+		return -1;
+	}
+	elseif ($a->sortorder > $b->sortorder) {
+		return 1;
+	}
+	elseif ($a->sortorder == $b->sortorder) {
+		// teachers' roles are equal, then compare lastnames
+		return strcasecmp($a->lastname, $b->lastname);
+	}
+	else {
+		// This should never happen
+		return 0;
+	}
+}
