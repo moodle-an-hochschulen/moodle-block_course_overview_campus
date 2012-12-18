@@ -59,29 +59,18 @@ class block_course_overview_campus extends block_base {
 		$teacher = optional_param('teacher', null, PARAM_TEXT);
 		
 
-		// Need to keep track of latest changes as user preferences are not reliable
-		$recenthidecourse = 0;
-		$recentshowcourse = 0;
-		$recentshownews = 0;
-		$recenthidenews = 0;
-
-	
 		// Set displaying preferences when set by GET parameters
 		if ($hidecourse != 0) {
 			set_user_preference('block_course_overview_campus-hidecourse-'.$hidecourse, 1);
-			$recenthidecourse = $hidecourse;
 		}
 		if ($showcourse != 0) {
 			set_user_preference('block_course_overview_campus-hidecourse-'.$showcourse, 0);
-			$recentshowcourse = $showcourse;
 		}
 		if ($hidenews != 0) {
 			set_user_preference('block_course_overview_campus-hidenews-'.$hidenews, 1); 
-			$recenthidenews = $hidenews;
 		}
 		if ($shownews != 0) {
 			set_user_preference('block_course_overview_campus-hidenews-'.$shownews, 0);
-			$recentshownews = $shownews;
 		}
 
 	
@@ -361,31 +350,13 @@ class block_course_overview_campus extends block_base {
 				}
 				
 
-				// Check if this course should be shown or not (based on recent show / hide requests or based on user preferences)
-				if ($c->id == $recenthidecourse) {
-					$courses[$c->id]->hidecourse = 1;
+				// Check if this course should be shown or not
+				$courses[$c->id]->hidecourse = get_user_preferences('block_course_overview_campus-hidecourse-'.$c->id, 0);
+				if ($courses[$c->id]->hidecourse == 1)
 					$hiddencourses++;
-				} 
-				elseif ($c->id == $recentshowcourse) {
-					$courses[$c->id]->hidecourse = 0;
-				} 
-				else {
-					$courses[$c->id]->hidecourse = get_user_preferences('block_course_overview_campus-hidecourse-'.$c->id, 0);
-					if ($courses[$c->id]->hidecourse == 1)
-						$hiddencourses++;
-				}
 	
-
-				// Check if this course should show news or not (based on recent hide news/ show news requests or based on user preferences)
-				if ($c->id==$recenthidenews) {
-					$courses[$c->id]->hidenews = 1;
-				} 
-				elseif ($c->id==$recentshownews) {
-					$courses[$c->id]->hidenews = 0;
-				} 
-				else {
-					$courses[$c->id]->hidenews = get_user_preferences('block_course_overview_campus-hidenews-'.$c->id, 0);
-				}
+				// Check if this course should show news or not
+				$courses[$c->id]->hidenews = get_user_preferences('block_course_overview_campus-hidenews-'.$c->id, 0);
 			}
 	
 
