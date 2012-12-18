@@ -10,6 +10,7 @@ This plugin requires Moodle 2.3+
 
 Changes
 =======
+2012-12-18 - New feature: Short teachers' names in course list
 2012-12-18 - New feature: Support multilang strings in term names and filter display names
 2012-12-17 - Initial version
 
