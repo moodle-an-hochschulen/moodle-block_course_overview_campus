@@ -545,7 +545,7 @@ class block_course_overview_campus extends block_base {
 					echo '<div class="coc-filter">';
 	
 					// Show filter description
-					echo $CFG->block_course_overview_campus_termcoursefilterdisplayname;
+					echo format_string($CFG->block_course_overview_campus_termcoursefilterdisplayname);
 					if ($CFG->block_course_overview_campus_termcoursefilterdisplayname != '')
 						echo '<br />';
 
@@ -576,7 +576,7 @@ class block_course_overview_campus extends block_base {
 								$selectedtermdisplayed = true;
 							} 
 							else {
-								echo '<option selected value="'.$t.'">'.$n.'</option> ';
+								echo '<option selected value="'.$t.'">'.format_string($n).'</option> ';
 								$selectedtermdisplayed = true;
 							}
 						} 
@@ -587,7 +587,7 @@ class block_course_overview_campus extends block_base {
 								echo '<option value="other">'.get_string('other', 'block_course_overview_campus').'</option> ';
 							} 
 							else {
-								echo '<option value="'.$t.'">'.$n.'</option> ';
+								echo '<option value="'.$t.'">'.format_string($n).'</option> ';
 							}
 						}
 					}
@@ -608,7 +608,7 @@ class block_course_overview_campus extends block_base {
 					echo '<div class="coc-filter">';
 	
 					// Show filter description
-					echo $CFG->block_course_overview_campus_categorycoursefilterdisplayname;
+					echo format_string($CFG->block_course_overview_campus_categorycoursefilterdisplayname);
 					if ($CFG->block_course_overview_campus_categorycoursefilterdisplayname != '')
 						echo '<br />';
 	
@@ -658,7 +658,7 @@ class block_course_overview_campus extends block_base {
 					echo '<div class="coc-filter">';
 	
 					// Show filter description
-					echo $CFG->block_course_overview_campus_teachercoursefilterdisplayname;
+					echo format_string($CFG->block_course_overview_campus_teachercoursefilterdisplayname);
 					if ($CFG->block_course_overview_campus_teachercoursefilterdisplayname != '')
 						echo '<br />';
 	

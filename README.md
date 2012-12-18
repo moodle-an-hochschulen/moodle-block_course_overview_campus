@@ -10,6 +10,7 @@ This plugin requires Moodle 2.3+
 
 Changes
 =======
+2012-12-18 - New feature: Support multilang strings in term names and filter display names
 2012-12-17 - Initial version
 
 
@@ -42,11 +43,11 @@ By checking one of these items, you activate a filter which enables your users t
 
 2. Term definition
 ------------------
-To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term. After that, set a label for each term according to your campus terminology. Finally, decide if a default term should be chosen if the user has not previously selected a term for filtering terms.
+To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term. After that, set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/23/en/Multi-language_content_filter for details). Finally, decide if a default term should be chosen if the user has not previously selected a term for filtering terms.
 
 3. Appearance
 -------------
-In this section, you can enable the displaying of the course's short name in the course list. Additionally, you can change the display names for each filter which are shown in the block view.
+In this section, you can enable the displaying of the course's short name in the course list. Additionally, you can change the display names for each filter which are shown in the block view (multilang strings are supported, see http://docs.moodle.org/23/en/Multi-language_content_filter for details).
 
 
 Data sources
