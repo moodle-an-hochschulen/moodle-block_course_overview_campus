@@ -10,6 +10,7 @@ This plugin requires Moodle 2.3+
 
 Changes
 =======
+2912-12-21 - Block now uses config_plugins database table instead of config table. You will have to set all block settings again, sorry about that!
 2012-12-21 - Small CSS improvement
 2012-12-18 - Code cleanup
 2012-12-18 - New feature: Short teachers' names in course list

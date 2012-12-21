@@ -18,22 +18,20 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Check if the configured term dates make sense
-function check_term_config() {
-	global $CFG;
-	
-	if ($CFG->block_course_overview_campus_termmode == 1)
+function check_term_config($config) {
+	if ($config->termmode == 1)
 		return true;
-	elseif ($CFG->block_course_overview_campus_termmode == 2 && 
-		intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term1startday))) < intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term2startday))))
+	elseif ($config->termmode == 2 && 
+		intval(date('z', strtotime('2003-'.$config->term1startday))) < intval(date('z', strtotime('2003-'.$config->term2startday))))
 			return true;
-	elseif ($CFG->block_course_overview_campus_termmode == 3 && 
-		intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term1startday))) < intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term2startday))) &&			
-		intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term2startday))) < intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term3startday))))
+	elseif ($config->termmode == 3 && 
+		intval(date('z', strtotime('2003-'.$config->term1startday))) < intval(date('z', strtotime('2003-'.$config->term2startday))) &&			
+		intval(date('z', strtotime('2003-'.$config->term2startday))) < intval(date('z', strtotime('2003-'.$config->term3startday))))
 			return true;
-	elseif ($CFG->block_course_overview_campus_termmode == 4 && 
-		intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term1startday))) < intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term2startday))) &&			
-		intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term2startday))) < intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term3startday))) &&			
-		intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term3startday))) < intval(date('z', strtotime('2003-'.$CFG->block_course_overview_campus_term4startday)))) {
+	elseif ($config->termmode == 4 && 
+		intval(date('z', strtotime('2003-'.$config->term1startday))) < intval(date('z', strtotime('2003-'.$config->term2startday))) &&			
+		intval(date('z', strtotime('2003-'.$config->term2startday))) < intval(date('z', strtotime('2003-'.$config->term3startday))) &&			
+		intval(date('z', strtotime('2003-'.$config->term3startday))) < intval(date('z', strtotime('2003-'.$config->term4startday)))) {
 			return true;
 	}
 	else {
