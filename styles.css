@@ -94,7 +94,8 @@
 	margin: 0;
 }
 
-#coc-courselist .coursebox .overview .info {
+#coc-courselist .coursebox .overview .info,
+#coc-courselist .coursebox .overview .details  {
 	float: none; /* overwrite float style from base theme */
 	margin: 0;
 	width: 100%;
