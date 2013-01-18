@@ -43,12 +43,7 @@ class block_course_overview_campus extends block_base {
 		/********************************************************************************/
 
 		// Get block config
-		if(isset($this->config)) {
-			$config = $this->config;
-		} 
-		else {
-			$config = get_config('block_course_overview_campus');
-		}
+		$config = get_config('block_course_overview_campus');
 		
 		// Check if the configured term dates make sense, if not disable term filter
 		if (!check_term_config($config)) {

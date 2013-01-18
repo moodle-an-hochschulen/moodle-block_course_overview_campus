@@ -18,7 +18,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_course_overview_campus';
-$plugin->version = 2012121703;
-$plugin->release = '2.3 RC2 (Build: 2012121703)';
+$plugin->version = 2012121704;
+$plugin->release = '2.3 RC3 (Build: 2012121704)';
 $plugin->requires = 2012062500;
 $plugin->maturity = MATURITY_RC;
