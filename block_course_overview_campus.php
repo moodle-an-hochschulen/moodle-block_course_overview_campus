@@ -813,10 +813,10 @@ class block_course_overview_campus extends block_base {
 				if ($c->hidecourse == 0) {
 					echo '<div class="hidecourseicon">
 							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
-								<img src="'.$OUTPUT->pix_url('i/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
+								<img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
 							</a>
 							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
-								<img src="'.$OUTPUT->pix_url('i/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
+								<img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
 							</a>
 						</div>';
 				} 
@@ -824,10 +824,10 @@ class block_course_overview_campus extends block_base {
 				else {
 					echo '<div class="hidecourseicon">
 							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
-								<img src="'.$OUTPUT->pix_url('i/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
+								<img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
 							</a>
 							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
-								<img src="'.$OUTPUT->pix_url('i/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
+								<img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
 							</a>
 						</div>';
 				}
@@ -869,7 +869,10 @@ class block_course_overview_campus extends block_base {
 
 					// Output the course's preformatted news HTML
 					foreach ($coursenews[$c->id] as $modname => $html) {
-						echo $html;
+						echo '<div class="coc-module">';
+							echo $OUTPUT->pix_icon('icon', $modname, 'mod_'.$modname, array('class'=>'iconlarge'));
+							echo $html;
+						echo '</div>';
 					}
 
 					// End course news div
@@ -967,7 +970,7 @@ class block_course_overview_campus extends block_base {
 	}
 
 	public function has_config() {
-		return false;
+		return true;
 	}
 
 	public function applicable_formats() {
