@@ -10,6 +10,7 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-02-22 - German language has been integrated into AMOS and was removed from this plugin. Please update your language packs with http://YOURMOODLEURL/admin/tool/langimport/index.php after installing this plugin version
 2013-02-18 - Check compatibility for Moodle 2.4, add module icons to course news, fix language string names to comply with language string name convention
 2013-01-18 - Bugfix: Block didn't read configuration from config_plugins database table properly
 2012-12-21 - Block now uses config_plugins database table instead of config table. You will have to set all block settings again, sorry about that!
