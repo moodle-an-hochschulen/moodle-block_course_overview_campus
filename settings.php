@@ -54,7 +54,7 @@ if ($ADMIN->fulltree) {
 	// Get all calendar days
 	$format = get_string('strftimedateshort', 'langconfig');
 	for ($i = 1; $i <= 12; $i++) {
-		for ($j = 1; $j <= cal_days_in_month(CAL_GREGORIAN, $i, 2003); $j++) { // Use no leap year to calculate days in month to avoid providing 29th february as an option
+		for ($j = 1; $j <= date('t', mktime(0,0,0, $i, 1, 2003)); $j++) { // Use no leap year to calculate days in month to avoid providing 29th february as an option
 			// Create an intermediate timestamp with each day-month-combination and format it according to local date format for displaying purpose
 			$daystring = userdate(gmmktime(12, 0, 0, $i, $j, 2003), $format);
 

@@ -201,6 +201,9 @@ class block_course_overview_campus extends block_base {
 				// Populate filters with data about my courses
 				// Term filter
 				if ($config->termcoursefilter == true) {
+					// Create object for bufferung course term information
+					$courseterm = new stdClass();
+
 					// If course start date is undefined, set course term to "other"
 					if ($c->startdate == 0) {
 						$courseterm->id = 'other';
@@ -320,6 +323,9 @@ class block_course_overview_campus extends block_base {
 
 					// Add course term to filter list
 					$filterterms[$courseterm->id] = $courseterm->name;
+
+					// Cleanup
+					unset ($courseterm);
 				}
 	
 				// Category filter
