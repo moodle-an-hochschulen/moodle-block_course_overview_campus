@@ -700,21 +700,21 @@ class block_course_overview_campus extends block_base {
 				// And hidden courses managing is off
 				if ($manage == false) {
 					// Create footer with hidden courses information
-					$footer = '<div id="coc-hiddencoursesmanagement">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$PAGE->url->out_as_local_url(true, array('manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+					$footer = '<div id="coc-hiddencoursesmanagement">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
 				} 
 				// And hidden courses managing is on
 				else {
 					// Create toolbox with link for stopping management
-					echo '<div class="coursebox toolbox"><a href="'.$PAGE->url->out_as_local_url(true, array('manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+					echo '<div class="coursebox toolbox"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
 	
 					// Create footer with link for stopping management
-					$footer = '<div id="coc-hiddencoursesmanagement"><a href="'.$PAGE->url->out_as_local_url(true, array('manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+					$footer = '<div id="coc-hiddencoursesmanagement"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
 				}
 			}
 			// I have no hidden courses
 			else {
 					// Prepare footer to appear as soon as a course is hidden
-					$footer = '<div id="coc-hiddencoursesmanagement" class="coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$PAGE->url->out_as_local_url(true, array('manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+					$footer = '<div id="coc-hiddencoursesmanagement" class="coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
 			}
 			
 		
@@ -793,10 +793,10 @@ class block_course_overview_campus extends block_base {
 					// If course news are hidden
 					if ($c->hidenews == 0) {
 						echo '<div class="hidenewsicon">
-								<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => $c->id, 'shownews' => '')).'" id="coc-hidenews-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">
+								<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => $c->id, 'shownews' => '')).'" id="coc-hidenews-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">
 									<img src="'.$OUTPUT->pix_url('t/expanded').'" alt="'.get_string('hidenews', 'block_course_overview_campus').'" />
 								</a>
-								<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => '', 'shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">
+								<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => '', 'shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">
 									<img src="'.$OUTPUT->pix_url('t/collapsed').'" alt="'.get_string('shownews', 'block_course_overview_campus').'" />
 								</a>
 							</div>';
@@ -804,10 +804,10 @@ class block_course_overview_campus extends block_base {
 					// If course news are visible
 					else {
 						echo '<div class="hidenewsicon">
-								<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => $c->id, 'shownews' => '')).'" id="coc-hidenews-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">
+								<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => $c->id, 'shownews' => '')).'" id="coc-hidenews-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">
 									<img src="'.$OUTPUT->pix_url('t/expanded').'" alt="'.get_string('hidenews', 'block_course_overview_campus').'" />
 								</a>
-								<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => '', 'shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">
+								<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => '', 'shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">
 									<img src="'.$OUTPUT->pix_url('t/collapsed').'" alt="'.get_string('shownews', 'block_course_overview_campus').'" />
 								</a>
 							</div>';
@@ -818,10 +818,10 @@ class block_course_overview_campus extends block_base {
 				// If course is hidden
 				if ($c->hidecourse == 0) {
 					echo '<div class="hidecourseicon">
-							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
+							<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
 								<img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
 							</a>
-							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
+							<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
 								<img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
 							</a>
 						</div>';
@@ -829,10 +829,10 @@ class block_course_overview_campus extends block_base {
 				// If course is visible
 				else {
 					echo '<div class="hidecourseicon">
-							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
+							<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
 								<img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
 							</a>
-							<a href="'.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
+							<a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
 								<img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
 							</a>
 						</div>';

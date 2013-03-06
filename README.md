@@ -10,6 +10,7 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-03-06 - Bugfix: Block failed to work when wwwroot contained a subdirectory, kudos to Michael Wuttke
 2013-03-05 - Small code change, now PHP doesn't need to be compiled with --enable-calendar option, kudos to Carsten Biemann
 2013-02-22 - German language has been integrated into AMOS and was removed from this plugin. Please update your language packs with http://YOURMOODLEURL/admin/tool/langimport/index.php after installing this plugin version
 2013-02-18 - Check compatibility for Moodle 2.4, add module icons to course news, fix language string names to comply with language string name convention
