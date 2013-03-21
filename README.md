@@ -10,6 +10,7 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-03-18 - Code cleanup according to moodle codechecker
 2013-03-06 - Bugfix: Block failed to work when wwwroot contained a subdirectory, kudos to Michael Wuttke
 2013-03-05 - Small code change, now PHP doesn't need to be compiled with --enable-calendar option, kudos to Carsten Biemann
 2013-02-22 - German language has been integrated into AMOS and was removed from this plugin. Please update your language packs with http://YOURMOODLEURL/admin/tool/langimport/index.php after installing this plugin version
@@ -64,7 +65,7 @@ Data sources
 
 1. Category filter
 ------------------
-The category filter is filled with the main category of each of the user's courses. 
+The category filter is filled with the main category of each of the user's courses.
 Currently, there is no support for parent categories, grandparent categories and so on or any other category filtering. Please don't hesitate to suggest expedient improvements.
 
 2. Teacher filter
@@ -106,6 +107,13 @@ Moodle release support
 Due to limited ressources, block_course_overview_campus is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
 
 There may be several weeks after a new major release of Moodle has been published until I can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that block_course_overview_campus still works with a new major relase - please let me know on https://github.com/abias/moodle-block_course_overview_campus/issues
+
+
+Right-to-left support
+=====================
+This plugin has not been tested with Moodle's support for right-to-left (RTL) languages.
+If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send me a pull request on
+github with modifications.
 
 
 Copyright

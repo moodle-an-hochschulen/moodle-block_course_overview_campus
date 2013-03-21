@@ -8,7 +8,7 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -25,14 +25,14 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
-	'block/course_overview_campus:addinstance' => array(
-		'riskbitmask' => RISK_SPAM | RISK_XSS,
-		'captype' => 'write',
-		'contextlevel' => CONTEXT_BLOCK,
-		'archetypes' => array(
-			'editingteacher' => CAP_ALLOW,
-			'manager' => CAP_ALLOW
-		),
-		'clonepermissionsfrom' => 'moodle/site:manageblocks'
-	),
+    'block/course_overview_campus:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
 );

@@ -1,122 +1,122 @@
 /* Positioning of icons */
 .block_course_overview_campus .hidecourseicon {
-	float: right;
+    float: right;
 }
 
 .block_course_overview_campus .hidenewsicon {
-	float: left;
+    float: left;
 }
 
 
 /* Used for hiding courses and news in courselist */
 .coc-hidden {
-	display: none;
+    display: none;
 }
 
 
 /* Hidden courses management */
 #coc-hiddencoursesmanagement {
-	font-size: 90%;
+    font-size: 90%;
 }
 
 #coc-hiddencoursescount {
-	color: darkred;
+    color: darkred;
 }
 
 
 /* Toolbox for links above course list */
 .block_course_overview_campus .toolbox {
-	padding: 0.5em 0;
-	text-align: center;
+    padding: 0.5em 0;
+    text-align: center;
 }
 
 
 /* Filter item appearance */
 #coc-filterlist {
-	float: left;
-	padding-bottom: 20px;
-	width: 100%;
+    float: left;
+    padding-bottom: 20px;
+    width: 100%;
 }
 
 #coc-filterlist .coc-filter {
-	float: left;
-	font-size: 90%;
-	text-align: center;
-	width: 33%; 
+    float: left;
+    font-size: 90%;
+    text-align: center;
+    width: 33%;
 }
 
 #coc-filterlist .coc-filter select {
-	width: 98%;
+    width: 98%;
 }
 
 #coc-filtersubmit {
-	clear: both;
-	text-align: center;
-	width: 100%;
+    clear: both;
+    text-align: center;
+    width: 100%;
 }
 
 .jsenabled #coc-filtersubmit { /* Hide submit button when JS is enabled */
-	display: none;
+    display: none;
 }
 
 
 /* Course list appearance */
 #coc-courselist {
-	clear: both;
+    clear: both;
 }
 
 #coc-courselist .coursebox {
-	margin-bottom: 5px;
-	padding: 10px;
-	width: inherit;
+    margin-bottom: 5px;
+    padding: 10px;
+    width: inherit;
 }
 
-#coc-courselist .coursebox h3.main { 
-	margin: 0;
-	padding: 0 0 0 20px;
+#coc-courselist .coursebox h3.main {
+    margin: 0;
+    padding: 0 0 0 20px;
 }
 
 #coc-courselist .coc-metainfo {
-	font-size: 85%;
-	font-weight: normal !important;
+    font-size: 85%;
+    font-weight: normal !important;
 }
 
 
 /* Course news appearance */
 #coc-courselist .coc-coursenews {
-	border-left: 1px dashed grey;
-	margin: 10px 0 0 30px;
-	padding: 0 0 0 10px;
+    border-left: 1px dashed grey;
+    margin: 10px 0 0 30px;
+    padding: 0 0 0 10px;
 }
 
 #coc-courselist .coursebox .iconlarge {
-	float: left;
+    float: left;
 }
 
 #coc-courselist .coursebox .overview .name {
-	font-size: inherit;
-	margin: 0;
+    font-size: inherit;
+    margin: 0;
 }
 
 #coc-courselist .coursebox .overview .info,
 #coc-courselist .coursebox .overview .details  {
-	float: none; /* overwrite float style from base theme */
-	margin: 0;
-	width: 100%;
+    float: none; /* overwrite float style from base theme */
+    margin: 0;
+    width: 100%;
 }
 
 #coc-courselist .coursebox .overview {
-	margin: 0 0 10px 34px;
+    margin: 0 0 10px 34px;
 }
 
 #coc-courselist .coursebox .overview:last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 #coc-courselist .coursebox .coc-module {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #coc-courselist .coursebox .coc-module:last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
