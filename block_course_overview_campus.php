@@ -234,6 +234,12 @@ class block_course_overview_campus extends block_base {
                         $courseterm->name = 'other';
                     }
 
+                    // If course start date is available, if timeless courses are enabled and if course start date is before timeless course threshold, set course term to "timeless"
+                    else if ($config->timelesscourses == true && date('Y', $c->startdate) < $config->timelesscoursesthreshold) {
+                        $courseterm->id = 'timeless';
+                        $courseterm->name = 'timeless';
+                    }
+
                     // If course start date is available, distinguish between term modes
                     // "Academic year" mode
                     else if ($config->termmode == 1) {
@@ -422,7 +428,7 @@ class block_course_overview_campus extends block_base {
                         $selectedterm = 'all';
                         arsort($filterterms);
                         foreach ($filterterms as $t) {
-                            if ($t != 'other' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
+                            if ($t != 'other' && $t != 'timeless' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
                                 $selectedterm = $t;
                                 break;
                             }
@@ -450,7 +456,7 @@ class block_course_overview_campus extends block_base {
                         $selectedterm = 'all';
                         krsort($filterterms);
                         foreach ($filterterms as $t => $n) {
-                            if ($t != 'other' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
+                            if ($t != 'other' && $t != 'timeless' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
                                 $selectedterm = $t;
                                 break;
                             }
@@ -484,7 +490,7 @@ class block_course_overview_campus extends block_base {
                         $selectedterm = 'all';
                         krsort($filterterms);
                         foreach ($filterterms as $t => $n) {
-                            if ($t != 'other' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
+                            if ($t != 'other' && $t != 'timeless' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
                                 $selectedterm = $t;
                                 break;
                             }
@@ -524,7 +530,7 @@ class block_course_overview_campus extends block_base {
                         $selectedterm = 'all';
                         krsort($filterterms);
                         foreach ($filterterms as $t => $n) {
-                            if ($t != 'other' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
+                            if ($t != 'other' && $t != 'timeless' && intval(substr($t, 0, 4)) <= intval(date('Y'))) {
                                 $selectedterm = $t;
                                 break;
                             }
@@ -586,6 +592,11 @@ class block_course_overview_campus extends block_base {
                                 echo '<option selected value="other">'.get_string('other', 'block_course_overview_campus').'</option> ';
                                 $selectedtermdisplayed = true;
                             }
+                            // Handle "timeless" term option
+                            else if ($selectedterm == 'timeless') {
+                                echo '<option selected value="timeless">'.format_string($config->timelesscoursesname).'</option> ';
+                                $selectedtermdisplayed = true;
+                            }
                             else {
                                 echo '<option selected value="'.$t.'">'.format_string($n).'</option> ';
                                 $selectedtermdisplayed = true;
@@ -596,6 +607,10 @@ class block_course_overview_campus extends block_base {
                             // Handle "other" term option
                             if ($t == 'other') {
                                 echo '<option value="other">'.get_string('other', 'block_course_overview_campus').'</option> ';
+                            }
+                            // Handle "timeless" term option
+                            else if ($t == 'timeless') {
+                                echo '<option value="timeless">'.format_string($config->timelesscoursesname).'</option> ';
                             }
                             else {
                                 echo '<option value="'.$t.'">'.format_string($n).'</option> ';

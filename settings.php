@@ -95,8 +95,32 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('block_course_overview_campus/term4name', get_string('term4name', 'block_course_overview_campus'),
                         get_string('term4name_desc', 'block_course_overview_campus'), get_string('term4', 'block_course_overview_campus'), PARAM_TEXT));
 
+
+
+    // Term behaviour
+    $settings->add(new admin_setting_heading('block_course_overview_campus/termbehavioursettingheading', get_string('termbehavioursettingheading', 'block_course_overview_campus'), ''));
+
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/defaultterm', get_string('defaultterm', 'block_course_overview_campus'),
                         get_string('defaultterm_desc', 'block_course_overview_campus'), 1));
+
+
+    // Timeless courses
+    $settings->add(new admin_setting_heading('block_course_overview_campus/timelesscoursessettingheading', get_string('timelesscoursessettingheading', 'block_course_overview_campus'), ''));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/timelesscourses', get_string('timelesscourses', 'block_course_overview_campus'),
+                        get_string('timelesscourses_desc', 'block_course_overview_campus'), 1));
+
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/timelesscoursesname', get_string('timelesscoursesname', 'block_course_overview_campus'),
+                        get_string('timelesscoursesname_desc', 'block_course_overview_campus'), get_string('timelesscourses', 'block_course_overview_campus'), PARAM_TEXT));
+
+    // Get all years from 1970
+    for ($i = 1971; $i <= date('Y'); $i++) {
+        // Add the year as an option
+        $years[$i] = $i;
+    }
+
+    $settings->add(new admin_setting_configselect('block_course_overview_campus/timelesscoursesthreshold', get_string('timelesscoursesthreshold', 'block_course_overview_campus'),
+                        get_string('timelesscoursesthreshold_desc', 'block_course_overview_campus'), $years[date('Y')-1], $years));
 
 
     // Appearance

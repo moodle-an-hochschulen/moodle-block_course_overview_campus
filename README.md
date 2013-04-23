@@ -10,6 +10,7 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-04-23 - Add support for timeless courses
 2013-03-18 - Code cleanup according to moodle codechecker
 2013-03-06 - Bugfix: Block failed to work when wwwroot contained a subdirectory, kudos to Michael Wuttke
 2013-03-05 - Small code change, now PHP doesn't need to be compiled with --enable-calendar option, kudos to Carsten Biemann
@@ -45,7 +46,7 @@ After installing block_course_overview_campus with its default settings and addi
 
 To make use of the advanced features of the block, please visit Plugins -> Blocks -> Course overview on campus.
 
-There, you find three sections:
+There, you find five sections:
 
 1. Filter activation
 --------------------
@@ -53,9 +54,18 @@ By checking one of these items, you activate a filter which enables your users t
 
 2. Term definition
 ------------------
-To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term. After that, set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details). Finally, decide if a default term should be chosen if the user has not previously selected a term for filtering terms.
+To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term. After that, set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
 
-3. Appearance
+3. Term behaviour
+------------------
+Here, you are able to let block_course_overview_campus choose a default term if the user has not previously selected a term for filtering terms.
+
+4. Timeless courses
+------------------
+Here, you can enable support for "timeless courses". Timeless courses will be presented in the term filter as if they are not associated to a specific term. This is achieved by leveraging the course's start year field. After enabling timeless courses, you have to define a course start year threshold. Every course with a start year before (and not equal to) this year will be presentes as timeless course in the term filter.
+You are also able to set a label for timeless courses for the term filter (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
+
+5. Appearance
 -------------
 In this section, you can enable the displaying of the course's short name and of the teachers' names in the course list. Additionally, you can change the display names for each filter which are shown in the block view (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
 
@@ -74,7 +84,7 @@ block_course_overview_campus gets the list of teacher roles from $CFG->coursecon
 
 3. Term filter
 --------------
-As described in the "Usage & Settings" section of this file, you should to configure block_course_overview_campus according to your campus course of the year. After that, block_course_overview_campus maps each course to a term by looking at the course's start date. This term is filled into the term filter.
+As described in the "Usage & Settings" section of this file, you should configure block_course_overview_campus according to your campus course of the year. After that, block_course_overview_campus maps each course to a term by looking at the course's start date. This term is filled into the term filter.
 
 
 Moodle 2.4 Features

@@ -63,6 +63,10 @@ function check_term_config($config) {
  * @return string String with concatenated teacher names
  */
 function get_teachername_string($teachers) {
+    // If given array is empty, return empty string
+    if (empty($teachers))
+        return '';
+
     // Sort all teachers by relevance and name, return empty string when sorting fails
     $success = usort($teachers, "compare_teachers");
     if (!$success) {
