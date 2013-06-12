@@ -10,6 +10,8 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2913-96-12 - When managing hidden courses, now all courses are shown regardless if of the user's filter settings
+2013-06-12 - Bugfix: Setting page should check if the configured term dates make sense and show a warning information if not. This check didn't work up to now
 2013-04-23 - Add support for timeless courses
 2013-03-18 - Code cleanup according to moodle codechecker
 2013-03-06 - Bugfix: Block failed to work when wwwroot contained a subdirectory, kudos to Michael Wuttke
@@ -54,7 +56,7 @@ By checking one of these items, you activate a filter which enables your users t
 
 2. Term definition
 ------------------
-To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term. After that, set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
+To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term (Please make sure that the configured start dates make sense, i.e. that term 2 starts after term 1 and so on). After that, set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
 
 3. Term behaviour
 ------------------

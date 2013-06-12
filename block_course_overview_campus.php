@@ -552,8 +552,8 @@ class block_course_overview_campus extends block_base {
             /***                        GENERATE OUTPUT FOR FILTER                        ***/
             /********************************************************************************/
 
-            // Show filter form if any filter is activated
-            if ($config->categorycoursefilter == true || $config->termcoursefilter == true || $config->teachercoursefilter == true) {
+            // Show filter form if any filter is activated and if management of hidden courses isn't activ
+            if ($manage == false && ($config->categorycoursefilter == true || $config->termcoursefilter == true || $config->teachercoursefilter == true)) {
                 // Start section and form
                 echo '<div id="coc-filterlist"><form method="post" action="">';
 
@@ -779,7 +779,7 @@ class block_course_overview_campus extends block_base {
                 // Remember course ID for YUI processing
                 $yui_courseslist .= $c->id.' ';
 
-                // Start course div as visible if it isn't hidden or if hidden courses are currently shwon
+                // Start course div as visible if it isn't hidden or if hidden courses are currently shown
                 if (($c->hidecourse == 0) || $manage == true) {
                     echo '<div id="coc-course-'.$c->id.'" class="coc-course">';
                 }
@@ -790,8 +790,8 @@ class block_course_overview_campus extends block_base {
 
                 // Start filter by term div - later we use this div to filter the course
                 if ($config->termcoursefilter == true) {
-                    // Show course if it is within selected term or all terms are selected
-                    if ($c->term == $selectedterm || $selectedterm == 'all') {
+                    // Show course if it is within selected term or all terms are selected or if hidden courses are currently shown
+                    if ($c->term == $selectedterm || $selectedterm == 'all' || $manage == true) {
                         echo '<div class="termdiv coc-term-'.$c->term.'">';
                     }
                     // Otherwise hide the course with CSS
@@ -802,8 +802,8 @@ class block_course_overview_campus extends block_base {
 
                 // Start filter by category div - later we use this div to filter the course
                 if ($config->categorycoursefilter == true) {
-                    // Show course if it is within selected category or all categories are selected
-                    if ($c->categoryid == $selectedcategory || $selectedcategory == 'all') {
+                    // Show course if it is within selected category or all categories are selected or if hidden courses are currently shown
+                    if ($c->categoryid == $selectedcategory || $selectedcategory == 'all' || $manage == true) {
                         echo '<div class="categorydiv coc-category-'.$c->categoryid.'">';
                     }
                     // Otherwise hide the course with CSS
@@ -822,8 +822,8 @@ class block_course_overview_campus extends block_base {
                         echo ' coc-teacher-'.$id;
                     }
 
-                    // Show course if it has the selected teacher or all teachers are selected
-                    if (isset($c->teachers[$selectedteacher]) || $selectedteacher=='all') {
+                    // Show course if it has the selected teacher or all teachers are selected or if hidden courses are currently shown
+                    if (isset($c->teachers[$selectedteacher]) || $selectedteacher=='all' || $manage == true) {
                         echo '">';
                     }
                     // Otherwise hide the course with CSS
