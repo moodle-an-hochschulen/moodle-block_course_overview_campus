@@ -10,7 +10,13 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
-2913-96-12 - When managing hidden courses, now all courses are shown regardless if of the user's filter settings
+2013-06-18 - Re-sorted block settings page
+2013-06-18 - Added ability to prioritize courses in which I teach in the course overview list
+2013-06-18 - Added ability to merge homonymous categories into one category when using the category filter
+2013-06-18 - Added ability to set the title of the block instead of using title from block_course_overview
+2013-06-18 - Added ability to define teacher roles in block settings instead of relying on Moodle core coursecontact setting
+2013-06-18 - Bugfix: When show teacher names setting was enabled, but teacher filter was diabled, the teacher name's list was not populated correctly
+2013-06-12 - When managing hidden courses, now all courses are shown regardless if of the user's filter settings
 2013-06-12 - Bugfix: Setting page should check if the configured term dates make sense and show a warning information if not. This check didn't work up to now
 2013-04-23 - Add support for timeless courses
 2013-03-18 - Code cleanup according to moodle codechecker
@@ -48,28 +54,44 @@ After installing block_course_overview_campus with its default settings and addi
 
 To make use of the advanced features of the block, please visit Plugins -> Blocks -> Course overview on campus.
 
-There, you find five sections:
+There, you find multiple sections:
 
-1. Filter activation
---------------------
-By checking one of these items, you activate a filter which enables your users to filter their courses by category, by term or by teachers. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
+1. Appearance
+-------------
+In this section, you can enable the displaying of the course's short name and of the teachers' names in the course list. You can define which roles in a course will be displayed besides the course's name as teacher and get listed in the teacher filter. You can define if courses in which you have the user has a teacher role are listed first in the course overview list.
+Additionally, you can change the block's title which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
 
-2. Term definition
-------------------
+2. Category filter: Filter activation
+-------------------------------------
+By checking this item, you activate a filter which enables your users to filter their courses by category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
+
+2.1 Category filter: Merge homonymous categories
+------------------------------------------------
+If there are multiple categories with different parent categories, but with the same name, the category filter will be filled with multiple categories with the same name by default. This can be confusing to the user. If you want to merge all homonymous categories into one category when using the category filter, activate this setting
+
+3. Teacher filter: Filter activation
+------------------------------------
+By checking this item, you activate a filter which enables your users to filter their courses by teacher. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
+
+4. Term filter: Filter activation
+---------------------------------
+By checking this item, you activate a filter which enables your users to filter their courses by term. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
+
+4.1. Term filter: Term definition
+---------------------------------
 To make meaningfully use of the term filter, you have to configure it according to your campus course of the year and campus terminology. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term (Please make sure that the configured start dates make sense, i.e. that term 2 starts after term 1 and so on). After that, set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
 
-3. Term behaviour
-------------------
+4.2 Term filter: Term behaviour
+-------------------------------
 Here, you are able to let block_course_overview_campus choose a default term if the user has not previously selected a term for filtering terms.
 
-4. Timeless courses
-------------------
+4.3 Term filter: Timeless courses
+---------------------------------
 Here, you can enable support for "timeless courses". Timeless courses will be presented in the term filter as if they are not associated to a specific term. This is achieved by leveraging the course's start year field. After enabling timeless courses, you have to define a course start year threshold. Every course with a start year before (and not equal to) this year will be presentes as timeless course in the term filter.
 You are also able to set a label for timeless courses for the term filter (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
-
-5. Appearance
--------------
-In this section, you can enable the displaying of the course's short name and of the teachers' names in the course list. Additionally, you can change the display names for each filter which are shown in the block view (multilang strings are supported, see http://docs.moodle.org/24/en/Multi-language_content_filter for details).
 
 
 Data sources

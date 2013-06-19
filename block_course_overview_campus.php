@@ -29,12 +29,19 @@ require_once(dirname(__FILE__) . '/lib.php');
 
 class block_course_overview_campus extends block_base {
 
+    // Variable which will hold the plugin's config
+    public $config;
+
     function init() {
+        global $config;
+        $config = get_config('block_course_overview_campus');
+
         $this->title = get_string('pluginname', 'block_course_overview_campus');
     }
 
     function specialization() {
-        $this->title = get_string('pluginname', 'block_course_overview');
+        global $config;
+        $this->title = format_string($config->blocktitle);
     }
 
     function applicable_formats() {
@@ -54,7 +61,7 @@ class block_course_overview_campus extends block_base {
     }
 
     function get_content() {
-        global $USER, $CFG, $DB, $PAGE, $OUTPUT;
+        global $config, $USER, $CFG, $DB, $PAGE, $OUTPUT;
 
         if ($this->content !== null) {
             return $this->content;
@@ -65,9 +72,6 @@ class block_course_overview_campus extends block_base {
         /********************************************************************************/
         /***                              PREPROCESSING                               ***/
         /********************************************************************************/
-
-        // Get block config
-        $config = get_config('block_course_overview_campus');
 
         // Check if the configured term dates make sense, if not disable term filter
         if (!check_term_config($config)) {
@@ -192,9 +196,8 @@ class block_course_overview_campus extends block_base {
             $coursecategories = $DB->get_records('course_categories');
 
             // Get teacher roles for later use
-            $CFG->coursecontact = trim($CFG->coursecontact);
-            if (!empty($CFG->coursecontact)) {
-                $teacherroles = explode(',', $CFG->coursecontact);
+            if (!empty($config->teacherroles)) {
+                $teacherroles = explode(',', $config->teacherroles);
             }
             else {
                 $teacherroles = array();
@@ -222,6 +225,9 @@ class block_course_overview_campus extends block_base {
 
             // Now iterate over courses and collect data about my courses
             foreach ($courses as $c) {
+                // Get course context
+                $context = context_course::instance($c->id);
+
                 // Populate filters with data about my courses
                 // Term filter
                 if ($config->termcoursefilter == true) {
@@ -373,17 +379,30 @@ class block_course_overview_campus extends block_base {
                     $c->categoryname = format_string($coursecategory->name);
                     $c->categoryid = $coursecategory->id;
 
+                    // Merge homonymous categories into one category if configured
+                    if ($config->mergehomonymouscategories == true) {
+                        // Check if course category name is already present in the category filter array
+                        if ($othercategoryid = array_search($c->categoryname, $filtercategories)) {
+                            // If yes and if course category is different than the already present category (same name, but different id), modify course category id to equal the already present category id (poor hack, but functional)
+                            if ($othercategoryid != $c->categoryid) {
+                                $c->categoryid = $othercategoryid;
+                            }
+                        }
+                    }
+
                     // Add course category name and classname to filter list
                     $filtercategories[$c->categoryid] = $c->categoryname;
                 }
 
                 // Teacher filter
-                if ($config->teachercoursefilter == true) {
-                    // Get course context
-                    $context = context_course::instance($c->id);
-
+                if ($config->teachercoursefilter == true || $config->showteachername == true) {
                     // Get course teachers based on global teacher roles
-                    $courseteachers = get_role_users($teacherroles, $context, true);
+                    if (count($teacherroles) > 0) {
+                        $courseteachers = get_role_users($teacherroles, $context, true);
+                    }
+                    else {
+                        $courseteachers = array();
+                    }
 
                     // Remember course teachers for later use
                     $c->teachers = $courseteachers;
@@ -403,6 +422,25 @@ class block_course_overview_campus extends block_base {
 
                 // Check if this course should show news or not
                 $courses[$c->id]->hidenews = get_user_preferences('block_course_overview_campus-hidenews-'.$c->id, 0);
+
+
+                // Re-sort courses to list courses in which I have a teacher role first if configured - First step: Removing the courses
+                if ($config->prioritizemyteachedcourses) {
+                    // Check if user is teacher in this course
+                    if (array_key_exists($USER->id, $courseteachers)) {
+                        // Remember the course
+                        $myteachercourses[] = $c;
+                        // Remove the course from the courses array
+                        unset($courses[$c->id]);
+                    }
+                }
+            }
+
+
+            // Re-sort courses to list courses in which I have a teacher role first if configured - Last step: Adding the courses again
+            if ($config->prioritizemyteachedcourses) {
+                // Add the courses again at the beginning of the courses array
+                $courses = $myteachercourses + $courses;
             }
 
 
@@ -894,7 +932,12 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Get teachers' names for use with course link
-                $teachernames = get_teachername_string($c->teachers);
+                if (count($c->teachers) > 0) {
+                    $teachernames = get_teachername_string($c->teachers);
+                }
+                else {
+                    $teachernames = '';
+                }
 
 
                 // Output course link (show shortname and teacher name if configured)

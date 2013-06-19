@@ -27,21 +27,66 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(dirname(__FILE__) . '/lib.php');
 
+global $CFG;
+
 if ($ADMIN->fulltree) {
-    // Filter usage
-    $settings->add(new admin_setting_heading('block_course_overview_campus/filtersettingheading', get_string('filtersettingheading', 'block_course_overview_campus'), ''));
+    // Appearance
+    $settings->add(new admin_setting_heading('block_course_overview_campus/appearancesettingheading', get_string('appearancesettingheading', 'block_course_overview_campus'), ''));
+
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/blocktitle', get_string('blocktitle', 'block_course_overview_campus'),
+                        get_string('blocktitle_desc', 'block_course_overview_campus'), get_string('pluginname', 'block_course_overview'), PARAM_TEXT));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/showshortname', get_string('showshortname', 'block_course_overview_campus'),
+                        get_string('showshortname_desc', 'block_course_overview_campus'), 0));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/showteachername', get_string('showteachername', 'block_course_overview_campus'),
+                        get_string('showteachername_desc', 'block_course_overview_campus'), 0));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/prioritizemyteachedcourses', get_string('prioritizemyteachedcourses', 'block_course_overview_campus'),
+                        get_string('prioritizemyteachedcourses_desc', 'block_course_overview_campus'), 0));
+
+    $settings->add(new admin_setting_pickroles('block_course_overview_campus/teacherroles', get_string('teacherroles', 'block_course_overview_campus'),
+                        get_string('teacherroles_desc', 'block_course_overview_campus'), array('editingteacher')));
+
+
+    // Category filter: Activation
+    $settings->add(new admin_setting_heading('block_course_overview_campus/categorycoursefiltersettingheading', get_string('categorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/categorycoursefilter', get_string('categorycoursefilter', 'block_course_overview_campus'),
                         get_string('categorycoursefilter_desc', 'block_course_overview_campus'), 0));
 
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/categorycoursefilterdisplayname', get_string('categorycoursefilterdisplayname', 'block_course_overview_campus'),
+                        get_string('categorycoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('category', 'block_course_overview_campus'), PARAM_TEXT));
+
+
+    // Category filter: Merge homonymous categories
+    $settings->add(new admin_setting_heading('block_course_overview_campus/mergehomonymouscategoriessettingheading', get_string('mergehomonymouscategoriessettingheading', 'block_course_overview_campus'), ''));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/mergehomonymouscategories', get_string('mergehomonymouscategories', 'block_course_overview_campus'),
+                        get_string('mergehomonymouscategories_desc', 'block_course_overview_campus'), 0));
+
+
+    // Teacher filter: Activation
+    $settings->add(new admin_setting_heading('block_course_overview_campus/teachercoursefiltersettingheading', get_string('teachercoursefiltersettingheading', 'block_course_overview_campus'), ''));
+
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/teachercoursefilter', get_string('teachercoursefilter', 'block_course_overview_campus'),
                         get_string('teachercoursefilter_desc', 'block_course_overview_campus'), 0));
+
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/teachercoursefilterdisplayname', get_string('teachercoursefilterdisplayname', 'block_course_overview_campus'),
+                        get_string('teachercoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('defaultcourseteacher'), PARAM_TEXT));
+
+
+    // Term filter: Activation
+    $settings->add(new admin_setting_heading('block_course_overview_campus/termcoursefiltersettingheading', get_string('termcoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/termcoursefilter', get_string('termcoursefilter', 'block_course_overview_campus'),
                         get_string('termcoursefilter_desc', 'block_course_overview_campus'), 0));
 
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/termcoursefilterdisplayname', get_string('termcoursefilterdisplayname', 'block_course_overview_campus'),
+                        get_string('termcoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('term', 'block_course_overview_campus'), PARAM_TEXT));
 
-    // Term definition
+
+    // Term filter: Term definition
     // Check if the configured term dates make sense, if not show warning information
     $config = get_config('block_course_overview_campus');
     if (isset($config->termcoursefilter) && $config->termcoursefilter == true && !check_term_config($config)) {
@@ -97,15 +142,14 @@ if ($ADMIN->fulltree) {
                         get_string('term4name_desc', 'block_course_overview_campus'), get_string('term4', 'block_course_overview_campus'), PARAM_TEXT));
 
 
-
-    // Term behaviour
+    // Term filter: Term behaviour
     $settings->add(new admin_setting_heading('block_course_overview_campus/termbehavioursettingheading', get_string('termbehavioursettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/defaultterm', get_string('defaultterm', 'block_course_overview_campus'),
                         get_string('defaultterm_desc', 'block_course_overview_campus'), 1));
 
 
-    // Timeless courses
+    // Term filter: Timeless courses
     $settings->add(new admin_setting_heading('block_course_overview_campus/timelesscoursessettingheading', get_string('timelesscoursessettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/timelesscourses', get_string('timelesscourses', 'block_course_overview_campus'),
@@ -122,23 +166,4 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new admin_setting_configselect('block_course_overview_campus/timelesscoursesthreshold', get_string('timelesscoursesthreshold', 'block_course_overview_campus'),
                         get_string('timelesscoursesthreshold_desc', 'block_course_overview_campus'), $years[date('Y')-1], $years));
-
-
-    // Appearance
-    $settings->add(new admin_setting_heading('block_course_overview_campus/appearancesettingheading', get_string('appearancesettingheading', 'block_course_overview_campus'), ''));
-
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/showshortname', get_string('showshortname', 'block_course_overview_campus'),
-                        get_string('showshortname_desc', 'block_course_overview_campus'), 0));
-
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/showteachername', get_string('showteachername', 'block_course_overview_campus'),
-                        get_string('showteachername_desc', 'block_course_overview_campus'), 0));
-
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/categorycoursefilterdisplayname', get_string('categorycoursefilterdisplayname', 'block_course_overview_campus'),
-                        get_string('categorycoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('category', 'block_course_overview_campus'), PARAM_TEXT));
-
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/teachercoursefilterdisplayname', get_string('teachercoursefilterdisplayname', 'block_course_overview_campus'),
-                        get_string('teachercoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('defaultcourseteacher'), PARAM_TEXT));
-
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/termcoursefilterdisplayname', get_string('termcoursefilterdisplayname', 'block_course_overview_campus'),
-                        get_string('termcoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('term', 'block_course_overview_campus'), PARAM_TEXT));
 }
