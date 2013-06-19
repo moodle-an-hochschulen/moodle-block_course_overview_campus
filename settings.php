@@ -45,6 +45,9 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/prioritizemyteachedcourses', get_string('prioritizemyteachedcourses', 'block_course_overview_campus'),
                         get_string('prioritizemyteachedcourses_desc', 'block_course_overview_campus'), 0));
 
+    // Appearance
+    $settings->add(new admin_setting_heading('block_course_overview_campus/teacherrolessettingheading', get_string('teacherrolessettingheading', 'block_course_overview_campus'), ''));
+
     $settings->add(new admin_setting_pickroles('block_course_overview_campus/teacherroles', get_string('teacherroles', 'block_course_overview_campus'),
                         get_string('teacherroles_desc', 'block_course_overview_campus'), array('editingteacher')));
 
