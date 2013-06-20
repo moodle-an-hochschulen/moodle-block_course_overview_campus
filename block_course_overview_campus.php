@@ -438,7 +438,7 @@ class block_course_overview_campus extends block_base {
 
 
             // Re-sort courses to list courses in which I have a teacher role first if configured - Last step: Adding the courses again
-            if ($config->prioritizemyteachedcourses) {
+            if ($config->prioritizemyteachedcourses && isset ($myteachercourses) && count($myteachercourses) > 0) {
                 // Add the courses again at the beginning of the courses array
                 $courses = $myteachercourses + $courses;
             }

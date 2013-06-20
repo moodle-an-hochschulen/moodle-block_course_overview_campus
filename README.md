@@ -10,6 +10,7 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-06-18 - Bugfix: Fix problem with new ability to prioritize courses in which I teach. Sorry for the inconvenience
 2013-06-18 - Re-sorted block settings page
 2013-06-18 - Added ability to prioritize courses in which I teach in the course overview list
 2013-06-18 - Added ability to merge homonymous categories into one category when using the category filter
