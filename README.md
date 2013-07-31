@@ -5,7 +5,7 @@ Moodle block which provides all functionality of block_course_overview, provides
 
 Requirements
 ============
-This plugin requires Moodle 2.4+
+This plugin requires Moodle 2.5+
 
 
 Changes
