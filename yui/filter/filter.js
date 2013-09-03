@@ -5,18 +5,17 @@ var Filter = function() {
 };
 Filter.prototype = {
     initializer : function() {
-        var i;
-        var nodeFilterTerm = Y.one('#filterTerm')
+        var nodeFilterTerm = Y.one('#coc-filterterm')
         if(nodeFilterTerm != null) {
             nodeFilterTerm.on('change', this.filterTerm, this);
         }
 
-        var nodeFilterTeacher = Y.one('#filterTeacher')
+        var nodeFilterTeacher = Y.one('#coc-filterteacher')
         if(nodeFilterTeacher != null) {
             nodeFilterTeacher.on('change', this.filterTeacher, this);
         }
 
-        var nodeFilterCategory = Y.one('#filterCategory')
+        var nodeFilterCategory = Y.one('#coc-filtercategory')
         if(nodeFilterCategory != null) {
             nodeFilterCategory.on('change', this.filterCategory, this);
         }
@@ -24,8 +23,8 @@ Filter.prototype = {
     filterTerm : function(e) {
         // Prevent the event from refreshing the page
         e.preventDefault();
-        var index = Y.one("#filterTerm").get('selectedIndex');
-        var value = Y.one("#filterTerm").get("options").item(index).getAttribute('value');
+        var index = Y.one("#coc-filterterm").get('selectedIndex');
+        var value = Y.one("#coc-filterterm").get("options").item(index).getAttribute('value');
         if(value=="all") {
             Y.all('div.termdiv').removeClass('coc-hidden');
         } else {
@@ -38,8 +37,8 @@ Filter.prototype = {
     filterTeacher : function(e) {
         // Prevent the event from refreshing the page
         e.preventDefault();
-        var index = Y.one("#filterTeacher").get('selectedIndex');
-        var value = Y.one("#filterTeacher").get("options").item(index).getAttribute('value');
+        var index = Y.one("#coc-filterteacher").get('selectedIndex');
+        var value = Y.one("#coc-filterteacher").get("options").item(index).getAttribute('value');
         if(value=="all") {
             Y.all('div.teacherdiv').removeClass('coc-hidden');
         } else {
@@ -52,8 +51,8 @@ Filter.prototype = {
     filterCategory : function(e) {
         // Prevent the event from refreshing the page
         e.preventDefault();
-        var index = Y.one("#filterCategory").get('selectedIndex');
-        var value = Y.one("#filterCategory").get("options").item(index).getAttribute('value');
+        var index = Y.one("#coc-filtercategory").get('selectedIndex');
+        var value = Y.one("#coc-filtercategory").get("options").item(index).getAttribute('value');
         if(value=="all") {
             Y.all('div.categorydiv').removeClass('coc-hidden');
         } else {

@@ -41,6 +41,7 @@ class block_course_overview_campus extends block_base {
 
     function specialization() {
         global $config;
+
         $this->title = format_string($config->blocktitle);
     }
 
@@ -80,14 +81,14 @@ class block_course_overview_campus extends block_base {
 
 
         // Process GET parameters
-        $hidecourse = optional_param('hidecourse', 0, PARAM_INT);
-        $showcourse = optional_param('showcourse', 0, PARAM_INT);
-        $hidenews = optional_param('hidenews', 0, PARAM_INT);
-        $shownews = optional_param('shownews', 0, PARAM_INT);
-        $manage = optional_param('manage', 0, PARAM_BOOL);
-        $term = optional_param('term', null, PARAM_TEXT);
-        $category = optional_param('category', null, PARAM_TEXT);
-        $teacher = optional_param('teacher', null, PARAM_TEXT);
+        $hidecourse = optional_param('coc-hidecourse', 0, PARAM_INT);
+        $showcourse = optional_param('coc-showcourse', 0, PARAM_INT);
+        $hidenews = optional_param('coc-hidenews', 0, PARAM_INT);
+        $shownews = optional_param('coc-shownews', 0, PARAM_INT);
+        $manage = optional_param('coc-manage', 0, PARAM_BOOL);
+        $term = optional_param('coc-term', null, PARAM_TEXT);
+        $category = optional_param('coc-category', null, PARAM_TEXT);
+        $teacher = optional_param('coc-teacher', null, PARAM_TEXT);
 
 
         // Set displaying preferences when set by GET parameters
@@ -167,7 +168,7 @@ class block_course_overview_campus extends block_base {
             ob_start();
 
 
-            // Get lastaccess of all courses to support course news
+            // Get lastaccess of my courses to support course news
             foreach ($courses as $c) {
                 if (isset($USER->lastcourseaccess[$c->id])) {
                     $courses[$c->id]->lastaccess = $USER->lastcourseaccess[$c->id];
@@ -179,20 +180,24 @@ class block_course_overview_campus extends block_base {
 
             // Get course news from my courses
             $coursenews = array();
-            if ($modules = $DB->get_records('modules')) {
-                foreach ($modules as $mod) {
-                    if (file_exists($CFG->dirroot.'/mod/'.$mod->name.'/lib.php')) {
-                        include_once($CFG->dirroot.'/mod/'.$mod->name.'/lib.php');
-                        $fname = $mod->name.'_print_overview';
-                        if (function_exists($fname)) {
-                            $fname($courses, $coursenews);
-                        }
+            if ($modules = get_plugin_list_with_function('mod', 'print_overview')) {
+                // Split courses list into batches with no more than MAX_MODINFO_CACHE_SIZE courses in one batch.
+                // Otherwise we exceed the cache limit in get_fast_modinfo() and rebuild it too often.
+                if (defined('MAX_MODINFO_CACHE_SIZE') && MAX_MODINFO_CACHE_SIZE > 0 && count($courses) > MAX_MODINFO_CACHE_SIZE) {
+                    $batches = array_chunk($courses, MAX_MODINFO_CACHE_SIZE, true);
+                }
+                else {
+                    $batches = array($courses);
+                }
+                foreach ($batches as $courses) {
+                    foreach ($modules as $fname) {
+                        $fname($courses, $coursenews);
                     }
                 }
             }
 
 
-            // Get course categories for later use
+            // Get all course categories for later use
             $coursecategories = $DB->get_records('course_categories');
 
             // Get teacher roles for later use
@@ -251,15 +256,18 @@ class block_course_overview_campus extends block_base {
                     else if ($config->termmode == 1) {
                         // If term starts on January 1st, set course term to course start date's year
                         if ($config->term1startday == 1) {
-                            $courseterm->id = $courseterm->name = date('Y', $c->startdate);
+                            $courseterm->id = date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If term doesn't start on January 1st and course start date's day comes on or after term start day, set course term to course start date's year + next year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
-                            $courseterm->id = $courseterm->name = date('Y', $c->startdate).'-'.(date('Y', $c->startdate)+1);
+                            $courseterm->id = date('Y', $c->startdate).'-'.(date('Y', $c->startdate)+1);
+                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                         }
                         // If term doesn't start on January 1st and course start date's day comes before term start day, set course term to course start date's year + former year
                         else {
-                            $courseterm->id = $courseterm->name = (date('Y', $c->startdate)-1).'-'.date('Y', $c->startdate);
+                            $courseterm->id = (date('Y', $c->startdate)-1).'-'.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                     }
                     // "Semester" mode
@@ -267,23 +275,23 @@ class block_course_overview_campus extends block_base {
                         // If course start date's day comes before first term start day, set course term to second term of former year
                         if (intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-2';
-                            $courseterm->name = $config->term2name.' '.(date('Y', $c->startdate)-1).'/'.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after first term start day but before second term start day, set course term to first term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-1';
-                            $courseterm->name = $config->term1name.' '.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after second term start day, set course term to second term of current year
                         else {
                             $courseterm->id = date('Y', $c->startdate).'-2';
                             // If first term does start on January 1st, suffix name with single year, otherwise suffix name with double year
                             if ($config->term1startday == '1') {
-                                $courseterm->name = $config->term2name.' '.date('Y', $c->startdate);
+                                $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate));
                             }
                             else {
-                                $courseterm->name = $config->term2name.' '.date('Y', $c->startdate).'/'.(date('Y', $c->startdate)+1);
+                                $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                             }
                         }
                     }
@@ -292,29 +300,29 @@ class block_course_overview_campus extends block_base {
                         // If course start date's day comes before first term start day, set course term to third term of former year
                         if (intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-3';
-                            $courseterm->name = $config->term3name.' '.(date('Y', $c->startdate)-1).'/'.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after first term start day but before second term start day, set course term to first term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-1';
-                            $courseterm->name = $config->term1name.' '.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after second term start day but before third term start day, set course term to second term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term3startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-2';
-                            $courseterm->name = $config->term2name.' '.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after third term start day, set course term to third term of current year
                         else {
                             $courseterm->id = date('Y', $c->startdate).'-3';
                             // If first term does start on January 1st, suffix name with single year, otherwise suffix name with double year
                             if ($config->term1startday == '1') {
-                                $courseterm->name = $config->term3name.' '.date('Y', $c->startdate);
+                                $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate));
                             }
                             else {
-                                $courseterm->name = $config->term3name.' '.date('Y', $c->startdate).'/'.(date('Y', $c->startdate)+1);
+                                $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                             }
                         }
                     }
@@ -323,35 +331,35 @@ class block_course_overview_campus extends block_base {
                         // If course start date's day comes before first term start day, set course term to fourth term of former year
                         if (intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-4';
-                            $courseterm->name = $config->term4name.' '.(date('Y', $c->startdate)-1).'/'.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term4name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after first term start day but before second term start day, set course term to first term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-1';
-                            $courseterm->name = $config->term1name.' '.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after second term start day but before third term start day, set course term to second term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term3startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-2';
-                            $courseterm->name = $config->term2name.' '.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after third term start day but before fourth term start day, set course term to third term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term3startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term4startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-3';
-                            $courseterm->name = $config->term3name.' '.date('Y', $c->startdate);
+                            $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after fourth term start day, set course term to fourth term of current year
                         else {
                             $courseterm->id = date('Y', $c->startdate).'-4';
                             // If first term does start on January 1st, suffix name with single year, otherwise suffix name with double year
                             if ($config->term1startday == '1') {
-                                $courseterm->name = $config->term4name.' '.date('Y', $c->startdate);
+                                $courseterm->name = get_term_displayname($config->term4name, date('Y', $c->startdate));
                             }
                             else {
-                                $courseterm->name = $config->term4name.' '.date('Y', $c->startdate).'/'.(date('Y', $c->startdate)+1);
+                                $courseterm->name = get_term_displayname($config->term4name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                             }
                         }
                     }
@@ -362,6 +370,7 @@ class block_course_overview_campus extends block_base {
 
                     // Remember course term for later use
                     $c->term = $courseterm->id;
+                    $c->termname = format_string($courseterm->name);
 
                     // Add course term to filter list
                     $filterterms[$courseterm->id] = $courseterm->name;
@@ -390,12 +399,12 @@ class block_course_overview_campus extends block_base {
                         }
                     }
 
-                    // Add course category name and classname to filter list
+                    // Add course category name to filter list
                     $filtercategories[$c->categoryid] = $c->categoryname;
                 }
 
                 // Teacher filter
-                if ($config->teachercoursefilter == true || $config->showteachername == true) {
+                if ($config->teachercoursefilter == true || $config->secondrowshowteachername == true) {
                     // Get course teachers based on global teacher roles
                     if (count($teacherroles) > 0) {
                         $courseteachers = get_role_users($teacherroles, $context, true);
@@ -408,8 +417,10 @@ class block_course_overview_campus extends block_base {
                     $c->teachers = $courseteachers;
 
                     // Add all course teacher's names to filter list
-                    foreach ($courseteachers as $ct) {
-                        $filterteachers[$ct->id] = $ct->lastname.', '.$ct->firstname;
+                    if ($config->teachercoursefilter == true) {
+                        foreach ($courseteachers as $ct) {
+                            $filterteachers[$ct->id] = $ct->lastname.', '.$ct->firstname;
+                        }
                     }
                 }
 
@@ -590,7 +601,7 @@ class block_course_overview_campus extends block_base {
             /***                        GENERATE OUTPUT FOR FILTER                        ***/
             /********************************************************************************/
 
-            // Show filter form if any filter is activated and if management of hidden courses isn't activ
+            // Show filter form if any filter is activated and if hidden courses management isn't active
             if ($manage == false && ($config->categorycoursefilter == true || $config->termcoursefilter == true || $config->teachercoursefilter == true)) {
                 // Start section and form
                 echo '<div id="coc-filterlist"><form method="post" action="">';
@@ -604,7 +615,7 @@ class block_course_overview_campus extends block_base {
                     if ($config->termcoursefilterdisplayname != '')
                         echo '<br />';
 
-                    echo '<select name="term" id="filterTerm">';
+                    echo '<select name="coc-term" id="coc-filterterm">';
 
                     // Remember in this variable if selected term was displayed or not
                     $selectedtermdisplayed = false;
@@ -677,7 +688,7 @@ class block_course_overview_campus extends block_base {
                         echo '<br />';
                     }
 
-                    echo '<select name="category" id="filterCategory">';
+                    echo '<select name="coc-category" id="coc-filtercategory">';
 
                     // Remember in this variable if selected category was displayed or not
                     $selectedcategorydisplayed = false;
@@ -728,7 +739,7 @@ class block_course_overview_campus extends block_base {
                         echo '<br />';
                     }
 
-                    echo '<select name="teacher" id="filterTeacher">';
+                    echo '<select name="coc-teacher" id="coc-filterteacher">';
 
                     // Remember in this variable if selected teacher was displayed or not
                     $selectedteacherdisplayed = false;
@@ -783,24 +794,24 @@ class block_course_overview_campus extends block_base {
 
             // I have hidden courses
             if ($hiddencourses > 0) {
-                // And hidden courses managing is off
+                // And hidden courses managing isn't active
                 if ($manage == false) {
                     // Create footer with hidden courses information
-                    $footer = '<div id="coc-hiddencoursesmanagement">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                    $footer = '<div id="coc-hiddencoursesmanagement">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
                 }
-                // And hidden courses managing is on
+                // And hidden courses managing is active
                 else {
                     // Create toolbox with link for stopping management
-                    echo '<div class="coursebox toolbox"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+                    echo '<div class="coursebox toolbox"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
 
-                    // Create footer with link for stopping management
-                    $footer = '<div id="coc-hiddencoursesmanagement"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+                    // Create footer with the same link for stopping management
+                    $footer = '<div id="coc-hiddencoursesmanagement"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
                 }
             }
             // I have no hidden courses
             else {
-                    // Prepare footer to appear as soon as a course is hidden
-                    $footer = '<div id="coc-hiddencoursesmanagement" class="coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                    // Prepare footer to appear via YUI as soon as a course is hidden
+                    $footer = '<div id="coc-hiddencoursesmanagement" class="coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
             }
 
 
@@ -879,10 +890,10 @@ class block_course_overview_campus extends block_base {
                     // If course news are hidden
                     if ($c->hidenews == 0) {
                         echo '<div class="hidenewsicon">
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => $c->id, 'shownews' => '')).'" id="coc-hidenews-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenews-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">
                                     <img src="'.$OUTPUT->pix_url('t/expanded').'" alt="'.get_string('hidenews', 'block_course_overview_campus').'" />
                                 </a>
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => '', 'shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">
                                     <img src="'.$OUTPUT->pix_url('t/collapsed').'" alt="'.get_string('shownews', 'block_course_overview_campus').'" />
                                 </a>
                             </div>';
@@ -890,10 +901,10 @@ class block_course_overview_campus extends block_base {
                     // If course news are visible
                     else {
                         echo '<div class="hidenewsicon">
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => $c->id, 'shownews' => '')).'" id="coc-hidenews-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenews-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">
                                     <img src="'.$OUTPUT->pix_url('t/expanded').'" alt="'.get_string('hidenews', 'block_course_overview_campus').'" />
                                 </a>
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidenews' => '', 'shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownews-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">
                                     <img src="'.$OUTPUT->pix_url('t/collapsed').'" alt="'.get_string('shownews', 'block_course_overview_campus').'" />
                                 </a>
                             </div>';
@@ -904,10 +915,10 @@ class block_course_overview_campus extends block_base {
                 // If course is hidden
                 if ($c->hidecourse == 0) {
                     echo '<div class="hidecourseicon">
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
+                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
                                 <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
                             </a>
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
+                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
                                 <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
                             </a>
                         </div>';
@@ -915,10 +926,10 @@ class block_course_overview_campus extends block_base {
                 // If course is visible
                 else {
                     echo '<div class="hidecourseicon">
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => $c->id, 'showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
+                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
                                 <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
                             </a>
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('manage' => $manage, 'hidecourse' => '', 'showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
+                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
                                 <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
                             </a>
                         </div>';
@@ -926,33 +937,53 @@ class block_course_overview_campus extends block_base {
 
 
                 // Get course attributes for use with course link
-                $attributes = array('title' => s($c->fullname));
+                $attributes = array('title' => format_string($c->fullname));
                 if (empty($c->visible)) {
                     $attributes['class'] = 'dimmed';
                 }
 
-                // Get teachers' names for use with course link
-                if (count($c->teachers) > 0) {
-                    $teachernames = get_teachername_string($c->teachers);
-                }
-                else {
-                    $teachernames = '';
+                // Check if some meta info has to be displayed in addition to the course name
+                if ($config->secondrowshowshortname == true || $config->secondrowshowtermname == true || $config->secondrowshowcategoryname == true || ($config->secondrowshowteachername == true && $teachernames != '')) {
+                    $meta = array();
+                    if ($config->secondrowshowshortname == true) {
+                        $meta[] = $c->shortname;
+                    }
+                    if ($config->secondrowshowtermname == true) {
+                        $meta[] = $c->termname;
+                    }
+                    if ($config->secondrowshowcategoryname == true) {
+                        $meta[] = $c->categoryname;
+                    }
+                    if ($config->secondrowshowteachername == true) {
+                        // Get teachers' names for use with course link
+                        if (count($c->teachers) > 0) {
+                            $teachernames = get_teachername_string($c->teachers);
+                        }
+                        else {
+                            $teachernames = '';
+                        }
+                        $meta[] = $teachernames;
+                    }
                 }
 
-
-                // Output course link (show shortname and teacher name if configured)
-                if ($config->showshortname == true && $config->showteachername == true && $teachernames != '') {
-                    echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.$c->shortname.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$teachernames.')</span>', $attributes), 3);
-                }
-                else if ($config->showshortname == true) {
-                    echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.$c->shortname.')</span>', $attributes), 3);
-                }
-                else if ($config->showteachername == true && $teachernames != '') {
-                    echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.$teachernames.')</span>', $attributes), 3);
+                // Output course link (with meta info if configured)
+                if (isset($meta) && count($meta) > 0) {
+                    if ($config->firstrowcoursename == 2) {
+                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), $c->shortname.'<br /><span class="coc-metainfo">('.implode($meta, '&nbsp;&nbsp;|&nbsp;&nbsp;').')</span>', $attributes), 3);
+                    }
+                    else {
+                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.implode($meta, '&nbsp;&nbsp;|&nbsp;&nbsp;').')</span>', $attributes), 3);
+                    }
                 }
                 else {
-                    echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname), $attributes), 3);
+                    if ($config->firstrowcoursename == 2) {
+                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), $c->shortname, $attributes), 3);
+                    }
+                    else {
+                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname), $attributes), 3);
+                    }
                 }
+
 
                 // Output course news
                 if (array_key_exists($c->id, $coursenews)) {

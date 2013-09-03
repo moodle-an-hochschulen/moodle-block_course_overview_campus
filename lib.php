@@ -86,6 +86,68 @@ function get_teachername_string($teachers) {
 
 
 /**
+ * Take term name and year(s) and return displayname for term filter based on plugin configuration
+ *
+ * @param string $termname The term's name
+ * @param string $year The term's year
+ * @param string $year2 The term's second year (optional)(
+ * @return string String with the term's displayname
+ */
+function get_term_displayname($termname, $year, $year2='') {
+    global $config;
+
+    // Build the first year - second year combination
+    $displayname = $year;
+    if ($year2 != '') {
+        // Hyphen separation
+        if ($config->termyearseparation == 1) {
+            $displayname = $year.'-'.$year2;
+        }
+        // Slash separation
+        else if ($config->termyearseparation == 2) {
+            $displayname = $year.'/'.$year2;
+        }
+        // Underscore separation
+        else if ($config->termyearseparation == 3) {
+            $displayname = $year.'_'.$year2;
+        }
+        // No second year
+        else if ($config->termyearseparation == 4) {
+            $displayname = $year;
+        }
+        // This shouldn't happen
+        else {
+            $displayname = $year.'/'.$year2;
+        }
+    }
+
+    // Add the term name
+    // Prefix with space
+    if ($config->termyearpos == 1) {
+        $displayname = $displayname.' '.$termname;
+    }
+    // Prefix without space
+    else if ($config->termyearpos == 2) {
+        $displayname = $displayname.$termname;
+    }
+    // Suffix with space
+    else if ($config->termyearpos == 3) {
+        $displayname = $termname.' '.$displayname;
+    }
+    // Suffix without space
+    else if ($config->termyearpos == 4) {
+        $displayname = $termname.$displayname;
+    }
+    // This shouldn't happen
+    else {
+        $displayname = $termname. ' '.$termname;
+    }
+
+    return $displayname;
+}
+
+
+/**
  * Compare helper function
  *
  * @param object $a Teacher A

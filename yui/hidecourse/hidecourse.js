@@ -5,7 +5,7 @@ var HideCourse = function() {
 };
 HideCourse.prototype = {
     initializer : function(params) {
-        var i, c;
+        var i;
 
         var courses = params.courses.split(" ");
         for(i=0; i<courses.length; i++){
