@@ -26,12 +26,38 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
+ * Display overview for courses (copied from /blocks/course_overview/locallib.php)
+ *
+ * @param array $courses courses for which overview needs to be shown
+ * @return array html overview
+ */
+function block_course_overview_campus_get_overviews($courses) {
+    $htmlarray = array();
+    if ($modules = get_plugin_list_with_function('mod', 'print_overview')) {
+        // Split courses list into batches with no more than MAX_MODINFO_CACHE_SIZE courses in one batch.
+        // Otherwise we exceed the cache limit in get_fast_modinfo() and rebuild it too often.
+        if (defined('MAX_MODINFO_CACHE_SIZE') && MAX_MODINFO_CACHE_SIZE > 0 && count($courses) > MAX_MODINFO_CACHE_SIZE) {
+            $batches = array_chunk($courses, MAX_MODINFO_CACHE_SIZE, true);
+        } else {
+            $batches = array($courses);
+        }
+        foreach ($batches as $courses) {
+            foreach ($modules as $fname) {
+                $fname($courses, $htmlarray);
+            }
+        }
+    }
+    return $htmlarray;
+}
+
+
+/**
  * Check if the configured term dates make sense
  *
  * @param object $config The config object
  * @return bool
  */
-function check_term_config($config) {
+function block_course_overview_campus_check_term_config($config) {
     if ($config->termmode == 1) {
         return true;
     }
@@ -62,13 +88,13 @@ function check_term_config($config) {
  * @param array $teachers Array of teachers
  * @return string String with concatenated teacher names
  */
-function get_teachername_string($teachers) {
+function block_course_overview_campus_get_teachername_string($teachers) {
     // If given array is empty, return empty string
     if (empty($teachers))
         return '';
 
     // Sort all teachers by relevance and name, return empty string when sorting fails
-    $success = usort($teachers, "compare_teachers");
+    $success = usort($teachers, "block_course_overview_campus_compare_teachers");
     if (!$success) {
         return '';
     }
@@ -93,7 +119,7 @@ function get_teachername_string($teachers) {
  * @param string $year2 The term's second year (optional)(
  * @return string String with the term's displayname
  */
-function get_term_displayname($termname, $year, $year2='') {
+function block_course_overview_campus_get_term_displayname($termname, $year, $year2='') {
     global $config;
 
     // Build the first year - second year combination
@@ -154,7 +180,7 @@ function get_term_displayname($termname, $year, $year2='') {
  * @param object $b Teacher B
  * @return int
  */
-function compare_teachers($a, $b) {
+function block_course_overview_campus_compare_teachers($a, $b) {
     // compare relevance of teachers' roles
     if ($a->sortorder < $b->sortorder) {
         return -1;

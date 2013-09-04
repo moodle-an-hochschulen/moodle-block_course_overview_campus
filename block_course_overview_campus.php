@@ -75,7 +75,7 @@ class block_course_overview_campus extends block_base {
         /********************************************************************************/
 
         // Check if the configured term dates make sense, if not disable term filter
-        if (!check_term_config($config)) {
+        if (!block_course_overview_campus_check_term_config($config)) {
             $config->termcoursefilter = false;
         }
 
@@ -179,22 +179,7 @@ class block_course_overview_campus extends block_base {
             }
 
             // Get course news from my courses
-            $coursenews = array();
-            if ($modules = get_plugin_list_with_function('mod', 'print_overview')) {
-                // Split courses list into batches with no more than MAX_MODINFO_CACHE_SIZE courses in one batch.
-                // Otherwise we exceed the cache limit in get_fast_modinfo() and rebuild it too often.
-                if (defined('MAX_MODINFO_CACHE_SIZE') && MAX_MODINFO_CACHE_SIZE > 0 && count($courses) > MAX_MODINFO_CACHE_SIZE) {
-                    $batches = array_chunk($courses, MAX_MODINFO_CACHE_SIZE, true);
-                }
-                else {
-                    $batches = array($courses);
-                }
-                foreach ($batches as $courses) {
-                    foreach ($modules as $fname) {
-                        $fname($courses, $coursenews);
-                    }
-                }
-            }
+            $coursenews = block_course_overview_campus_get_overviews($courses);
 
 
             // Get all course categories for later use
@@ -257,17 +242,17 @@ class block_course_overview_campus extends block_base {
                         // If term starts on January 1st, set course term to course start date's year
                         if ($config->term1startday == 1) {
                             $courseterm->id = date('Y', $c->startdate);
-                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If term doesn't start on January 1st and course start date's day comes on or after term start day, set course term to course start date's year + next year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-'.(date('Y', $c->startdate)+1);
-                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term1name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                         }
                         // If term doesn't start on January 1st and course start date's day comes before term start day, set course term to course start date's year + former year
                         else {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-'.date('Y', $c->startdate);
-                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term1name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                     }
                     // "Semester" mode
@@ -275,23 +260,23 @@ class block_course_overview_campus extends block_base {
                         // If course start date's day comes before first term start day, set course term to second term of former year
                         if (intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-2';
-                            $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term2name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after first term start day but before second term start day, set course term to first term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-1';
-                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after second term start day, set course term to second term of current year
                         else {
                             $courseterm->id = date('Y', $c->startdate).'-2';
                             // If first term does start on January 1st, suffix name with single year, otherwise suffix name with double year
                             if ($config->term1startday == '1') {
-                                $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate));
+                                $courseterm->name = block_course_overview_campus_get_term_displayname($config->term2name, date('Y', $c->startdate));
                             }
                             else {
-                                $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
+                                $courseterm->name = block_course_overview_campus_get_term_displayname($config->term2name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                             }
                         }
                     }
@@ -300,29 +285,29 @@ class block_course_overview_campus extends block_base {
                         // If course start date's day comes before first term start day, set course term to third term of former year
                         if (intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-3';
-                            $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term3name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after first term start day but before second term start day, set course term to first term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-1';
-                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after second term start day but before third term start day, set course term to second term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term3startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-2';
-                            $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term2name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after third term start day, set course term to third term of current year
                         else {
                             $courseterm->id = date('Y', $c->startdate).'-3';
                             // If first term does start on January 1st, suffix name with single year, otherwise suffix name with double year
                             if ($config->term1startday == '1') {
-                                $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate));
+                                $courseterm->name = block_course_overview_campus_get_term_displayname($config->term3name, date('Y', $c->startdate));
                             }
                             else {
-                                $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
+                                $courseterm->name = block_course_overview_campus_get_term_displayname($config->term3name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                             }
                         }
                     }
@@ -331,35 +316,35 @@ class block_course_overview_campus extends block_base {
                         // If course start date's day comes before first term start day, set course term to fourth term of former year
                         if (intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday)))) {
                             $courseterm->id = (date('Y', $c->startdate)-1).'-4';
-                            $courseterm->name = get_term_displayname($config->term4name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term4name, date('Y', $c->startdate)-1, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after first term start day but before second term start day, set course term to first term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term1startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-1';
-                            $courseterm->name = get_term_displayname($config->term1name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term1name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after second term start day but before third term start day, set course term to second term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term2startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term3startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-2';
-                            $courseterm->name = get_term_displayname($config->term2name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term2name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after third term start day but before fourth term start day, set course term to third term of current year
                         else if (intval(date('z', $c->startdate)) >= intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term3startday))) &&
                                 intval(date('z', $c->startdate)) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$config->term4startday)))) {
                             $courseterm->id = date('Y', $c->startdate).'-3';
-                            $courseterm->name = get_term_displayname($config->term3name, date('Y', $c->startdate));
+                            $courseterm->name = block_course_overview_campus_get_term_displayname($config->term3name, date('Y', $c->startdate));
                         }
                         // If course start date's day comes on or after fourth term start day, set course term to fourth term of current year
                         else {
                             $courseterm->id = date('Y', $c->startdate).'-4';
                             // If first term does start on January 1st, suffix name with single year, otherwise suffix name with double year
                             if ($config->term1startday == '1') {
-                                $courseterm->name = get_term_displayname($config->term4name, date('Y', $c->startdate));
+                                $courseterm->name = block_course_overview_campus_get_term_displayname($config->term4name, date('Y', $c->startdate));
                             }
                             else {
-                                $courseterm->name = get_term_displayname($config->term4name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
+                                $courseterm->name = block_course_overview_campus_get_term_displayname($config->term4name, date('Y', $c->startdate), date('Y', $c->startdate)+1);
                             }
                         }
                     }
@@ -957,7 +942,7 @@ class block_course_overview_campus extends block_base {
                     if ($config->secondrowshowteachername == true) {
                         // Get teachers' names for use with course link
                         if (count($c->teachers) > 0) {
-                            $teachernames = get_teachername_string($c->teachers);
+                            $teachernames = block_course_overview_campus_get_teachername_string($c->teachers);
                         }
                         else {
                             $teachernames = '';

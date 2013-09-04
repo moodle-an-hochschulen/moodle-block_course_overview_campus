@@ -112,7 +112,7 @@ if ($ADMIN->fulltree) {
     // Term filter: Term definition
     // Check if the configured term dates make sense, if not show warning information
     $config = get_config('block_course_overview_campus');
-    if (isset($config->termcoursefilter) && $config->termcoursefilter == true && !check_term_config($config)) {
+    if (isset($config->termcoursefilter) && $config->termcoursefilter == true && !block_course_overview_campus_check_term_config($config)) {
         $settings->add(new admin_setting_heading('block_course_overview_campus/termsettingheading', get_string('termsettingheading', 'block_course_overview_campus'), '<span class="errormessage">'.get_string('termsettingerror', 'block_course_overview_campus').'</span>'));
     }
     else {
