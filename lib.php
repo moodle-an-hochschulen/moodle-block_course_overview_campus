@@ -54,26 +54,26 @@ function block_course_overview_campus_get_overviews($courses) {
 /**
  * Check if the configured term dates make sense
  *
- * @param object $config The config object
+ * @param object $coc_config The config object
  * @return bool
  */
-function block_course_overview_campus_check_term_config($config) {
-    if ($config->termmode == 1) {
+function block_course_overview_campus_check_term_config($coc_config) {
+    if ($coc_config->termmode == 1) {
         return true;
     }
-    else if ($config->termmode == 2 &&
-        intval(date('z', strtotime('2003-'.$config->term1startday))) < intval(date('z', strtotime('2003-'.$config->term2startday)))) {
+    else if ($coc_config->termmode == 2 &&
+        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) < intval(date('z', strtotime('2003-'.$coc_config->term2startday)))) {
             return true;
     }
-    else if ($config->termmode == 3 &&
-        intval(date('z', strtotime('2003-'.$config->term1startday))) < intval(date('z', strtotime('2003-'.$config->term2startday))) &&
-        intval(date('z', strtotime('2003-'.$config->term2startday))) < intval(date('z', strtotime('2003-'.$config->term3startday)))) {
+    else if ($coc_config->termmode == 3 &&
+        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) < intval(date('z', strtotime('2003-'.$coc_config->term2startday))) &&
+        intval(date('z', strtotime('2003-'.$coc_config->term2startday))) < intval(date('z', strtotime('2003-'.$coc_config->term3startday)))) {
             return true;
     }
-    else if ($config->termmode == 4 &&
-        intval(date('z', strtotime('2003-'.$config->term1startday))) < intval(date('z', strtotime('2003-'.$config->term2startday))) &&
-        intval(date('z', strtotime('2003-'.$config->term2startday))) < intval(date('z', strtotime('2003-'.$config->term3startday))) &&
-        intval(date('z', strtotime('2003-'.$config->term3startday))) < intval(date('z', strtotime('2003-'.$config->term4startday)))) {
+    else if ($coc_config->termmode == 4 &&
+        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) < intval(date('z', strtotime('2003-'.$coc_config->term2startday))) &&
+        intval(date('z', strtotime('2003-'.$coc_config->term2startday))) < intval(date('z', strtotime('2003-'.$coc_config->term3startday))) &&
+        intval(date('z', strtotime('2003-'.$coc_config->term3startday))) < intval(date('z', strtotime('2003-'.$coc_config->term4startday)))) {
             return true;
     }
     else {
@@ -120,25 +120,25 @@ function block_course_overview_campus_get_teachername_string($teachers) {
  * @return string String with the term's displayname
  */
 function block_course_overview_campus_get_term_displayname($termname, $year, $year2='') {
-    global $config;
+    global $coc_config;
 
     // Build the first year - second year combination
     $displayname = $year;
     if ($year2 != '') {
         // Hyphen separation
-        if ($config->termyearseparation == 1) {
+        if ($coc_config->termyearseparation == 1) {
             $displayname = $year.'-'.$year2;
         }
         // Slash separation
-        else if ($config->termyearseparation == 2) {
+        else if ($coc_config->termyearseparation == 2) {
             $displayname = $year.'/'.$year2;
         }
         // Underscore separation
-        else if ($config->termyearseparation == 3) {
+        else if ($coc_config->termyearseparation == 3) {
             $displayname = $year.'_'.$year2;
         }
         // No second year
-        else if ($config->termyearseparation == 4) {
+        else if ($coc_config->termyearseparation == 4) {
             $displayname = $year;
         }
         // This shouldn't happen
@@ -149,19 +149,19 @@ function block_course_overview_campus_get_term_displayname($termname, $year, $ye
 
     // Add the term name
     // Prefix with space
-    if ($config->termyearpos == 1) {
+    if ($coc_config->termyearpos == 1) {
         $displayname = $displayname.' '.$termname;
     }
     // Prefix without space
-    else if ($config->termyearpos == 2) {
+    else if ($coc_config->termyearpos == 2) {
         $displayname = $displayname.$termname;
     }
     // Suffix with space
-    else if ($config->termyearpos == 3) {
+    else if ($coc_config->termyearpos == 3) {
         $displayname = $termname.' '.$displayname;
     }
     // Suffix without space
-    else if ($config->termyearpos == 4) {
+    else if ($coc_config->termyearpos == 4) {
         $displayname = $termname.$displayname;
     }
     // This shouldn't happen

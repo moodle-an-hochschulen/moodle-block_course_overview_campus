@@ -10,6 +10,7 @@ This plugin requires Moodle 2.5+
 
 Changes
 =======
+2013-10-29 - Bugfix: block_course_overview_campus variable names interfered with other plugin's variables
 2013-09-04 - Bugfix: Long course lists were incomplete. Sorry for the inconvenience!
 2013-09-03 - Added ability to fine-tune the course name and meta info which will be displayed in the course overview list entries. Please revise your settings after updating the plugin
 2013-09-03 - Added ability to fine-tune the term names which will be displayed in the term filter dropdown. Please revise your settings after updating the plugin, especially if you are running the term filter in Academic year mode
