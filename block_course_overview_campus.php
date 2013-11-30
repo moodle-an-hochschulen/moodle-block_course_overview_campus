@@ -142,7 +142,7 @@ class block_course_overview_campus extends block_base {
 
 
         // Get my courses in alphabetical order
-        $courses = enrol_get_my_courses('id, shortname, modinfo, sectioncache', 'fullname ASC');
+        $courses = enrol_get_my_courses('id, shortname', 'fullname ASC');
 
         // Remove frontpage course, if enrolled, from courses list
         $site = get_site();
@@ -926,7 +926,7 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Check if some meta info has to be displayed in addition to the course name
-                if ($coc_config->secondrowshowshortname == true || $coc_config->secondrowshowtermname == true || $coc_config->secondrowshowcategoryname == true || ($coc_config->secondrowshowteachername == true && $teachernames != '')) {
+                if ($coc_config->secondrowshowshortname == true || $coc_config->secondrowshowtermname == true || $coc_config->secondrowshowcategoryname == true || $coc_config->secondrowshowteachername == true) {
                     $meta = array();
                     if ($coc_config->secondrowshowshortname == true) {
                         $meta[] = $c->shortname;
