@@ -42,6 +42,17 @@
     float: left;
     font-size: 90%;
     text-align: center;
+}
+
+#coc-filterlist .coc-filter.coc-filtercount-1 {
+    width: 99%;
+}
+
+#coc-filterlist .coc-filter.coc-filtercount-2 {
+    width: 49%;
+}
+
+#coc-filterlist .coc-filter.coc-filtercount-3 {
     width: 33%;
 }
 
@@ -71,7 +82,7 @@
     width: inherit;
 }
 
-#coc-courselist .coursebox h3.main {
+#coc-courselist .coursebox h3 {
     margin: 0;
     padding: 0 0 0 20px;
 }

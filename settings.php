@@ -59,17 +59,40 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowteachername', get_string('secondrowshowteachername', 'block_course_overview_campus'),
                         get_string('secondrowshowteachername_desc', 'block_course_overview_campus'), 0));
 
+
+    // Course news
+    $settings->add(new admin_setting_heading('block_course_overview_campus/coursenewsheading', get_string('coursenewsheading', 'block_course_overview_campus'), ''));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/enablecoursenews', get_string('enablecoursenews', 'block_course_overview_campus'),
+                        get_string('enablecoursenews_desc', 'block_course_overview_campus'), 1));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/coursenewsdefault', get_string('coursenewsdefault', 'block_course_overview_campus'),
+                        get_string('coursenewsdefault_desc', 'block_course_overview_campus'), 0));
+
+    // Get activities which provide course news
+    $modules = get_plugin_list_with_function('mod', 'print_overview');
+    foreach ($modules as $m => $f) {
+        $modchoices[$m] = get_string('pluginname', $m);
+    }
+
+    $settings->add(new admin_setting_configmultiselect('block_course_overview_campus/skipcoursenews', get_string('skipcoursenews', 'block_course_overview_campus'), get_string('skipcoursenews_desc', 'block_course_overview_campus'), array(), $modchoices));
+
+
     // Course order
     $settings->add(new admin_setting_heading('block_course_overview_campus/ordersettingheading', get_string('ordersettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/prioritizemyteachedcourses', get_string('prioritizemyteachedcourses', 'block_course_overview_campus'),
                         get_string('prioritizemyteachedcourses_desc', 'block_course_overview_campus'), 0));
 
+
     // Teacher roles
     $settings->add(new admin_setting_heading('block_course_overview_campus/teacherrolessettingheading', get_string('teacherrolessettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_pickroles('block_course_overview_campus/teacherroles', get_string('teacherroles', 'block_course_overview_campus'),
                         get_string('teacherroles_desc', 'block_course_overview_campus'), array('editingteacher')));
+
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/noteachertext', get_string('noteachertext', 'block_course_overview_campus'),
+                        get_string('noteachertext_desc', 'block_course_overview_campus'), get_string('noteacher', 'block_course_overview_campus'), PARAM_TEXT));
 
 
     // Category filter: Activation

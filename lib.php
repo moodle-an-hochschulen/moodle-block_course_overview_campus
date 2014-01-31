@@ -31,9 +31,17 @@ defined('MOODLE_INTERNAL') || die();
  * @param array $courses courses for which overview needs to be shown
  * @return array html overview
  */
-function block_course_overview_campus_get_overviews($courses) {
+function block_course_overview_campus_get_overviews($courses, $skip) {
     $htmlarray = array();
     if ($modules = get_plugin_list_with_function('mod', 'print_overview')) {
+        // Remove modules which should be skipped
+        $skipmodules = explode(',', $skip);
+        if (is_array($skipmodules)) {
+            foreach($skipmodules as $s) {
+                unset($modules[$s]);
+            }
+        }
+
         // Split courses list into batches with no more than MAX_MODINFO_CACHE_SIZE courses in one batch.
         // Otherwise we exceed the cache limit in get_fast_modinfo() and rebuild it too often.
         if (defined('MAX_MODINFO_CACHE_SIZE') && MAX_MODINFO_CACHE_SIZE > 0 && count($courses) > MAX_MODINFO_CACHE_SIZE) {
