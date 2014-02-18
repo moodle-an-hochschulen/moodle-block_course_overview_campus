@@ -235,13 +235,13 @@ class block_course_overview_campus extends block_base {
                     // If course start date is undefined, set course term to "other"
                     if ($c->startdate == 0) {
                         $courseterm->id = 'other';
-                        $courseterm->name = 'other';
+                        $courseterm->name = get_string('other', 'block_course_overview_campus');
                     }
 
                     // If course start date is available, if timeless courses are enabled and if course start date is before timeless course threshold, set course term to "timeless"
                     else if ($coc_config->timelesscourses == true && date('Y', $c->startdate) < $coc_config->timelesscoursesthreshold) {
                         $courseterm->id = 'timeless';
-                        $courseterm->name = 'timeless';
+                        $courseterm->name = format_string($coc_config->timelesscoursesname);
                     }
 
                     // If course start date is available, distinguish between term modes

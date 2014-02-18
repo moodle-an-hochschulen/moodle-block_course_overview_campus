@@ -10,6 +10,7 @@ This plugin requires Moodle 2.6.1+
 
 Changes
 =======
+2014-02-18 - Bugfix: Second row didn't show the configured string for "timeless courses"; Credits to Sebastian Becker
 2014-01-31 - Improve width of filters if less than all three filters are enabled
 2014-01-31 - Added setting to skip activities when collecting and displaying course news
 2014-01-31 - Added setting to disable course news completely and to hide course news by default
