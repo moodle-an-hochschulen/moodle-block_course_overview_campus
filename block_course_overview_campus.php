@@ -90,11 +90,13 @@ class block_course_overview_campus extends block_base {
 
 
         // Set displaying preferences when set by GET parameters
-        if ($hidecourse != 0) {
-            set_user_preference('block_course_overview_campus-hidecourse-'.$hidecourse, 1);
-        }
-        if ($showcourse != 0) {
-            set_user_preference('block_course_overview_campus-hidecourse-'.$showcourse, 0);
+        if ($coc_config->enablehidecourses) {
+            if ($hidecourse != 0) {
+                set_user_preference('block_course_overview_campus-hidecourse-'.$hidecourse, 1);
+            }
+            if ($showcourse != 0) {
+                set_user_preference('block_course_overview_campus-hidecourse-'.$showcourse, 0);
+            }
         }
         if ($coc_config->enablecoursenews) {
             if ($hidenews != 0) {
@@ -210,7 +212,9 @@ class block_course_overview_campus extends block_base {
             }
 
             // Create counter for hidden courses
-            $hiddencourses = 0;
+            if ($coc_config->enablehidecourses) {
+                $hiddencourses = 0;
+            }
 
             // Create string to remember courses for YUI processing
             $yui_courseslist = ' ';
@@ -419,9 +423,11 @@ class block_course_overview_campus extends block_base {
 
 
                 // Check if this course should be shown or not
-                $courses[$c->id]->hidecourse = get_user_preferences('block_course_overview_campus-hidecourse-'.$c->id, 0);
-                if ($courses[$c->id]->hidecourse == 1) {
-                    $hiddencourses++;
+                if ($coc_config->enablehidecourses) {
+                    $courses[$c->id]->hidecourse = get_user_preferences('block_course_overview_campus-hidecourse-'.$c->id, 0);
+                    if ($courses[$c->id]->hidecourse == 1) {
+                        $hiddencourses++;
+                    }
                 }
 
                 // Check if this course should show news or not
@@ -597,7 +603,7 @@ class block_course_overview_campus extends block_base {
             /********************************************************************************/
 
             // Show filter form if any filter is activated and if hidden courses management isn't active
-            if ($manage == false && ($coc_config->categorycoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->teachercoursefilter == true)) {
+            if ((!$coc_config->enablehidecourses || $manage == false) && ($coc_config->categorycoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->teachercoursefilter == true)) {
                 // Calculate CSS class for filter divs
                 $filtercount = 0;
                 if ($coc_config->termcoursefilter == true) {
@@ -609,20 +615,35 @@ class block_course_overview_campus extends block_base {
                 if ($coc_config->categorycoursefilter == true) {
                     $filtercount++;
                 }
+                if ($filtercount == 1) {
+                    $filterwidth = 'span12';
+                }
+                else if ($filtercount == 2) {
+                    $filterwidth = 'span6';
+                }
+                else if ($filtercount == 3) {
+                    $filterwidth = 'span4';
+                }
+                else if ($filtercount == 4) {
+                    $filterwidth = 'span3';
+                }
+                else {
+                    $filterwidth = 'span12';
+                }
 
                 // Start section and form
-                echo '<div id="coc-filterlist"><form method="post" action="">';
+                echo '<div id="coc-filterlist" class="row-fluid"><form method="post" action="">';
 
                 // Show term filter
                 if ($coc_config->termcoursefilter == true) {
-                    echo '<div class="coc-filter coc-filtercount-'.$filtercount.'">';
+                    echo '<div class="coc-filter '.$filterwidth.'">';
 
                     // Show filter description
                     echo format_string($coc_config->termcoursefilterdisplayname);
                     if ($coc_config->termcoursefilterdisplayname != '')
                         echo '<br />';
 
-                    echo '<select name="coc-term" id="coc-filterterm">';
+                    echo '<select name="coc-term" id="coc-filterterm" class="input-block-level">';
 
                     // Remember in this variable if selected term was displayed or not
                     $selectedtermdisplayed = false;
@@ -687,7 +708,7 @@ class block_course_overview_campus extends block_base {
 
                 // Show category filter
                 if ($coc_config->categorycoursefilter == true) {
-                    echo '<div class="coc-filter coc-filtercount-'.$filtercount.'">';
+                    echo '<div class="coc-filter '.$filterwidth.'">';
 
                     // Show filter description
                     echo format_string($coc_config->categorycoursefilterdisplayname);
@@ -695,7 +716,7 @@ class block_course_overview_campus extends block_base {
                         echo '<br />';
                     }
 
-                    echo '<select name="coc-category" id="coc-filtercategory">';
+                    echo '<select name="coc-category" id="coc-filtercategory" class="input-block-level">';
 
                     // Remember in this variable if selected category was displayed or not
                     $selectedcategorydisplayed = false;
@@ -738,7 +759,7 @@ class block_course_overview_campus extends block_base {
 
                 // Show teacher filter
                 if ($coc_config->teachercoursefilter == true) {
-                    echo '<div class="coc-filter coc-filtercount-'.$filtercount.'">';
+                    echo '<div class="coc-filter '.$filterwidth.'">';
 
                     // Show filter description
                     echo format_string($coc_config->teachercoursefilterdisplayname);
@@ -746,7 +767,7 @@ class block_course_overview_campus extends block_base {
                         echo '<br />';
                     }
 
-                    echo '<select name="coc-teacher" id="coc-filterteacher">';
+                    echo '<select name="coc-teacher" id="coc-filterteacher" class="input-block-level">';
 
                     // Remember in this variable if selected teacher was displayed or not
                     $selectedteacherdisplayed = false;
@@ -786,11 +807,11 @@ class block_course_overview_campus extends block_base {
                     echo '</div>';
                 }
 
-                // Show submit button for Non-JavaScript interaction
-                echo '<div id="coc-filtersubmit"><input type="submit" value="'.get_string('submitfilter', 'block_course_overview_campus').'" /></div>';
-
                 // End section and form
                 echo '</form></div>';
+
+                // Show submit button for Non-JavaScript interaction
+                echo '<div id="coc-filtersubmit" class="row-fluid"><input type="submit" value="'.get_string('submitfilter', 'block_course_overview_campus').'" /></div>';
             }
 
 
@@ -799,26 +820,29 @@ class block_course_overview_campus extends block_base {
             /***               GENERATE OUTPUT FOR HIDDEN COURSES MANAGEMENT              ***/
             /********************************************************************************/
 
-            // I have hidden courses
-            if ($hiddencourses > 0) {
-                // And hidden courses managing isn't active
-                if ($manage == false) {
-                    // Create footer with hidden courses information
-                    $footer = '<div id="coc-hiddencoursesmanagement">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
-                }
-                // And hidden courses managing is active
-                else {
-                    // Create toolbox with link for stopping management
-                    echo '<div class="coursebox toolbox"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+            // Do only if course hiding is enabled
+            if ($coc_config->enablehidecourses) {
+                // I have hidden courses
+                if ($hiddencourses > 0) {
+                    // And hidden courses managing isn't active
+                    if ($manage == false) {
+                        // Create and remember bottom box for course hide management
+                        $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                    }
+                    // And hidden courses managing is active
+                    else {
+                        // Create and output top box for course hide management
+                        echo '<div id="coc-hiddencoursesmanagement-top" class="row-fluid"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
 
-                    // Create footer with the same link for stopping management
-                    $footer = '<div id="coc-hiddencoursesmanagement"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+                        // Create and remember bottom box for course hide management
+                        $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+                    }
                 }
-            }
-            // I have no hidden courses
-            else {
-                    // Prepare footer to appear via YUI as soon as a course is hidden
-                    $footer = '<div id="coc-hiddencoursesmanagement" class="coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                // I have no hidden courses
+                else {
+                    // Create and remember bottom box for course hide management to appear via YUI as soon as a course is hidden
+                    $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                }
             }
 
 
@@ -828,7 +852,7 @@ class block_course_overview_campus extends block_base {
             /********************************************************************************/
 
             // Start section
-            echo '<div id="coc-courselist">';
+            echo '<div id="coc-courselist" class="row-fluid">';
 
             // Show courses
             foreach ($courses as $c) {
@@ -836,7 +860,7 @@ class block_course_overview_campus extends block_base {
                 $yui_courseslist .= $c->id.' ';
 
                 // Start course div as visible if it isn't hidden or if hidden courses are currently shown
-                if (($c->hidecourse == 0) || $manage == true) {
+                if (!$coc_config->enablehidecourses || ($c->hidecourse == 0) || $manage == true) {
                     echo '<div id="coc-course-'.$c->id.'" class="coc-course">';
                 }
                 // Otherwise start course div as hidden
@@ -921,29 +945,30 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Output course visibility control icons
-                // If course is hidden
-                if ($c->hidecourse == 0) {
-                    echo '<div class="hidecourseicon">
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
-                                <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
-                            </a>
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
-                                <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
-                            </a>
-                        </div>';
+                if ($coc_config->enablehidecourses) {
+                    // If course is hidden
+                    if ($c->hidecourse == 0) {
+                        echo '<div class="hidecourseicon">
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
+                                    <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
+                                </a>
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
+                                    <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
+                                </a>
+                            </div>';
+                    }
+                    // If course is visible
+                    else {
+                        echo '<div class="hidecourseicon">
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
+                                    <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
+                                </a>
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
+                                    <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
+                                </a>
+                            </div>';
+                    }
                 }
-                // If course is visible
-                else {
-                    echo '<div class="hidecourseicon">
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourse-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
-                                <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
-                            </a>
-                            <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourse-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
-                                <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
-                            </a>
-                        </div>';
-                }
-
 
                 // Get course attributes for use with course link
                 $attributes = array('title' => format_string($c->fullname));
@@ -974,24 +999,27 @@ class block_course_overview_campus extends block_base {
                             $meta[] = $teachernames;
                         }
                     }
-                }
 
-                // Output course link (with meta info if configured)
-                if (isset($meta) && count($meta) > 0) {
-                    if ($coc_config->firstrowcoursename == 2) {
-                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), $c->shortname.'<br /><span class="coc-metainfo">('.implode($meta, '&nbsp;&nbsp;|&nbsp;&nbsp;').')</span>', $attributes), 3);
+                    // Create meta info code
+                    // Hide metainfo on phones if configured
+                    if ($coc_config->secondrowhideonphones == true) {
+                        $metainfo = '<br /><span class="coc-metainfo hidden-phone">('.implode($meta, '  |  ').')</span>';
                     }
+                    // Otherwise
                     else {
-                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).'<br /><span class="coc-metainfo">('.implode($meta, '&nbsp;&nbsp;|&nbsp;&nbsp;').')</span>', $attributes), 3);
+                        $metainfo = '<br /><span class="coc-metainfo">('.implode($meta, '  |  ').')</span>';
                     }
                 }
                 else {
-                    if ($coc_config->firstrowcoursename == 2) {
-                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), $c->shortname, $attributes), 3);
-                    }
-                    else {
-                        echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname), $attributes), 3);
-                    }
+                    $metainfo = '';
+                }
+
+                // Output course link
+                if ($coc_config->firstrowcoursename == 2) {
+                    echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), $c->shortname.$metainfo, $attributes), 3);
+                }
+                else {
+                    echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).$metainfo, $attributes), 3);
                 }
 
 
@@ -1051,6 +1079,14 @@ class block_course_overview_campus extends block_base {
 
 
             /********************************************************************************/
+            /***                 OUTPUT FOR HIDDEN COURSES MANAGEMENT                     ***/
+            /********************************************************************************/
+
+            echo $hidemanagebox;
+
+
+
+            /********************************************************************************/
             /***                             OUTPUT CONTENT                               ***/
             /********************************************************************************/
 
@@ -1066,8 +1102,12 @@ class block_course_overview_campus extends block_base {
 
             // Verify that course displaying parameters are updatable by AJAX
             foreach ($courses as $c) {
-                user_preference_allow_ajax_update('block_course_overview_campus-hidecourse-'.$c->id, PARAM_INT);
-                user_preference_allow_ajax_update('block_course_overview_campus-hidenews-'.$c->id, PARAM_INT);
+                if ($coc_config->enablehidecourses) {
+                    user_preference_allow_ajax_update('block_course_overview_campus-hidecourse-'.$c->id, PARAM_INT);
+                }
+                if ($coc_config->enablecoursenews) {
+                    user_preference_allow_ajax_update('block_course_overview_campus-hidenews-'.$c->id, PARAM_INT);
+                }
             }
 
             // Verify that filter parameters are updatable by AJAX
@@ -1082,7 +1122,9 @@ class block_course_overview_campus extends block_base {
             }
 
             // Include YUI for hiding courses with AJAX
-            $PAGE->requires->yui_module('moodle-block_course_overview_campus-hidecourse', 'M.block_course_overview_campus.initHideCourse', array(array('courses'=>trim($yui_courseslist), 'editing'=>$manage)));
+            if ($coc_config->enablehidecourses) {
+                $PAGE->requires->yui_module('moodle-block_course_overview_campus-hidecourse', 'M.block_course_overview_campus.initHideCourse', array(array('courses'=>trim($yui_courseslist), 'editing'=>$manage)));
+            }
 
             // Include YUI for hiding course news with AJAX
             if ($coc_config->enablecoursenews) {
@@ -1109,13 +1151,6 @@ class block_course_overview_campus extends block_base {
         }
         else {
             $this->content->text = '';
-        }
-
-        if (!empty($footer)) {
-            $this->content->footer = $footer;
-        }
-        else {
-            $this->content->footer = '';
         }
 
         return $this->content;

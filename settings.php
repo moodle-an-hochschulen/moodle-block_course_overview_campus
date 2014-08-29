@@ -59,6 +59,25 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowteachername', get_string('secondrowshowteachername', 'block_course_overview_campus'),
                         get_string('secondrowshowteachername_desc', 'block_course_overview_campus'), 0));
 
+    // Possible teacher name styles
+    $teachernamestylemodes[1] = get_string('teachernamestylefullname', 'block_course_overview_campus');
+    $teachernamestylemodes[2] = get_string('teachernamestylelastname', 'block_course_overview_campus');
+    $teachernamestylemodes[3] = get_string('teachernamestylefirstname', 'block_course_overview_campus');
+    $teachernamestylemodes[4] = get_string('teachernamestylefullnamedisplay', 'block_course_overview_campus', $CFG->fullnamedisplay);
+
+    $settings->add(new admin_setting_configselect('block_course_overview_campus/secondrowshowteachernamestyle', get_string('secondrowshowteachernamestyle', 'block_course_overview_campus'),
+                        get_string('secondrowshowteachernamestyle_desc', 'block_course_overview_campus'), $teachernamestylemodes[2], $teachernamestylemodes));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowhideonphones', get_string('secondrowhideonphones', 'block_course_overview_campus'),
+                        get_string('secondrowhideonphones_desc', 'block_course_overview_campus'), 0));
+
+
+    // Course overview list hidden courses management
+    $settings->add(new admin_setting_heading('block_course_overview_campus/hidecoursessettingheading', get_string('hidecoursessettingheading', 'block_course_overview_campus'), ''));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/enablehidecourses', get_string('enablehidecourses', 'block_course_overview_campus'),
+                        get_string('enablehidecourses_desc', 'block_course_overview_campus'), 1));
+
 
     // Course news
     $settings->add(new admin_setting_heading('block_course_overview_campus/coursenewsheading', get_string('coursenewsheading', 'block_course_overview_campus'), ''));

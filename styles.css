@@ -1,6 +1,7 @@
 /* Positioning of icons */
 .block_course_overview_campus .hidecourseicon {
     float: right;
+    margin-left: 20px;
 }
 
 .block_course_overview_campus .hidenewsicon {
@@ -15,8 +16,11 @@
 
 
 /* Hidden courses management */
-#coc-hiddencoursesmanagement {
+#coc-hiddencoursesmanagement-bottom,
+#coc-hiddencoursesmanagement-top {
     font-size: 90%;
+    padding: 0.5em 0;
+    text-align: center;
 }
 
 #coc-hiddencoursescount {
@@ -24,46 +28,18 @@
 }
 
 
-/* Toolbox for links above course list */
-.block_course_overview_campus .toolbox {
-    padding: 0.5em 0;
-    text-align: center;
-}
-
-
 /* Filter item appearance */
 #coc-filterlist {
-    float: left;
     padding-bottom: 20px;
-    width: 100%;
 }
 
 #coc-filterlist .coc-filter {
-    float: left;
     font-size: 90%;
     text-align: center;
 }
 
-#coc-filterlist .coc-filter.coc-filtercount-1 {
-    width: 99%;
-}
-
-#coc-filterlist .coc-filter.coc-filtercount-2 {
-    width: 49%;
-}
-
-#coc-filterlist .coc-filter.coc-filtercount-3 {
-    width: 33%;
-}
-
-#coc-filterlist .coc-filter select {
-    width: 98%;
-}
-
 #coc-filtersubmit {
-    clear: both;
     text-align: center;
-    width: 100%;
 }
 
 .jsenabled #coc-filtersubmit { /* Hide submit button when JS is enabled */
@@ -72,10 +48,6 @@
 
 
 /* Course list appearance */
-#coc-courselist {
-    clear: both;
-}
-
 #coc-courselist .coursebox {
     margin-bottom: 5px;
     padding: 10px;
@@ -90,6 +62,7 @@
 #coc-courselist .coc-metainfo {
     font-size: 85%;
     font-weight: normal !important;
+    white-space: pre-wrap; /* To support multiple whitespaces before and after pipe */
 }
 
 
@@ -111,7 +84,6 @@
 
 #coc-courselist .coursebox .overview .info,
 #coc-courselist .coursebox .overview .details  {
-    float: none; /* overwrite float style from base theme */
     margin: 0;
     width: 100%;
 }

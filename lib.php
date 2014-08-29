@@ -97,6 +97,8 @@ function block_course_overview_campus_check_term_config($coc_config) {
  * @return string String with concatenated teacher names
  */
 function block_course_overview_campus_get_teachername_string($teachers) {
+    global $coc_config;
+
     // If given array is empty, return empty string
     if (empty($teachers))
         return '';
@@ -107,9 +109,30 @@ function block_course_overview_campus_get_teachername_string($teachers) {
         return '';
     }
 
-    // Get all teachers' names as an array
+    // Get all teachers' names as an array according the teacher name style setting
     $teachernames = array_map(function($obj) {
-        return $obj->lastname;
+        global $coc_config;
+
+        // Display fullname
+        if ($coc_config->secondrowshowteachernamestyle == 1) {
+            return $obj->firstname.' '.$obj->lastname;
+        }
+        // Display lastname
+        else if ($coc_config->secondrowshowteachernamestyle == 2) {
+            return $obj->lastname;
+        }
+        // Display firstname
+        else if ($coc_config->secondrowshowteachernamestyle == 3) {
+            return $obj->firstname;
+        }
+        // Display fullnamedisplay
+        else if ($coc_config->secondrowshowteachernamestyle == 4) {
+            return fullname($obj);
+        }
+        // Fallback: Display lastname
+        else {
+            return $obj->lastname;
+        }
     }, $teachers);
 
     // Implode teachers' names to a single string

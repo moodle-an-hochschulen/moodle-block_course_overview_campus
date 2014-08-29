@@ -22,7 +22,7 @@ HideCourse.prototype = {
         if (editing==0) {
             Y.one('#coc-course-'+course).addClass('coc-hidden');
             Y.one('#coc-hiddencoursescount').setContent(parseInt(Y.one('#coc-hiddencoursescount').get("innerHTML"))+1);
-            Y.one('#coc-hiddencoursesmanagement').removeClass('coc-hidden');
+            Y.one('#coc-hiddencoursesmanagement-bottom').removeClass('coc-hidden');
         }
 
         M.util.set_user_preference('block_course_overview_campus-hidecourse-'+course, 1);

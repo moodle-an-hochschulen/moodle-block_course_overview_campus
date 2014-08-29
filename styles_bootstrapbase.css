@@ -1,0 +1,4 @@
+/* Bootstrapbase makes h3 headings uppercase, this is not desired for this block. */
+.block_course_overview_campus.block .content h3 {
+    text-transform: none;
+}

@@ -5,11 +5,19 @@ Moodle block which provides all functionality of block_course_overview, provides
 
 Requirements
 ============
-This plugin requires Moodle 2.6.1+
+This plugin requires Moodle 2.7+
 
 
 Changes
 =======
+2014-08-29 - Update README file
+2014-08-22 - Added setting to hide second row in course list on mobile phones to save space
+2014-08-22 - Bootstrapbase makes h3 headings uppercase, this is not desired for this block and was overwritten in styles_bootstrapbase.css
+2014-08-22 - Changed HTML code to leverage Bootstrap based themes, Drop support for Non-Bootstrap based themes
+2014-08-22 - Changed HTML code for hide course management box - please check your theme, if you have styled the block in a custom way
+2014-08-19 - Added setting to disable hiding of courses completely
+2014-08-19 - Added setting to control the styling of the teacher's name in the second row
+2014-06-30 - Check compatibility for Moodle 2.7, no functionality change
 2014-02-18 - Bugfix: Second row didn't show the configured string for "timeless courses"; Credits to Sebastian Becker
 2014-01-31 - Improve width of filters if less than all three filters are enabled
 2014-01-31 - Added setting to skip activities when collecting and displaying course news
@@ -52,14 +60,14 @@ Installation
 Install the plugin like any other plugin to folder
 /blocks/course_overview_campus
 
-See http://docs.moodle.org/26/en/Installing_plugins for details on installing Moodle plugins
+See http://docs.moodle.org/en/Installing_plugins for details on installing Moodle plugins
 
 
 Placement
 =========
 block_course_overview_campus is used ideally as sticky block and placed on your frontpage (and mymoodle page, if your moodle instance uses this pagetype).
 
-See http://docs.moodle.org/26/en/Block_settings#Making_a_block_sticky_throughout_the_whole_site for details about sticky blocks
+See http://docs.moodle.org/en/Block_settings#Making_a_block_sticky_throughout_the_whole_site for details about sticky blocks
 
 
 Usage & Settings
@@ -72,7 +80,7 @@ There, you find multiple sections:
 
 1. Appearance
 -------------
-In this section, you can change the block's title which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/26/en/Multi-language_content_filter for details).
+In this section, you can change the block's title which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
 2. Course overview list entries
 -------------------------------
@@ -93,7 +101,7 @@ In this section, you can define which roles in a course will be displayed beside
 6. Category filter: Filter activation
 -------------------------------------
 By checking this item, you activate a filter which enables your users to filter their courses by category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/26/en/Multi-language_content_filter for details).
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
 6.1 Category filter: Merge homonymous categories
 ------------------------------------------------
@@ -102,12 +110,12 @@ If there are multiple categories with different parent categories, but with the 
 7. Teacher filter: Filter activation
 ------------------------------------
 By checking this item, you activate a filter which enables your users to filter their courses by teacher. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/26/en/Multi-language_content_filter for details).
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
 8. Term filter: Filter activation
 ---------------------------------
 By checking this item, you activate a filter which enables your users to filter their courses by term. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/26/en/Multi-language_content_filter for details).
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
 8.1. Term filter: Term definition
 ---------------------------------
@@ -115,7 +123,7 @@ To make meaningfully use of the term filter, you have to configure it according 
 
 8.2. Term filter: Term names
 ----------------------------
-To make meaningfully use of the term filter, you have to configure it according to your campus terminology. In this section, you can set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/26/en/Multi-language_content_filter for details).
+To make meaningfully use of the term filter, you have to configure it according to your campus terminology. In this section, you can set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 Additionally, you can fine-tune the displaying of the term names which will be displayed in the term filter dropdown.
 
 8.3 Term filter: Term behaviour
@@ -125,7 +133,7 @@ Here, you are able to let block_course_overview_campus choose a default term if 
 8.4 Term filter: Timeless courses
 ---------------------------------
 Here, you can enable support for "timeless courses". Timeless courses will be presented in the term filter as if they are not associated to a specific term. This is achieved by leveraging the course's start year field. After enabling timeless courses, you have to define a course start year threshold. Every course with a start year before (and not equal to) this year will be presentes as timeless course in the term filter.
-You are also able to set a label for timeless courses for the term filter (multilang strings are supported, see http://docs.moodle.org/26/en/Multi-language_content_filter for details).
+You are also able to set a label for timeless courses for the term filter (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
 
 Data sources
@@ -145,14 +153,15 @@ As described in the "Usage & Settings" section of this file, you should configur
 As described in the "Usage & Settings" section of this file, you should configure block_course_overview_campus according to your campus course of the year. After that, block_course_overview_campus maps each course to a term by looking at the course's start date. This term is filled into the term filter.
 
 
-Moodle 2.4+ Features
-====================
-In contrast to previous Moodle versions, Moodle 2.4 added some features to the moodle core block_course_overview:
-- In block_course_overview in Moodle 2.4+, a user is able to sort his course list by drag and drop. I decided to not adopt this feature for block_course_overview_campus because I think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list remains sorted by full course name.
-- In block_course_overview in Moodle 2.4+, a user is able to limit the length of his course list with a block setting. I decided to not adopt this feature for block_course_overview_campus because I think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list always shows all courses which have passed the selected course filters.
-- In block_course_overview in Moodle 2.4+, the administrator can configure the block to show Metacourse children. I decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
-- In block_course_overview in Moodle 2.4+, the administrator can configure the block to show a welcome message. I decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
-- In block_course_overview in Moodle 2.4+, course news are grouped by modules and each module can be collapsed / expanded. I decided to stick with the behaviour of block_course_overview_campus to collapse / expand course news as a whole, but I added some nice icons for each module to the course news list.
+Disregarded Moodle Features
+===========================
+During the development of Moodle, there have been added several features added to the moodle core block_course_overview and moodle core which would conflict with block_course_overview_campus functionality. It has been decided to disregard the following Moodle features for this block:
+- In block_course_overview in Moodle 2.4+, a user is able to sort his course list by drag and drop. We decided to not adopt this feature for block_course_overview_campus because we think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list remains sorted by full course name.
+- In block_course_overview in Moodle 2.4+, a user is able to limit the length of his course list with a block setting. We decided to not adopt this feature for block_course_overview_campus because we think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list always shows all courses which have passed the selected course filters.
+- In block_course_overview in Moodle 2.4+, the administrator can configure the block to show Metacourse children. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
+- In block_course_overview in Moodle 2.4+, the administrator can configure the block to show a welcome message. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
+- In block_course_overview in Moodle 2.4+, course news are grouped by modules and each module can be collapsed / expanded. We decided to stick with the behaviour of block_course_overview_campus to collapse / expand course news as a whole, but we added some nice icons for each module to the course news list.
+- In Moodle core since Moodle 2.2+, there is a setting "courselistshortnames" which controls the displaying of course names. This setting is also processed in block_course_overview. We decided to ignore this core setting and to stick to block_course_overview_campus's internal course display control settings.
 
 
 MNet courses
@@ -162,7 +171,7 @@ In contrast to the moodle core block_course_overview, this block doesn't support
 
 Themes
 ======
-block_course_overview_campus should work with all themes from moodle core.
+block_course_overview_campus should work with all Bootstrap based Moodle themes.
 block_course_overview_campus provides a fallback for browsers with JavaScript disabled.
 
 
@@ -175,7 +184,7 @@ Moodle release support
 ======================
 Due to limited ressources, block_course_overview_campus is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
 
-There may be several weeks after a new major release of Moodle has been published until I can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that block_course_overview_campus still works with a new major relase - please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
+There may be several weeks after a new major release of Moodle has been published until we can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that block_course_overview_campus still works with a new major relase - please let us know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
 
 
 Right-to-left support
@@ -187,7 +196,10 @@ github with modifications.
 
 Copyright
 =========
-Alexander Bias, University of Ulm
+University of Ulm
+kiz - Media Department
+Team Web & Teaching Support
+Alexander Bias
 
 
 Credits

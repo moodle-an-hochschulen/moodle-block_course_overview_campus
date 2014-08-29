@@ -14,10 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Block "course overview (campus)" - Version file
+ *
+ * @package     block
+ * @subpackage  block_course_overview_campus
+ * @copyright   2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_course_overview_campus';
-$plugin->version = 2013111802;
-$plugin->release = '2.6 (Build: 2014021800)';
-$plugin->requires = 2013111801;
+$plugin->version = 2014051204;
+$plugin->release = '2.7 (Build: 2014082200)';
+$plugin->requires = 2014051200;
 $plugin->maturity = MATURITY_STABLE;
