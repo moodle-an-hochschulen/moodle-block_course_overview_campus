@@ -10,6 +10,8 @@ This plugin requires Moodle 2.7+
 
 Changes
 -------
+* 2014-10-20 - Bugfix: There were problems with the term filter and courses which start on the term start day and / or term starting on january 1st
+* 2014-10-20 - Add multilanguage support to noteachertext string
 * 2014-08-29 - Update README file
 * 2014-08-22 - Added setting to hide second row in course list on mobile phones to save space
 * 2014-08-22 - Bootstrapbase makes h3 headings uppercase, this is not desired for this block and was overwritten in styles_bootstrapbase.css
