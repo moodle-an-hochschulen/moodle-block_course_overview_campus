@@ -1,15 +1,18 @@
 moodle-block_course_overview_campus
 ===================================
+
 Moodle block which provides all functionality of block_course_overview, provides additional filters (course category, course term and course teachers) to be used on university campuses as well as the possibility to hide courses and course news from the course list.
 
 
 Requirements
 ------------
+
 This plugin requires Moodle 2.8+
 
 
 Changes
 -------
+
 * 2014-01-29 - Check compatibility for Moodle 2.8, no functionality change
 * 2014-10-20 - Bugfix: There were problems with the term filter and courses which start on the term start day and / or term starting on january 1st
 * 2014-10-20 - Add multilanguage support to noteachertext string
@@ -60,6 +63,7 @@ Changes
 
 Installation
 ------------
+
 Install the plugin like any other plugin to folder
 /blocks/course_overview_campus
 
@@ -68,6 +72,7 @@ See http://docs.moodle.org/en/Installing_plugins for details on installing Moodl
 
 Placement
 ---------
+
 block_course_overview_campus is used ideally as sticky block and placed on your frontpage (and mymoodle page, if your moodle instance uses this pagetype).
 
 See http://docs.moodle.org/en/Block_settings#Making_a_block_sticky_throughout_the_whole_site for details about sticky blocks
@@ -75,6 +80,7 @@ See http://docs.moodle.org/en/Block_settings#Making_a_block_sticky_throughout_th
 
 Usage & Settings
 ----------------
+
 After installing block_course_overview_campus with its default settings and adding it to your frontpage, it behaves like block_course_overview from moodle core. Additionally, news from your courses can be folded and unfolded and courses can be hidden from the course list.
 
 To make use of the advanced features of the block, please visit Plugins -> Blocks -> Course overview on campus.
@@ -162,6 +168,7 @@ As described in the "Usage & Settings" section of this file, you should configur
 
 Disregarded Moodle Features
 ---------------------------
+
 During the development of Moodle, there have been added several features added to the moodle core block_course_overview and moodle core which would conflict with block_course_overview_campus functionality. It has been decided to disregard the following Moodle features for this block:
 
 * In block_course_overview in Moodle 2.4+, a user is able to sort his course list by drag and drop. We decided to not adopt this feature for block_course_overview_campus because we think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list remains sorted by full course name.
@@ -174,17 +181,20 @@ During the development of Moodle, there have been added several features added t
 
 MNet courses
 ------------
+
 In contrast to the moodle core block_course_overview, this block doesn't support MNet courses and wasn't tested with MNet Moodle installations.
 
 
 Themes
 ------
+
 block_course_overview_campus should work with all Bootstrap based Moodle themes.
 block_course_overview_campus provides a fallback for browsers with JavaScript disabled.
 
 
 Further information
 -------------------
+
 block_course_overview_campus is found in the Moodle Plugins repository: http://moodle.org/plugins/view/block_course_overview_campus
 
 Report a bug or suggest an improvement: https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
@@ -192,6 +202,7 @@ Report a bug or suggest an improvement: https://github.com/moodleuulm/moodle-blo
 
 Moodle release support
 ----------------------
+
 Due to limited ressources, block_course_overview_campus is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
 
 There may be several weeks after a new major release of Moodle has been published until we can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that block_course_overview_campus still works with a new major relase - please let us know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
@@ -199,6 +210,7 @@ There may be several weeks after a new major release of Moodle has been publishe
 
 Right-to-left support
 ---------------------
+
 This plugin has not been tested with Moodle's support for right-to-left (RTL) languages.
 If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send me a pull request on
 github with modifications.
@@ -206,6 +218,7 @@ github with modifications.
 
 Copyright
 ---------
+
 University of Ulm
 kiz - Media Department
 Team Web & Teaching Support
@@ -214,4 +227,5 @@ Alexander Bias
 
 Credits
 -------
+
 This plugin is an enhanced version of Andrew James' block_course_overview_plus (https://moodle.org/plugins/view.php?plugin=block_course_overview_plus) which was enhanced to fit the needs of university campuses.
