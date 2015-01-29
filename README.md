@@ -5,11 +5,12 @@ Moodle block which provides all functionality of block_course_overview, provides
 
 Requirements
 ------------
-This plugin requires Moodle 2.7+
+This plugin requires Moodle 2.8+
 
 
 Changes
 -------
+* 2014-01-29 - Check compatibility for Moodle 2.8, no functionality change
 * 2014-10-20 - Bugfix: There were problems with the term filter and courses which start on the term start day and / or term starting on january 1st
 * 2014-10-20 - Add multilanguage support to noteachertext string
 * 2014-08-29 - Update README file
