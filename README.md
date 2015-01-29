@@ -185,6 +185,8 @@ block_course_overview_campus provides a fallback for browsers with JavaScript di
 
 Further information
 -------------------
+block_course_overview_campus is found in the Moodle Plugins repository: http://moodle.org/plugins/view/block_course_overview_campus
+
 Report a bug or suggest an improvement: https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
 
 
