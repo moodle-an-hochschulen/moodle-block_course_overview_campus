@@ -13,7 +13,7 @@ This plugin requires Moodle 2.8+
 Changes
 -------
 
-* 2014-02-22 - Bugfix: Teacher filter might have listed terms twice; Thanks to Michael Veit
+* 2014-02-22 - Bugfix: Term filter might have listed terms twice; Thanks to Michael Veit
 * 2014-01-29 - Check compatibility for Moodle 2.8, no functionality change
 * 2014-10-20 - Bugfix: There were problems with the term filter and courses which start on the term start day and / or term starting on january 1st
 * 2014-10-20 - Add multilanguage support to noteachertext string
