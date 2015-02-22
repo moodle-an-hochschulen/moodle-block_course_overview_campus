@@ -436,7 +436,7 @@ class block_course_overview_campus extends block_base {
                 if ($coc_config->teachercoursefilter == true || $coc_config->secondrowshowteachername == true) {
                     // Get course teachers based on global teacher roles
                     if (count($teacherroles) > 0) {
-                        $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.lastname, u.firstname, r.sortorder', 'u.lastname, u.firstname');
+                        $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.id, u.lastname, u.firstname, r.sortorder', 'u.lastname, u.firstname');
                     }
                     else {
                         $courseteachers = array();
