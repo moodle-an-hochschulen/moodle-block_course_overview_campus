@@ -27,8 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(dirname(__FILE__) . '/lib.php');
 
-global $CFG;
-
 if ($ADMIN->fulltree) {
     // Appearance
     $settings->add(new admin_setting_heading('block_course_overview_campus/appearancesettingheading', get_string('appearancesettingheading', 'block_course_overview_campus'), ''));
@@ -63,7 +61,7 @@ if ($ADMIN->fulltree) {
     $teachernamestylemodes[1] = get_string('teachernamestylefullname', 'block_course_overview_campus');
     $teachernamestylemodes[2] = get_string('teachernamestylelastname', 'block_course_overview_campus');
     $teachernamestylemodes[3] = get_string('teachernamestylefirstname', 'block_course_overview_campus');
-    $teachernamestylemodes[4] = get_string('teachernamestylefullnamedisplay', 'block_course_overview_campus', $CFG->fullnamedisplay);
+    $teachernamestylemodes[4] = get_string('teachernamestylefullnamedisplay', 'block_course_overview_campus', get_config('core', 'fullnamedisplay'));
 
     $settings->add(new admin_setting_configselect('block_course_overview_campus/secondrowshowteachernamestyle', get_string('secondrowshowteachernamestyle', 'block_course_overview_campus'),
                         get_string('secondrowshowteachernamestyle_desc', 'block_course_overview_campus'), $teachernamestylemodes[2], $teachernamestylemodes));
