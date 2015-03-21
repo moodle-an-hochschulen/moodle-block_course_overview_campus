@@ -111,6 +111,14 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('block_course_overview_campus/noteachertext', get_string('noteachertext', 'block_course_overview_campus'),
                         get_string('noteachertext_desc', 'block_course_overview_campus'), get_string('noteacher', 'block_course_overview_campus'), PARAM_TEXT));
 
+    // Possible settings for parent teacher roles
+    $teacherrolesparentmodes[1] = get_string('yes');
+    $teacherrolesparentmodes[2] = get_string('no');
+    $teacherrolesparentmodes[3] = get_string('teacherrolesparentcapability', 'block_course_overview_campus');
+
+    $settings->add(new admin_setting_configselect('block_course_overview_campus/teacherrolesparent', get_string('teacherrolesparent', 'block_course_overview_campus'),
+                        get_string('teacherrolesparent_desc', 'block_course_overview_campus'), $teacherrolesparentmodes[1], $teacherrolesparentmodes));
+
 
     // Category filter: Activation
     $settings->add(new admin_setting_heading('block_course_overview_campus/categorycoursefiltersettingheading', get_string('categorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
