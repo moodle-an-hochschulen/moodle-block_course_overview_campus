@@ -44,7 +44,7 @@ class block_course_overview_campus extends block_base {
     }
 
     function applicable_formats() {
-        return array('my-index' => true, 'site-index' => true);
+        return array('my-index' => true, 'my' => true, 'site-index' => true);
     }
 
     function has_config() {
