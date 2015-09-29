@@ -17,6 +17,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['academicyear_desc'] = 'Academic year (Calendar year is not divided)';
+$string['activityoverview'] = 'You have {$a}s that need attention';
 $string['all'] = 'All';
 $string['appearancesettingheading'] = 'Appearance';
 $string['blocktitle'] = 'Block title';

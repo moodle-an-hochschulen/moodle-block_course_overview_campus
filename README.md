@@ -13,6 +13,7 @@ This plugin requires Moodle 2.9+
 Changes
 -------
 
+* 2015-09-29 - Output introduction string in course news like it's done in block_course_overview
 * 2015-08-21 - Change My Moodle to Dashboard in language pack
 * 2015-08-18 - Check compatibility for Moodle 2.9, no functionality change
 * 2015-03-21 - Bugfix: Block couldn't be placed on MyMoodle in some circumstances
