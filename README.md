@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-01-01 - Add support for Shifter in YUI files, fix several JSLint errors
 * 2016-01-01 - Check compatibility for Moodle 3.0, no functionality change
 * 2015-09-29 - Output introduction string in course news like it's done in block_course_overview
 * 2015-08-21 - Change My Moodle to Dashboard in language pack
