@@ -1,0 +1,10 @@
+{
+  "name": "moodle-block_course_overview_campus-filter",
+  "builds": {
+    "moodle-block_course_overview_campus-filter": {
+      "jsfiles": [
+        "filter.js"
+      ]
+    }
+  }
+}

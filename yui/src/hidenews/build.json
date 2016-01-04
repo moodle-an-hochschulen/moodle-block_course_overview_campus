@@ -1,0 +1,10 @@
+{
+  "name": "moodle-block_course_overview_campus-hidenews",
+  "builds": {
+    "moodle-block_course_overview_campus-hidenews": {
+      "jsfiles": [
+        "hidenews.js"
+      ]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "moodle-block_course_overview_campus-filter": {
+    "requires": [
+        "base",
+        "node"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "moodle-block_course_overview_campus-hidecourse": {
+    "requires": [
+        "base",
+        "node"
+    ]
+  }
+}

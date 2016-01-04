@@ -7,8 +7,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-YUI.add('moodle-block_course_overview_campus-hidenews', function(Y) {
-
 var HideNews = function() {
     HideNews.superclass.constructor.apply(this, arguments);
 };
@@ -50,6 +48,4 @@ M.block_course_overview_campus = M.block_course_overview_campus || {};
 // Initialisation function
 M.block_course_overview_campus.initHideNews = function(params) {
     return new HideNews(params);
-}
-
-}, '@VERSION@', {requires:['base','node']});
+};

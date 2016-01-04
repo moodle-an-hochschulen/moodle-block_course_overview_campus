@@ -7,8 +7,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-YUI.add('moodle-block_course_overview_campus-hidecourse', function(Y) {
-
 var HideCourse = function() {
     HideCourse.superclass.constructor.apply(this, arguments);
 };
@@ -28,9 +26,9 @@ HideCourse.prototype = {
 
         Y.one('#coc-hidecourse-'+course).addClass('coc-hidden');
         Y.one('#coc-showcourse-'+course).removeClass('coc-hidden');
-        if (editing==0) {
+        if (editing===0) {
             Y.one('#coc-course-'+course).addClass('coc-hidden');
-            Y.one('#coc-hiddencoursescount').setContent(parseInt(Y.one('#coc-hiddencoursescount').get("innerHTML"))+1);
+            Y.one('#coc-hiddencoursescount').setContent(parseInt(Y.one('#coc-hiddencoursescount').get("innerHTML"),10)+1);
             Y.one('#coc-hiddencoursesmanagement-bottom').removeClass('coc-hidden');
         }
 
@@ -54,6 +52,4 @@ M.block_course_overview_campus = M.block_course_overview_campus || {};
 // Initialisation function
 M.block_course_overview_campus.initHideCourse = function(params) {
     return new HideCourse(params);
-}
-
-}, '@VERSION@', {requires:['base','node']});
+};
