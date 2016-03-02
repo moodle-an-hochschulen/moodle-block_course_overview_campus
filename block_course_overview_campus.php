@@ -229,9 +229,9 @@ class block_course_overview_campus extends block_base {
                 // Get course context
                 $context = context_course::instance($c->id);
 
-                // Populate filters with data about my courses
-                // Term filter
-                if ($coc_config->termcoursefilter == true) {
+                // Collect information about my courses and populate filters with data about my courses
+                // Term information
+                if ($coc_config->termcoursefilter == true || $coc_config->secondrowshowtermname == true) {
                     // Create object for bufferung course term information
                     $courseterm = new stdClass();
 
@@ -399,23 +399,24 @@ class block_course_overview_campus extends block_base {
                     // Remember course term for later use
                     $c->term = $courseterm->id;
                     $c->termname = format_string($courseterm->name);
-
+                }
+                // Term filter
+                if ($coc_config->termcoursefilter == true) {
                     // Add course term to filter list
                     $filterterms[$courseterm->id] = $courseterm->name;
-
-                    // Cleanup
-                    unset ($courseterm);
                 }
 
-                // Category filter
-                if ($coc_config->categorycoursefilter == true) {
+                // Category information
+                if ($coc_config->categorycoursefilter == true || $coc_config->secondrowshowcategoryname == true) {
                     // Get course category name from array of all category names
                     $coursecategory = $coursecategories[$c->category];
 
                     // Remember course category name for later use
                     $c->categoryname = format_string($coursecategory->name);
                     $c->categoryid = $coursecategory->id;
-
+                }
+                // Category filter
+                if ($coc_config->categorycoursefilter == true) {
                     // Merge homonymous categories into one category if configured
                     if ($coc_config->mergehomonymouscategories == true) {
                         // Check if course category name is already present in the category filter array
@@ -431,7 +432,7 @@ class block_course_overview_campus extends block_base {
                     $filtercategories[$c->categoryid] = $c->categoryname;
                 }
 
-                // Teacher filter
+                // Teacher information
                 if ($coc_config->teachercoursefilter == true || $coc_config->secondrowshowteachername == true) {
                     // Get course teachers based on global teacher roles
                     if (count($teacherroles) > 0) {
@@ -459,7 +460,9 @@ class block_course_overview_campus extends block_base {
 
                     // Remember course teachers for later use
                     $c->teachers = $courseteachers;
-
+                }
+                // Teacher filter
+                if ($coc_config->teachercoursefilter == true) {
                     // Add all course teacher's names to filter list
                     if ($coc_config->teachercoursefilter == true) {
                         foreach ($courseteachers as $ct) {

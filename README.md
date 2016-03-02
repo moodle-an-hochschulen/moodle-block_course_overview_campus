@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-03-02 - Fix missing data in second row when corresponding filters are not activated; Credits to Dimitri Vorona
 * 2016-02-10 - Change plugin version and release scheme to the scheme promoted by moodle.org, no functionality change
 * 2016-01-01 - Add support for Shifter in YUI files, fix several JSLint errors
 * 2016-01-01 - Check compatibility for Moodle 3.0, no functionality change
