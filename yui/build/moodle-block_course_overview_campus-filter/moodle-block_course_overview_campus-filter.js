@@ -3,10 +3,9 @@ YUI.add('moodle-block_course_overview_campus-filter', function (Y, NAME) {
 /**
  * Block "course overview (campus)" - YUI code for filtering courses
  *
- * @package     block
- * @subpackage  block_course_overview_campus
- * @copyright   2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_course_overview_campus
+ * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 var Filter = function() {
