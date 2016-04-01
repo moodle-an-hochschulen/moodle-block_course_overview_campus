@@ -27,6 +27,11 @@ Filter.prototype = {
         if(nodeFilterCategory !== null) {
             nodeFilterCategory.on('change', this.filterCategory, this);
         }
+
+        var nodeFilterTopLevelCategory = Y.one('#coc-filtertoplevelcategory');
+        if(nodeFilterTopLevelCategory !== null) {
+            nodeFilterTopLevelCategory.on('change', this.filterTopLevelCategory, this);
+        }
     },
     filterTerm : function(e) {
         // Prevent the event from refreshing the page
@@ -69,6 +74,20 @@ Filter.prototype = {
         }
         // Store the users selection (Uses AJAX to save to the database)
         M.util.set_user_preference('block_course_overview_campus-selectedcategory', value);
+    },
+    filterTopLevelCategory : function(e) {
+        // Prevent the event from refreshing the page
+        e.preventDefault();
+        var index = Y.one("#coc-filtertoplevelcategory").get('selectedIndex');
+        var value = Y.one("#coc-filtertoplevelcategory").get("options").item(index).getAttribute('value');
+        if(value=="all") {
+            Y.all('div.toplevelcategorydiv').removeClass('coc-hidden');
+        } else {
+            Y.all('div.toplevelcategorydiv').addClass('coc-hidden');
+            Y.all('div.coc-toplevelcategory-'+value).removeClass('coc-hidden');
+        }
+        // Store the users selection (Uses AJAX to save to the database)
+        M.util.set_user_preference('block_course_overview_campus-selectedtoplevelcategory', value);
     }
 
 };

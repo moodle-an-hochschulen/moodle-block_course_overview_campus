@@ -204,7 +204,7 @@ function block_course_overview_campus_get_term_displayname($termname, $year, $ye
 
 
 /**
- * Compare helper function
+ * Compare teacher by relevance helper function
  *
  * @param object $a Teacher A
  * @param object $b Teacher B
@@ -221,6 +221,32 @@ function block_course_overview_campus_compare_teachers($a, $b) {
     else if ($a->sortorder == $b->sortorder) {
         // teachers' roles are equal, then compare lastnames
         return strcasecmp($a->lastname, $b->lastname);
+    }
+    else {
+        // This should never happen
+        return 0;
+    }
+}
+
+
+/**
+ * Compare category by sortorder helper function
+ *
+ * @param object $a Category A
+ * @param object $b Category B
+ * @return int
+ */
+function block_course_overview_campus_compare_categories($a, $b) {
+    // compare sortorder of categories
+    if ($a->sortorder < $b->sortorder) {
+        return -1;
+    }
+    else if ($a->sortorder > $b->sortorder) {
+        return 1;
+    }
+    else if ($a->sortorder == $b->sortorder) {
+        // Category sortorders are equal - this shouldn't happen, but if it does then compare category names alphabetically
+        return strcasecmp(format_string($a->name), format_string($b->name));
     }
     else {
         // This should never happen

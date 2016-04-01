@@ -13,6 +13,8 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-04-01 - Add feature to show top level category name in second row; rename existing feature to show parent category name
+* 2016-04-01 - Add filter for top level category; rename existing category filter to parent category filter
 * 2016-03-02 - Fix missing data in second row when corresponding filters are not activated; Credits to Dimitri Vorona
 * 2016-02-10 - Change plugin version and release scheme to the scheme promoted by moodle.org, no functionality change
 * 2016-01-01 - Add support for Shifter in YUI files, fix several JSLint errors
@@ -122,39 +124,44 @@ In this section, you can define if courses in which the user has a teacher role 
 
 In this section, you can define which roles in a course will be displayed besides the course's name as teacher and get listed in the teacher filter.
 
-### 4. Category filter: Filter activation
+### 4. Parent category filter: Filter activation
 
-By checking this item, you activate a filter which enables your users to filter their courses by category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
+By checking this item, you activate a filter which enables your users to filter their courses by parent category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
-### 4.1. Category filter: Merge homonymous categories
+### 4.1. Parent category filter: Merge homonymous parent categories
 
-If there are multiple categories with different parent categories, but with the same name, the category filter will be filled with multiple categories with the same name by default. This can be confusing to the user. If you want to merge all homonymous categories into one category when using the category filter, activate this setting
+If there are multiple courses with different parent categories, but with the same parent category name, the parent category filter will be filled with multiple categories with the same name by default. This can be confusing to the user. If you want to merge all homonymous parent categories into one filter entry when using the parent category filter, activate this setting
 
-### 5. Teacher filter: Filter activation
+### 5. Top level category filter: Filter activation
+
+By checking this item, you activate a filter which enables your users to filter their courses by top level category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
+Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
+
+### 6. Teacher filter: Filter activation
 
 By checking this item, you activate a filter which enables your users to filter their courses by teacher. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
-### 6. Term filter: Filter activation
+### 7. Term filter: Filter activation
 
 By checking this item, you activate a filter which enables your users to filter their courses by term. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
-### 6.1. Term filter: Term definition
+### 7.1. Term filter: Term definition
 
 To make meaningfully use of the term filter, you have to configure it according to your campus course of the year. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term (Please make sure that the configured start dates make sense, i.e. that term 2 starts after term 1 and so on).
 
-### 6.2. Term filter: Term names
+### 7.2. Term filter: Term names
 
 To make meaningfully use of the term filter, you have to configure it according to your campus terminology. In this section, you can set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 Additionally, you can fine-tune the displaying of the term names which will be displayed in the term filter dropdown.
 
-### 6.3. Term filter: Term behaviour
+### 7.3. Term filter: Term behaviour
 
 Here, you are able to let block_course_overview_campus choose a default term if the user has not previously selected a term for filtering terms.
 
-### 6.4. Term filter: Timeless courses
+### 7.4. Term filter: Timeless courses
 
 Here, you can enable support for "timeless courses". Timeless courses will be presented in the term filter as if they are not associated to a specific term. This is achieved by leveraging the course's start year field. After enabling timeless courses, you have to define a course start year threshold. Every course with a start year before (and not equal to) this year will be presentes as timeless course in the term filter.
 You are also able to set a label for timeless courses for the term filter (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
@@ -163,16 +170,26 @@ You are also able to set a label for timeless courses for the term filter (multi
 Data sources
 ------------
 
-### 1. Category filter
+### 1. Parent category filter
 
-The category filter is filled with the main category of each of the user's courses.
-Currently, there is no support for parent categories, grandparent categories and so on or any other category filtering. Please don't hesitate to suggest expedient improvements.
+The parent category filter is filled with the main category of each of the user's courses.
 
-### 2. Teacher filter
+Example:
+If the course's category path is Category A -> Category B -> Category C -> Course, the filter will contain an extry with Category C.
+
+
+### 2. Top level category filter
+
+The top level filter is filled with the top level category of each of the user's courses.
+
+Example:
+If the course's category path is Category A -> Category B -> Category C -> Course, the filter will contain an extry with Category A.
+
+### 3. Teacher filter
 
 As described in the "Usage & Settings" section of this file, you should configure the teacher roles for block_course_overview_campus according to your campus needs. After that, block_course_overview_campus takes each course member with one of the configured roles. These teachers are filled into the teacher filter.
 
-### 3. Term filter
+### 4. Term filter
 
 As described in the "Usage & Settings" section of this file, you should configure block_course_overview_campus according to your campus course of the year. After that, block_course_overview_campus maps each course to a term by looking at the course's start date. This term is filled into the term filter.
 

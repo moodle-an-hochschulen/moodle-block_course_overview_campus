@@ -85,6 +85,7 @@ class block_course_overview_campus extends block_base {
         $manage = optional_param('coc-manage', 0, PARAM_BOOL);
         $term = optional_param('coc-term', null, PARAM_TEXT);
         $category = optional_param('coc-category', null, PARAM_TEXT);
+        $toplevelcategory = optional_param('coc-toplevelcategory', null, PARAM_TEXT);
         $teacher = optional_param('coc-teacher', null, PARAM_TEXT);
 
 
@@ -122,14 +123,25 @@ class block_course_overview_campus extends block_base {
         }
 
 
-        // Set and remember category filter if GET parameter is present
+        // Set and remember parent category filter if GET parameter is present
         if ($category != null) {
             $selectedcategory = $category;
             set_user_preference('block_course_overview_campus-selectedcategory', $category);
         }
-        // Or set category filter based on user preference with 'all' categories fallback
+        // Or set parent category filter based on user preference with 'all' categories fallback
         else {
             $selectedcategory = get_user_preferences('block_course_overview_campus-selectedcategory', 'all');
+        }
+
+
+        // Set and remember top level category filter if GET parameter is present
+        if ($toplevelcategory != null) {
+            $selectedtoplevelcategory = $toplevelcategory;
+            set_user_preference('block_course_overview_campus-selectedtoplevelcategory', $toplevelcategory);
+        }
+        // Or set top level category filter based on user preference with 'all' categories fallback
+        else {
+            $selectedtoplevelcategory = get_user_preferences('block_course_overview_campus-selectedtoplevelcategory', 'all');
         }
 
 
@@ -205,6 +217,9 @@ class block_course_overview_campus extends block_base {
             }
             if ($coc_config->categorycoursefilter == true) {
                 $filtercategories = array();
+            }
+            if ($coc_config->toplevelcategorycoursefilter == true) {
+                $filtertoplevelcategories = array();
             }
             if ($coc_config->teachercoursefilter == true) {
                 $filterteachers = array();
@@ -406,16 +421,25 @@ class block_course_overview_campus extends block_base {
                     $filterterms[$courseterm->id] = $courseterm->name;
                 }
 
-                // Category information
-                if ($coc_config->categorycoursefilter == true || $coc_config->secondrowshowcategoryname == true) {
-                    // Get course category name from array of all category names
+                // Parent category information
+                if ($coc_config->categorycoursefilter == true || $coc_config->secondrowshowcategoryname == true || $coc_config->toplevelcategorycoursefilter == true || $coc_config->secondrowshowtoplevelcategoryname == true) {
+                    // Get course parent category name from array of all category names
                     $coursecategory = $coursecategories[$c->category];
 
-                    // Remember course category name for later use
+                    // Remember course parent category name for later use
                     $c->categoryname = format_string($coursecategory->name);
                     $c->categoryid = $coursecategory->id;
+
+                    // Get course top level category name from array of all category names
+                    $coursecategorypath = explode('/', $coursecategory->path);
+                    $coursetoplevelcategoryid = $coursecategorypath[1];
+                    $coursetoplevelcategory = $coursecategories[$coursetoplevelcategoryid];
+
+                    // Remember course top level category name for later use
+                    $c->toplevelcategoryname = format_string($coursetoplevelcategory->name);
+                    $c->toplevelcategoryid = $coursetoplevelcategory->id;
                 }
-                // Category filter
+                // Parent category filter
                 if ($coc_config->categorycoursefilter == true) {
                     // Merge homonymous categories into one category if configured
                     if ($coc_config->mergehomonymouscategories == true) {
@@ -428,8 +452,13 @@ class block_course_overview_campus extends block_base {
                         }
                     }
 
-                    // Add course category name to filter list
+                    // Add course parent category name to filter list
                     $filtercategories[$c->categoryid] = $c->categoryname;
+                }
+                // Top level category filter
+                if ($coc_config->toplevelcategorycoursefilter == true) {
+                    // Add course top level category name to filter list
+                    $filtertoplevelcategories[$c->toplevelcategoryid] = $c->toplevelcategoryname;
                 }
 
                 // Teacher information
@@ -653,7 +682,7 @@ class block_course_overview_campus extends block_base {
             /********************************************************************************/
 
             // Show filter form if any filter is activated and if hidden courses management isn't active
-            if ((!$coc_config->enablehidecourses || $manage == false) && ($coc_config->categorycoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->teachercoursefilter == true)) {
+            if ((!$coc_config->enablehidecourses || $manage == false) && ($coc_config->categorycoursefilter == true || $coc_config->toplevelcategorycoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->teachercoursefilter == true)) {
                 // Calculate CSS class for filter divs
                 $filtercount = 0;
                 if ($coc_config->termcoursefilter == true) {
@@ -663,6 +692,9 @@ class block_course_overview_campus extends block_base {
                     $filtercount++;
                 }
                 if ($coc_config->categorycoursefilter == true) {
+                    $filtercount++;
+                }
+                if ($coc_config->toplevelcategorycoursefilter == true) {
                     $filtercount++;
                 }
                 if ($filtercount == 1) {
@@ -756,7 +788,76 @@ class block_course_overview_campus extends block_base {
                     echo '</div>';
                 }
 
-                // Show category filter
+                // Show top level category filter
+                if ($coc_config->toplevelcategorycoursefilter == true) {
+                    echo '<div class="coc-filter '.$filterwidth.'">';
+
+                    // Show filter description
+                    echo format_string($coc_config->toplevelcategorycoursefilterdisplayname);
+                    if ($coc_config->toplevelcategorycoursefilterdisplayname != '') {
+                        echo '<br />';
+                    }
+
+                    echo '<select name="coc-toplevelcategory" id="coc-filtertoplevelcategory" class="input-block-level">';
+
+                    // Remember in this variable if selected top level category was displayed or not
+                    $selectedtoplevelcategorydisplayed = false;
+
+                    // Sort top level category filter by category sort order
+                    // Create empty array for sorted categories
+                    $filtertoplevelcategoriessortorder = array();
+                    // Fetch full category information for each category
+                    foreach ($filtertoplevelcategories as $ftl_key => $ftl_value) {
+                        $filtertoplevelcategoriesfullinfo[] = $coursecategories[$ftl_key];
+                    }
+                    // Sort full category information array by sortorder
+                    $success = usort($filtertoplevelcategoriesfullinfo, "block_course_overview_campus_compare_categories");
+                    // If sorting was not successful, return old array
+                    if (!$success) {
+                        return $filtertoplevelcategories;
+                    }
+                    // If sorting was successful, return new array with same data structure like the old one
+                    else {
+                        $filtertoplevelcategories = array();
+                        foreach ($filtertoplevelcategoriesfullinfo as $ftl) {
+                            $filtertoplevelcategories[$ftl->id] = format_string($ftl->name);
+                        }
+                    }
+
+                    // Print "All categories" option
+                    if ($selectedtoplevelcategory == 'all') {
+                        echo '<option value="all" selected>'.get_string('all', 'block_course_overview_campus').'</option> ';
+                        $selectedtoplevelcategorydisplayed = true;
+                    }
+                    else {
+                        echo '<option value="all">'.get_string('all', 'block_course_overview_campus').'</option> ';
+                    }
+
+                    // Print each top level category in filter as an option item and select selected top level category
+                    foreach ($filtertoplevelcategories as $value => $cat) {
+                        // If iterated top level category is selected top level category
+                        if ($selectedtoplevelcategory == $value) {
+                            echo '<option selected value="'.$value.'">'.$cat.'</option> ';
+                            $selectedtoplevelcategorydisplayed = true;
+                        }
+                        // If iterated top level category isn't selected top level category
+                        else {
+                            echo '<option value="'.$value.'">'.$cat.'</option> ';
+                        }
+                    }
+
+                    echo '</select>';
+
+                    // If selected top level category couldn't be displayed, select all categories and save the new selection. In this case, no option item is marked as selected, but that's ok as the "all" item is at the top
+                    if (!$selectedtoplevelcategorydisplayed) {
+                        $selectedtoplevelcategory = 'all';
+                        set_user_preference('block_course_overview_campus-selectedtoplevelcategory', $selectedtoplevelcategory);
+                    }
+
+                    echo '</div>';
+                }
+
+                // Show parent category filter
                 if ($coc_config->categorycoursefilter == true) {
                     echo '<div class="coc-filter '.$filterwidth.'">';
 
@@ -768,10 +869,10 @@ class block_course_overview_campus extends block_base {
 
                     echo '<select name="coc-category" id="coc-filtercategory" class="input-block-level">';
 
-                    // Remember in this variable if selected category was displayed or not
+                    // Remember in this variable if selected parent category was displayed or not
                     $selectedcategorydisplayed = false;
 
-                    // Sort category filter alphabetically
+                    // Sort parent category filter alphabetically
                     natcasesort($filtercategories);
 
                     // Print "All categories" option
@@ -783,14 +884,14 @@ class block_course_overview_campus extends block_base {
                         echo '<option value="all">'.get_string('all', 'block_course_overview_campus').'</option> ';
                     }
 
-                    // Print each category in filter as an option item and select selected category
+                    // Print each parent category in filter as an option item and select selected parent category
                     foreach ($filtercategories as $value => $cat) {
-                        // If iterated category is selected category
+                        // If iterated parent category is selected parent category
                         if ($selectedcategory == $value) {
                             echo '<option selected value="'.$value.'">'.$cat.'</option> ';
                             $selectedcategorydisplayed = true;
                         }
-                        // If iterated category isn't selected category
+                        // If iterated parent category isn't selected parent category
                         else {
                             echo '<option value="'.$value.'">'.$cat.'</option> ';
                         }
@@ -798,7 +899,7 @@ class block_course_overview_campus extends block_base {
 
                     echo '</select>';
 
-                    // If selected category couldn't be displayed, select all categories and save the new selection. In this case, no option item is marked as selected, but that's ok as the "all" item is at the top
+                    // If selected parent category couldn't be displayed, select all categories and save the new selection. In this case, no option item is marked as selected, but that's ok as the "all" item is at the top
                     if (!$selectedcategorydisplayed) {
                         $selectedcategory = 'all';
                         set_user_preference('block_course_overview_campus-selectedcategory', $selectedcategory);
@@ -930,15 +1031,27 @@ class block_course_overview_campus extends block_base {
                     }
                 }
 
-                // Start filter by category div - later we use this div to filter the course
+                // Start filter by parent category div - later we use this div to filter the course
                 if ($coc_config->categorycoursefilter == true) {
-                    // Show course if it is within selected category or all categories are selected or if hidden courses are currently shown
+                    // Show course if it is within selected parent category or all categories are selected or if hidden courses are currently shown
                     if ($c->categoryid == $selectedcategory || $selectedcategory == 'all' || $manage == true) {
                         echo '<div class="categorydiv coc-category-'.$c->categoryid.'">';
                     }
                     // Otherwise hide the course with CSS
                     else {
                         echo '<div class="categorydiv coc-category-'.$c->categoryid.' coc-hidden">';
+                    }
+                }
+
+                // Start filter by top level category div - later we use this div to filter the course
+                if ($coc_config->toplevelcategorycoursefilter == true) {
+                    // Show course if it is within selected top level category or all categories are selected or if hidden courses are currently shown
+                    if ($c->categoryid == $selectedtoplevelcategory || $selectedtoplevelcategory == 'all' || $manage == true) {
+                        echo '<div class="toplevelcategorydiv coc-toplevelcategory-'.$c->toplevelcategoryid.'">';
+                    }
+                    // Otherwise hide the course with CSS
+                    else {
+                        echo '<div class="toplevelcategorydiv coc-toplevelcategory-'.$c->toplevelcategoryid.' coc-hidden">';
                     }
                 }
 
@@ -1027,7 +1140,7 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Check if some meta info has to be displayed in addition to the course name
-                if ($coc_config->secondrowshowshortname == true || $coc_config->secondrowshowtermname == true || $coc_config->secondrowshowcategoryname == true || ($coc_config->secondrowshowteachername == true && count($c->teachers) > 0)) {
+                if ($coc_config->secondrowshowshortname == true || $coc_config->secondrowshowtermname == true || $coc_config->secondrowshowcategoryname == true || $coc_config->secondrowshowtoplevelcategoryname == true || ($coc_config->secondrowshowteachername == true && count($c->teachers) > 0)) {
                     $meta = array();
                     if ($coc_config->secondrowshowshortname == true) {
                         $meta[] = $c->shortname;
@@ -1037,6 +1150,9 @@ class block_course_overview_campus extends block_base {
                     }
                     if ($coc_config->secondrowshowcategoryname == true) {
                         $meta[] = $c->categoryname;
+                    }
+                    if ($coc_config->secondrowshowtoplevelcategoryname == true) {
+                        $meta[] = $c->toplevelcategoryname;
                     }
                     if ($coc_config->secondrowshowteachername == true) {
                         // Get teachers' names for use with course link
@@ -1119,8 +1235,13 @@ class block_course_overview_campus extends block_base {
                     echo '</div>';
                 }
 
-                // End filter by category div
+                // End filter by parent category div
                 if ($coc_config->categorycoursefilter == true) {
+                    echo '</div>';
+                }
+
+                // End filter by top level category div
+                if ($coc_config->toplevelcategorycoursefilter == true) {
                     echo '</div>';
                 }
 
@@ -1180,6 +1301,9 @@ class block_course_overview_campus extends block_base {
             if ($coc_config->categorycoursefilter == true) {
                 user_preference_allow_ajax_update('block_course_overview_campus-selectedcategory', PARAM_TEXT);
             }
+            if ($coc_config->toplevelcategorycoursefilter == true) {
+                user_preference_allow_ajax_update('block_course_overview_campus-selectedtoplevelcategory', PARAM_TEXT);
+            }
 
             // Include YUI for hiding courses with AJAX
             if ($coc_config->enablehidecourses) {
@@ -1192,7 +1316,7 @@ class block_course_overview_campus extends block_base {
             }
 
             // Include YUI for filtering courses with AJAX
-            if ($coc_config->teachercoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->categorycoursefilter == true) {
+            if ($coc_config->teachercoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->categorycoursefilter == true || $coc_config->toplevelcategorycoursefilter == true) {
                 $PAGE->requires->yui_module('moodle-block_course_overview_campus-filter', 'M.block_course_overview_campus.initFilter', array());
             }
         }

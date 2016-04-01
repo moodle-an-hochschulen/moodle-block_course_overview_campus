@@ -53,6 +53,9 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowcategoryname', get_string('secondrowshowcategoryname', 'block_course_overview_campus'),
                         get_string('secondrowshowcategoryname_desc', 'block_course_overview_campus'), 0));
 
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowtoplevelcategoryname', get_string('secondrowshowtoplevelcategoryname', 'block_course_overview_campus'),
+                        get_string('secondrowshowtoplevelcategoryname_desc', 'block_course_overview_campus'), 0));
+
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowteachername', get_string('secondrowshowteachername', 'block_course_overview_campus'),
                         get_string('secondrowshowteachername_desc', 'block_course_overview_campus'), 0));
 
@@ -119,7 +122,7 @@ if ($ADMIN->fulltree) {
                         get_string('teacherrolesparent_desc', 'block_course_overview_campus'), $teacherrolesparentmodes[1], $teacherrolesparentmodes));
 
 
-    // Category filter: Activation
+    // Parent category filter: Activation
     $settings->add(new admin_setting_heading('block_course_overview_campus/categorycoursefiltersettingheading', get_string('categorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/categorycoursefilter', get_string('categorycoursefilter', 'block_course_overview_campus'),
@@ -129,11 +132,21 @@ if ($ADMIN->fulltree) {
                         get_string('categorycoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('category', 'block_course_overview_campus'), PARAM_TEXT));
 
 
-    // Category filter: Merge homonymous categories
+    // Parent category filter: Merge homonymous categories
     $settings->add(new admin_setting_heading('block_course_overview_campus/mergehomonymouscategoriessettingheading', get_string('mergehomonymouscategoriessettingheading', 'block_course_overview_campus'), ''));
 
     $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/mergehomonymouscategories', get_string('mergehomonymouscategories', 'block_course_overview_campus'),
                         get_string('mergehomonymouscategories_desc', 'block_course_overview_campus'), 0));
+
+
+    // Top level category filter: Activation
+    $settings->add(new admin_setting_heading('block_course_overview_campus/toplevelcategorycoursefiltersettingheading', get_string('toplevelcategorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
+
+    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/toplevelcategorycoursefilter', get_string('toplevelcategorycoursefilter', 'block_course_overview_campus'),
+                        get_string('toplevelcategorycoursefilter_desc', 'block_course_overview_campus'), 0));
+
+    $settings->add(new admin_setting_configtext('block_course_overview_campus/toplevelcategorycoursefilterdisplayname', get_string('toplevelcategorycoursefilterdisplayname', 'block_course_overview_campus'),
+                        get_string('toplevelcategorycoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('toplevelcategory', 'block_course_overview_campus'), PARAM_TEXT));
 
 
     // Teacher filter: Activation
