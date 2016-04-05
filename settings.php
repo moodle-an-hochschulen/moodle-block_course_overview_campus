@@ -26,37 +26,97 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(dirname(__FILE__) . '/lib.php');
 
-if ($ADMIN->fulltree) {
-    // Appearance
-    $settings->add(new admin_setting_heading('block_course_overview_campus/appearancesettingheading', get_string('appearancesettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/blocktitle', get_string('blocktitle', 'block_course_overview_campus'),
+// Empty $settings to prevent a single settings page from being created by lib/classes/plugininfo/block.php  because we will create several settings pages now
+$settings = null;
+
+// Create admin settings category
+$ADMIN->add('blocksettings', new admin_category('block_course_overview_campus', get_string('pluginname', 'block_course_overview_campus')));
+
+
+
+// Create empty settings page structure to make the site administration work on non-admin pages
+if (!$ADMIN->fulltree) {
+    // Settings page: General
+    $settingspage = new admin_settingpage('block_course_overview_campus_general', get_string('settingspage_general', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Course overview list
+    $settingspage = new admin_settingpage('block_course_overview_campus_courseoverviewlist', get_string('settingspage_courseoverviewlist', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Hide courses
+    $settingspage = new admin_settingpage('block_course_overview_campus_hidecourses', get_string('settingspage_hidecourses', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Course news
+    $settingspage = new admin_settingpage('block_course_overview_campus_coursenews', get_string('settingspage_coursenews', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Teacher roles
+    $settingspage = new admin_settingpage('block_course_overview_campus_teacherroles', get_string('settingspage_teacherroles', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Parent category filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_categoryfilter', get_string('settingspage_categoryfilter', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Top level category filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_toplevelcategoryfilter', get_string('settingspage_toplevelcategoryfilter', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Teacher filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_teacherfilter', get_string('settingspage_teacherfilter', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+    // Settings page: Term filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_termfilter', get_string('settingspage_termfilter', 'block_course_overview_campus'));
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+}
+
+
+// Create full settings page structure
+else if ($ADMIN->fulltree) {
+    // Settings page: General
+    $settingspage = new admin_settingpage('block_course_overview_campus_general', get_string('settingspage_general', 'block_course_overview_campus'));
+
+    // Appearance
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/appearancesettingheading', get_string('appearancesettingheading', 'block_course_overview_campus'), ''));
+
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/blocktitle', get_string('blocktitle', 'block_course_overview_campus'),
                         get_string('blocktitle_desc', 'block_course_overview_campus'), get_string('pluginname', 'block_course_overview'), PARAM_TEXT));
 
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Course overview list
+    $settingspage = new admin_settingpage('block_course_overview_campus_courseoverviewlist', get_string('settingspage_courseoverviewlist', 'block_course_overview_campus'));
 
     // Course overview list entries
-    $settings->add(new admin_setting_heading('block_course_overview_campus/listentriessettingheading', get_string('listentriessettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/listentriessettingheading', get_string('listentriessettingheading', 'block_course_overview_campus'), ''));
 
-    // Possible term modes
+    // Possible course name modes
     $coursenamemodes[1] = get_string('fullnamecourse');
     $coursenamemodes[2] = get_string('shortnamecourse');
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/firstrowcoursename', get_string('firstrowcoursename', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/firstrowcoursename', get_string('firstrowcoursename', 'block_course_overview_campus'),
                         get_string('firstrowcoursename_desc', 'block_course_overview_campus'), $coursenamemodes[1], $coursenamemodes));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowshortname', get_string('secondrowshowshortname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowshortname', get_string('secondrowshowshortname', 'block_course_overview_campus'),
                         get_string('secondrowshowshortname_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowtermname', get_string('secondrowshowtermname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowtermname', get_string('secondrowshowtermname', 'block_course_overview_campus'),
                         get_string('secondrowshowtermname_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowcategoryname', get_string('secondrowshowcategoryname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowcategoryname', get_string('secondrowshowcategoryname', 'block_course_overview_campus'),
                         get_string('secondrowshowcategoryname_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowtoplevelcategoryname', get_string('secondrowshowtoplevelcategoryname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowtoplevelcategoryname', get_string('secondrowshowtoplevelcategoryname', 'block_course_overview_campus'),
                         get_string('secondrowshowtoplevelcategoryname_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowteachername', get_string('secondrowshowteachername', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowshowteachername', get_string('secondrowshowteachername', 'block_course_overview_campus'),
                         get_string('secondrowshowteachername_desc', 'block_course_overview_campus'), 0));
 
     // Possible teacher name styles
@@ -65,27 +125,48 @@ if ($ADMIN->fulltree) {
     $teachernamestylemodes[3] = get_string('teachernamestylefirstname', 'block_course_overview_campus');
     $teachernamestylemodes[4] = get_string('teachernamestylefullnamedisplay', 'block_course_overview_campus', get_config('core', 'fullnamedisplay'));
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/secondrowshowteachernamestyle', get_string('secondrowshowteachernamestyle', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/secondrowshowteachernamestyle', get_string('secondrowshowteachernamestyle', 'block_course_overview_campus'),
                         get_string('secondrowshowteachernamestyle_desc', 'block_course_overview_campus'), $teachernamestylemodes[2], $teachernamestylemodes));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowhideonphones', get_string('secondrowhideonphones', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/secondrowhideonphones', get_string('secondrowhideonphones', 'block_course_overview_campus'),
                         get_string('secondrowhideonphones_desc', 'block_course_overview_campus'), 0));
 
 
-    // Course overview list hidden courses management
-    $settings->add(new admin_setting_heading('block_course_overview_campus/hidecoursessettingheading', get_string('hidecoursessettingheading', 'block_course_overview_campus'), ''));
+    // Course order
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/ordersettingheading', get_string('ordersettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/enablehidecourses', get_string('enablehidecourses', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/prioritizemyteachedcourses', get_string('prioritizemyteachedcourses', 'block_course_overview_campus'),
+                        get_string('prioritizemyteachedcourses_desc', 'block_course_overview_campus'), 0));
+
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Hide courses
+    $settingspage = new admin_settingpage('block_course_overview_campus_hidecourses', get_string('settingspage_hidecourses', 'block_course_overview_campus'));
+
+    // Course overview list hidden courses management
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/hidecoursessettingheading', get_string('hidecoursessettingheading', 'block_course_overview_campus'), ''));
+
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/enablehidecourses', get_string('enablehidecourses', 'block_course_overview_campus'),
                         get_string('enablehidecourses_desc', 'block_course_overview_campus'), 1));
 
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Course news
+    $settingspage = new admin_settingpage('block_course_overview_campus_coursenews', get_string('settingspage_coursenews', 'block_course_overview_campus'));
 
     // Course news
-    $settings->add(new admin_setting_heading('block_course_overview_campus/coursenewsheading', get_string('coursenewsheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/coursenewsheading', get_string('coursenewsheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/enablecoursenews', get_string('enablecoursenews', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/enablecoursenews', get_string('enablecoursenews', 'block_course_overview_campus'),
                         get_string('enablecoursenews_desc', 'block_course_overview_campus'), 1));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/coursenewsdefault', get_string('coursenewsdefault', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/coursenewsdefault', get_string('coursenewsdefault', 'block_course_overview_campus'),
                         get_string('coursenewsdefault_desc', 'block_course_overview_campus'), 0));
 
     // Get activities which provide course news
@@ -94,23 +175,23 @@ if ($ADMIN->fulltree) {
         $modchoices[$m] = get_string('pluginname', $m);
     }
 
-    $settings->add(new admin_setting_configmultiselect('block_course_overview_campus/skipcoursenews', get_string('skipcoursenews', 'block_course_overview_campus'), get_string('skipcoursenews_desc', 'block_course_overview_campus'), array(), $modchoices));
+    $settingspage->add(new admin_setting_configmultiselect('block_course_overview_campus/skipcoursenews', get_string('skipcoursenews', 'block_course_overview_campus'), get_string('skipcoursenews_desc', 'block_course_overview_campus'), array(), $modchoices));
+
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
 
 
-    // Course order
-    $settings->add(new admin_setting_heading('block_course_overview_campus/ordersettingheading', get_string('ordersettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/prioritizemyteachedcourses', get_string('prioritizemyteachedcourses', 'block_course_overview_campus'),
-                        get_string('prioritizemyteachedcourses_desc', 'block_course_overview_campus'), 0));
-
+    // Settings page: Teacher roles
+    $settingspage = new admin_settingpage('block_course_overview_campus_teacherroles', get_string('settingspage_teacherroles', 'block_course_overview_campus'));
 
     // Teacher roles
-    $settings->add(new admin_setting_heading('block_course_overview_campus/teacherrolessettingheading', get_string('teacherrolessettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/teacherrolessettingheading', get_string('teacherrolessettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_pickroles('block_course_overview_campus/teacherroles', get_string('teacherroles', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_pickroles('block_course_overview_campus/teacherroles', get_string('teacherroles', 'block_course_overview_campus'),
                         get_string('teacherroles_desc', 'block_course_overview_campus'), array('editingteacher')));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/noteachertext', get_string('noteachertext', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/noteachertext', get_string('noteachertext', 'block_course_overview_campus'),
                         get_string('noteachertext_desc', 'block_course_overview_campus'), get_string('noteacher', 'block_course_overview_campus'), PARAM_TEXT));
 
     // Possible settings for parent teacher roles
@@ -118,54 +199,82 @@ if ($ADMIN->fulltree) {
     $teacherrolesparentmodes[2] = get_string('no');
     $teacherrolesparentmodes[3] = get_string('teacherrolesparentcapability', 'block_course_overview_campus');
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/teacherrolesparent', get_string('teacherrolesparent', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/teacherrolesparent', get_string('teacherrolesparent', 'block_course_overview_campus'),
                         get_string('teacherrolesparent_desc', 'block_course_overview_campus'), $teacherrolesparentmodes[1], $teacherrolesparentmodes));
 
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Parent category filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_categoryfilter', get_string('settingspage_categoryfilter', 'block_course_overview_campus'));
 
     // Parent category filter: Activation
-    $settings->add(new admin_setting_heading('block_course_overview_campus/categorycoursefiltersettingheading', get_string('categorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/categorycoursefiltersettingheading', get_string('categorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/categorycoursefilter', get_string('categorycoursefilter', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/categorycoursefilter', get_string('categorycoursefilter', 'block_course_overview_campus'),
                         get_string('categorycoursefilter_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/categorycoursefilterdisplayname', get_string('categorycoursefilterdisplayname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/categorycoursefilterdisplayname', get_string('categorycoursefilterdisplayname', 'block_course_overview_campus'),
                         get_string('categorycoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('category', 'block_course_overview_campus'), PARAM_TEXT));
 
 
     // Parent category filter: Merge homonymous categories
-    $settings->add(new admin_setting_heading('block_course_overview_campus/mergehomonymouscategoriessettingheading', get_string('mergehomonymouscategoriessettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/mergehomonymouscategoriessettingheading', get_string('mergehomonymouscategoriessettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/mergehomonymouscategories', get_string('mergehomonymouscategories', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/mergehomonymouscategories', get_string('mergehomonymouscategories', 'block_course_overview_campus'),
                         get_string('mergehomonymouscategories_desc', 'block_course_overview_campus'), 0));
 
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Top level category filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_toplevelcategoryfilter', get_string('settingspage_toplevelcategoryfilter', 'block_course_overview_campus'));
 
     // Top level category filter: Activation
-    $settings->add(new admin_setting_heading('block_course_overview_campus/toplevelcategorycoursefiltersettingheading', get_string('toplevelcategorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/toplevelcategorycoursefiltersettingheading', get_string('toplevelcategorycoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/toplevelcategorycoursefilter', get_string('toplevelcategorycoursefilter', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/toplevelcategorycoursefilter', get_string('toplevelcategorycoursefilter', 'block_course_overview_campus'),
                         get_string('toplevelcategorycoursefilter_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/toplevelcategorycoursefilterdisplayname', get_string('toplevelcategorycoursefilterdisplayname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/toplevelcategorycoursefilterdisplayname', get_string('toplevelcategorycoursefilterdisplayname', 'block_course_overview_campus'),
                         get_string('toplevelcategorycoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('toplevelcategory', 'block_course_overview_campus'), PARAM_TEXT));
 
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Teacher filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_teacherfilter', get_string('settingspage_teacherfilter', 'block_course_overview_campus'));
 
     // Teacher filter: Activation
-    $settings->add(new admin_setting_heading('block_course_overview_campus/teachercoursefiltersettingheading', get_string('teachercoursefiltersettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/teachercoursefiltersettingheading', get_string('teachercoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/teachercoursefilter', get_string('teachercoursefilter', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/teachercoursefilter', get_string('teachercoursefilter', 'block_course_overview_campus'),
                         get_string('teachercoursefilter_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/teachercoursefilterdisplayname', get_string('teachercoursefilterdisplayname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/teachercoursefilterdisplayname', get_string('teachercoursefilterdisplayname', 'block_course_overview_campus'),
                         get_string('teachercoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('defaultcourseteacher'), PARAM_TEXT));
 
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
+
+
+
+    // Settings page: Term filter
+    $settingspage = new admin_settingpage('block_course_overview_campus_termfilter', get_string('settingspage_termfilter', 'block_course_overview_campus'));
 
     // Term filter: Activation
-    $settings->add(new admin_setting_heading('block_course_overview_campus/termcoursefiltersettingheading', get_string('termcoursefiltersettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/termcoursefiltersettingheading', get_string('termcoursefiltersettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/termcoursefilter', get_string('termcoursefilter', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/termcoursefilter', get_string('termcoursefilter', 'block_course_overview_campus'),
                         get_string('termcoursefilter_desc', 'block_course_overview_campus'), 0));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/termcoursefilterdisplayname', get_string('termcoursefilterdisplayname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/termcoursefilterdisplayname', get_string('termcoursefilterdisplayname', 'block_course_overview_campus'),
                         get_string('termcoursefilterdisplayname_desc', 'block_course_overview_campus'), get_string('term', 'block_course_overview_campus'), PARAM_TEXT));
 
 
@@ -173,10 +282,10 @@ if ($ADMIN->fulltree) {
     // Check if the configured term dates make sense, if not show warning information
     $coc_config = get_config('block_course_overview_campus');
     if (isset($coc_config->termcoursefilter) && $coc_config->termcoursefilter == true && !block_course_overview_campus_check_term_config($coc_config)) {
-        $settings->add(new admin_setting_heading('block_course_overview_campus/termsettingheading', get_string('termsettingheading', 'block_course_overview_campus'), '<span class="errormessage">'.get_string('termsettingerror', 'block_course_overview_campus').'</span>'));
+        $settingspage->add(new admin_setting_heading('block_course_overview_campus/termsettingheading', get_string('termsettingheading', 'block_course_overview_campus'), '<span class="errormessage">'.get_string('termsettingerror', 'block_course_overview_campus').'</span>'));
     }
     else {
-        $settings->add(new admin_setting_heading('block_course_overview_campus/termsettingheading', get_string('termsettingheading', 'block_course_overview_campus'), ''));
+        $settingspage->add(new admin_setting_heading('block_course_overview_campus/termsettingheading', get_string('termsettingheading', 'block_course_overview_campus'), ''));
     }
 
     // Possible term modes
@@ -185,7 +294,7 @@ if ($ADMIN->fulltree) {
     $termmodes[3] = get_string('tertial_desc', 'block_course_overview_campus');
     $termmodes[4] = get_string('trimester_desc', 'block_course_overview_campus');
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/termmode', get_string('termmode', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/termmode', get_string('termmode', 'block_course_overview_campus'),
                         get_string('termmode_desc', 'block_course_overview_campus'), $termmodes[1], $termmodes));
 
 
@@ -201,32 +310,32 @@ if ($ADMIN->fulltree) {
         }
     }
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/term1startday', get_string('term1startday', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/term1startday', get_string('term1startday', 'block_course_overview_campus'),
                         get_string('term1startday_desc', 'block_course_overview_campus'), $days['01-01'], $days));
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/term2startday', get_string('term2startday', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/term2startday', get_string('term2startday', 'block_course_overview_campus'),
                         get_string('term2startday_desc', 'block_course_overview_campus'), $days['01-01'], $days));
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/term3startday', get_string('term3startday', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/term3startday', get_string('term3startday', 'block_course_overview_campus'),
                         get_string('term3startday_desc', 'block_course_overview_campus'), $days['01-01'], $days));
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/term4startday', get_string('term4startday', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/term4startday', get_string('term4startday', 'block_course_overview_campus'),
                         get_string('term4startday_desc', 'block_course_overview_campus'), $days['01-01'], $days));
 
 
     // Term filter: Term names
-    $settings->add(new admin_setting_heading('block_course_overview_campus/termnamesettingheading', get_string('termnamesettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/termnamesettingheading', get_string('termnamesettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/term1name', get_string('term1name', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/term1name', get_string('term1name', 'block_course_overview_campus'),
                         get_string('term1name_desc', 'block_course_overview_campus'), get_string('term1', 'block_course_overview_campus'), PARAM_TEXT));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/term2name', get_string('term2name', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/term2name', get_string('term2name', 'block_course_overview_campus'),
                         get_string('term2name_desc', 'block_course_overview_campus'), get_string('term2', 'block_course_overview_campus'), PARAM_TEXT));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/term3name', get_string('term3name', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/term3name', get_string('term3name', 'block_course_overview_campus'),
                         get_string('term3name_desc', 'block_course_overview_campus'), get_string('term3', 'block_course_overview_campus'), PARAM_TEXT));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/term4name', get_string('term4name', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/term4name', get_string('term4name', 'block_course_overview_campus'),
                         get_string('term4name_desc', 'block_course_overview_campus'), get_string('term4', 'block_course_overview_campus'), PARAM_TEXT));
 
     // Possible year positions for later use
@@ -235,7 +344,7 @@ if ($ADMIN->fulltree) {
     $termyearpos[3] = get_string('termyearpossuffixspace_desc', 'block_course_overview_campus');
     $termyearpos[4] = get_string('termyearpossuffixnospace_desc', 'block_course_overview_campus');
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/termyearpos', get_string('termyearpos', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/termyearpos', get_string('termyearpos', 'block_course_overview_campus'),
                         get_string('termyearpos_desc', 'block_course_overview_campus'), $termyearpos[3], $termyearpos));
 
     // Possible year separators for later use
@@ -244,24 +353,24 @@ if ($ADMIN->fulltree) {
     $termyearseparation[3] = get_string('termyearseparationunderscore_desc', 'block_course_overview_campus');
     $termyearseparation[4] = get_string('termyearseparationnosecondyear_desc', 'block_course_overview_campus');
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/termyearseparation', get_string('termyearseparation', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/termyearseparation', get_string('termyearseparation', 'block_course_overview_campus'),
                         get_string('termyearseparation_desc', 'block_course_overview_campus'), $termyearseparation[2], $termyearseparation));
 
 
     // Term filter: Term behaviour
-    $settings->add(new admin_setting_heading('block_course_overview_campus/termbehavioursettingheading', get_string('termbehavioursettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/termbehavioursettingheading', get_string('termbehavioursettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/defaultterm', get_string('defaultterm', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/defaultterm', get_string('defaultterm', 'block_course_overview_campus'),
                         get_string('defaultterm_desc', 'block_course_overview_campus'), 1));
 
 
     // Term filter: Timeless courses
-    $settings->add(new admin_setting_heading('block_course_overview_campus/timelesscoursessettingheading', get_string('timelesscoursessettingheading', 'block_course_overview_campus'), ''));
+    $settingspage->add(new admin_setting_heading('block_course_overview_campus/timelesscoursessettingheading', get_string('timelesscoursessettingheading', 'block_course_overview_campus'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('block_course_overview_campus/timelesscourses', get_string('timelesscourses', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/timelesscourses', get_string('timelesscourses', 'block_course_overview_campus'),
                         get_string('timelesscourses_desc', 'block_course_overview_campus'), 1));
 
-    $settings->add(new admin_setting_configtext('block_course_overview_campus/timelesscoursesname', get_string('timelesscoursesname', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configtext('block_course_overview_campus/timelesscoursesname', get_string('timelesscoursesname', 'block_course_overview_campus'),
                         get_string('timelesscoursesname_desc', 'block_course_overview_campus'), get_string('timelesscourses', 'block_course_overview_campus'), PARAM_TEXT));
 
     // Get all years from 1970
@@ -270,6 +379,9 @@ if ($ADMIN->fulltree) {
         $years[$i] = $i;
     }
 
-    $settings->add(new admin_setting_configselect('block_course_overview_campus/timelesscoursesthreshold', get_string('timelesscoursesthreshold', 'block_course_overview_campus'),
+    $settingspage->add(new admin_setting_configselect('block_course_overview_campus/timelesscoursesthreshold', get_string('timelesscoursesthreshold', 'block_course_overview_campus'),
                         get_string('timelesscoursesthreshold_desc', 'block_course_overview_campus'), $years[date('Y')-1], $years));
+
+    // Add settings page to the admin settings category
+    $ADMIN->add('block_course_overview_campus', $settingspage);
 }

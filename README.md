@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-04-05 - Split the existing long settings page into multiple settings pages
 * 2016-04-01 - Add feature to show top level category name in second row; rename existing feature to show parent category name
 * 2016-04-01 - Add filter for top level category; rename existing category filter to parent category filter
 * 2016-03-02 - Fix missing data in second row when corresponding filters are not activated; Credits to Dimitri Vorona
