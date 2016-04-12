@@ -99,73 +99,43 @@ After installing block_course_overview_campus with its default settings and addi
 
 To make use of the advanced features of the block, please visit Plugins -> Blocks -> Course overview on campus.
 
-There, you find multiple sections:
+There, you find multiple settings pages:
 
-### 1. Appearance
+### 1. General
 
-In this section, you can change the block's title which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
+On this settings page, you can change the block's title which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
 
-### 2.1. Course overview list: Entries
+### 2. Course overview list
 
-In this section, you can configure if the course's full name or short name should be displayed in the course overview list entries. Additionally, you can enable and style the displaying of some meta data in a second row of the course overview list entry.
+On this settings page, you can change the appearance of the course overview list, especially if the course's full name or short name should be displayed in the course overview list entries. Additionally, you can enable and style the displaying of some meta data in a second row of the course overview list entry and you can define if courses in which the user has a teacher role are listed first in the course overview list.
 
-### 2.2. Course overview list: Hide courses
+### 3. Hide courses
 
-In this section, you can enable (default) or disable the system for hiding courses from the course overview list.
+On this settings page, you can enable (default) or disable the system for hiding courses from the course overview list.
 
-### 2.3. Course overview list: Course news
+### 4. Course news
 
-In this section, you can configure if the course list should also show course news. Additionally, you can configure which and how course news are displayed.
+On this settings page, you can configure if the course list should also show course news. Additionally, you can configure which and how course news are displayed.
 
-### 2.4. Course overview list: Order
+### 5. Teacher roles
 
-In this section, you can define if courses in which the user has a teacher role are listed first in the course overview list.
+On this settings page, you can define which roles in a course will be displayed besides the course's name as teacher and get listed in the teacher filter.
 
-### 3. Teacher roles
+### 6. Parent category filter
 
-In this section, you can define which roles in a course will be displayed besides the course's name as teacher and get listed in the teacher filter.
+On this settings page, you can activate and configure a filter which enables your users to filter their courses by parent category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
-### 4. Parent category filter: Filter activation
+### 7. Top level category filter
 
-By checking this item, you activate a filter which enables your users to filter their courses by parent category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
+On this settings page, you can activate and configure a filter which enables your users to filter their courses by top level category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
-### 4.1. Parent category filter: Merge homonymous parent categories
+### 8. Teacher filter
 
-If there are multiple courses with different parent categories, but with the same parent category name, the parent category filter will be filled with multiple categories with the same name by default. This can be confusing to the user. If you want to merge all homonymous parent categories into one filter entry when using the parent category filter, activate this setting
+On this settings page, you can activate and configure a filter which enables your users to filter their courses by teacher. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
-### 5. Top level category filter: Filter activation
+### 9. Term filter
 
-By checking this item, you activate a filter which enables your users to filter their courses by top level category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
-
-### 6. Teacher filter: Filter activation
-
-By checking this item, you activate a filter which enables your users to filter their courses by teacher. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
-
-### 7. Term filter: Filter activation
-
-By checking this item, you activate a filter which enables your users to filter their courses by term. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
-Additionally, you can change the display name for this filter which is shown in the block view (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
-
-### 7.1. Term filter: Term definition
-
-To make meaningfully use of the term filter, you have to configure it according to your campus course of the year. First, select if your year is divided into one, two, three or four terms. Then, set the start days of each term (Please make sure that the configured start dates make sense, i.e. that term 2 starts after term 1 and so on).
-
-### 7.2. Term filter: Term names
-
-To make meaningfully use of the term filter, you have to configure it according to your campus terminology. In this section, you can set a label for each term according to your campus terminology (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
-Additionally, you can fine-tune the displaying of the term names which will be displayed in the term filter dropdown.
-
-### 7.3. Term filter: Term behaviour
-
-Here, you are able to let block_course_overview_campus choose a default term if the user has not previously selected a term for filtering terms.
-
-### 7.4. Term filter: Timeless courses
-
-Here, you can enable support for "timeless courses". Timeless courses will be presented in the term filter as if they are not associated to a specific term. This is achieved by leveraging the course's start year field. After enabling timeless courses, you have to define a course start year threshold. Every course with a start year before (and not equal to) this year will be presentes as timeless course in the term filter.
-You are also able to set a label for timeless courses for the term filter (multilang strings are supported, see http://docs.moodle.org/en/Multi-language_content_filter for details).
+On this settings page, you can activate and configure a filter which enables your users to filter their courses by term. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
 
 Data sources
