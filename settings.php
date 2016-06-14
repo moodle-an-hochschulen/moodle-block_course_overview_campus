@@ -202,6 +202,8 @@ else if ($ADMIN->fulltree) {
     $settingspage->add(new admin_setting_configselect('block_course_overview_campus/teacherrolesparent', get_string('teacherrolesparent', 'block_course_overview_campus'),
                         get_string('teacherrolesparent_desc', 'block_course_overview_campus'), $teacherrolesparentmodes[1], $teacherrolesparentmodes));
 
+    $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/teacherroleshidesuspendedteacher', get_string('teacherroleshidesuspendedteacher', 'block_course_overview_campus'),
+                        get_string('teacherrolessuspendedteacher_desc', 'block_course_overview_campus'), 0));
     // Add settings page to the admin settings category
     $ADMIN->add('block_course_overview_campus', $settingspage);
 
