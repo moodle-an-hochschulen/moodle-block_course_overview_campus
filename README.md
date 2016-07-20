@@ -7,12 +7,13 @@ Moodle block which provides all functionality of block_course_overview, provides
 Requirements
 ------------
 
-This plugin requires Moodle 3.0+
+This plugin requires Moodle 3.1+
 
 
 Changes
 -------
 
+* 2016-07-19 - Check compatibility for Moodle 3.1, no functionality change
 * 2016-06-14 - New Feature: Hide suspended teachers
 * 2016-04-05 - Split the existing long settings page into multiple settings pages
 * 2016-04-01 - Add feature to show top level category name in second row; rename existing feature to show parent category name
