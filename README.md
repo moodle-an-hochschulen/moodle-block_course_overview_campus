@@ -13,6 +13,7 @@ This plugin requires Moodle 3.1+
 Changes
 -------
 
+* 2016-11-07 - Remove a debug message about missing name fields in the DB query if teacher names are configured to be displayed according to the fullnamedisplay setting
 * 2016-07-19 - Check compatibility for Moodle 3.1, no functionality change
 * 2016-06-14 - New Feature: Hide suspended teachers
 * 2016-04-05 - Split the existing long settings page into multiple settings pages
