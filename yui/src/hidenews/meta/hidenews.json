@@ -1,8 +1,0 @@
-{
-  "moodle-block_course_overview_campus-hidenews": {
-    "requires": [
-        "base",
-        "node"
-    ]
-  }
-}
