@@ -230,12 +230,12 @@ class block_course_overview_campus extends block_base {
                 $hiddencourses = 0;
             }
 
-            // Create string to remember courses for YUI processing
-            $yui_courseslist = ' ';
+            // Create string to remember courses for JS processing
+            $js_courseslist = ' ';
 
-            // Create string to remember course news for YUI processing
+            // Create string to remember course news for JS processing
             if ($coc_config->enablecoursenews) {
-                $yui_coursenewslist = ' ';
+                $js_coursenewslist = ' ';
             }
 
 
@@ -483,7 +483,7 @@ class block_course_overview_campus extends block_base {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
                                 $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
-                            } 
+                            }
                             else {
                                 $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
                             }
@@ -493,7 +493,7 @@ class block_course_overview_campus extends block_base {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
                                 $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
-                            } 
+                            }
                             else {
                                 $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', u.alternatename, r.sortorder', 'u.lastname, u.firstname');
                             }
@@ -503,7 +503,7 @@ class block_course_overview_campus extends block_base {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
                                 $courseteachers = get_role_users($teacherroles, $context, has_capability('moodle/course:reviewotherusers', $context), 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
-                            } 
+                            }
                             else {
                                 $courseteachers = get_role_users($teacherroles, $context, has_capability('moodle/course:reviewotherusers', $context), 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
                             }
@@ -1021,7 +1021,7 @@ class block_course_overview_campus extends block_base {
                 }
                 // I have no hidden courses
                 else {
-                    // Create and remember bottom box for course hide management to appear via YUI as soon as a course is hidden
+                    // Create and remember bottom box for course hide management to appear via JS as soon as a course is hidden
                     $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
                 }
             }
@@ -1037,8 +1037,8 @@ class block_course_overview_campus extends block_base {
 
             // Show courses
             foreach ($courses as $c) {
-                // Remember course ID for YUI processing
-                $yui_courseslist .= $c->id.' ';
+                // Remember course ID for JS processing
+                $js_courseslist .= $c->id.' ';
 
                 // Start course div as visible if it isn't hidden or if hidden courses are currently shown
                 if (!$coc_config->enablehidecourses || ($c->hidecourse == 0) || $manage == true) {
@@ -1222,8 +1222,8 @@ class block_course_overview_campus extends block_base {
                 // Output course news
                 if ($coc_config->enablecoursenews) {
                     if (array_key_exists($c->id, $coursenews)) {
-                        // Remember course ID for YUI processing
-                        $yui_coursenewslist .= $c->id.' ';
+                        // Remember course ID for JS processing
+                        $js_coursenewslist .= $c->id.' ';
 
                         // Start course news div as visible if the course's news aren't hidden
                         if ($c->hidenews == 0) {
@@ -1335,27 +1335,27 @@ class block_course_overview_campus extends block_base {
                 user_preference_allow_ajax_update('block_course_overview_campus-selectedtoplevelcategory', PARAM_TEXT);
             }
 
-            // Include YUI for hiding courses with AJAX
+            // Include JS for hiding courses with AJAX
             if ($coc_config->enablehidecourses) {
                 $PAGE->requires->js_call_amd('block_course_overview_campus/hidecourse', 'initHideCourse', [
                     [
-                        'courses' => trim($yui_courseslist), 'editing' => $manage
+                        'courses' => trim($js_courseslist), 'editing' => $manage
                     ]
                 ]);
             }
 
-            // Include YUI for hiding course news with AJAX
+            // Include JS for hiding course news with AJAX
             if ($coc_config->enablecoursenews) {
                 $PAGE->requires->js_call_amd('block_course_overview_campus/hidenews', 'initHideNews', [
                     [
-                        'courses' => trim($yui_coursenewslist)
+                        'courses' => trim($js_coursenewslist)
                     ]
                 ]);
             }
 
-            // Include YUI for filtering courses with AJAX
+            // Include JS for filtering courses with AJAX
             if ($coc_config->teachercoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->categorycoursefilter == true || $coc_config->toplevelcategorycoursefilter == true) {
-                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'init');
+                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'initFilter');
             }
         }
 

@@ -1,10 +1,11 @@
 /**
- * Block "course overview (campus)" - YUI code for filtering courses
+ * Block "course overview (campus)" - JS code for filtering courses
  *
  * @package    block_course_overview_campus
- * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
+ * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 /*global define,M*/
 define(['jquery'], function ($) {
     "use strict";
@@ -12,6 +13,7 @@ define(['jquery'], function ($) {
     function filterTerm(e) {
         // Prevent the event from refreshing the page.
         e.preventDefault();
+
         var value = $('#coc-filterterm').val();
         if (value === "all") {
             $('.termdiv').removeClass('coc-hidden');
@@ -19,6 +21,7 @@ define(['jquery'], function ($) {
             $('.termdiv').addClass('coc-hidden');
             $('.coc-term-' + value).removeClass('coc-hidden');
         }
+
         // Store the users selection (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-selectedterm', value);
     }
@@ -26,6 +29,7 @@ define(['jquery'], function ($) {
     function filterTeacher(e) {
         // Prevent the event from refreshing the page.
         e.preventDefault();
+
         var value = $("#coc-filterteacher").val();
         if (value === "all") {
             $('.teacherdiv').removeClass('coc-hidden');
@@ -33,6 +37,7 @@ define(['jquery'], function ($) {
             $('.teacherdiv').addClass('coc-hidden');
             $('.coc-teacher-' + value).removeClass('coc-hidden');
         }
+
         // Store the users selection (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-selectedteacher', value);
     }
@@ -40,6 +45,7 @@ define(['jquery'], function ($) {
     function filterCategory(e) {
         // Prevent the event from refreshing the page.
         e.preventDefault();
+
         var value = $("#coc-filtercategory").val();
         if (value === "all") {
             $('.categorydiv').removeClass('coc-hidden');
@@ -47,6 +53,7 @@ define(['jquery'], function ($) {
             $('.categorydiv').addClass('coc-hidden');
             $('.coc-category-' + value).removeClass('coc-hidden');
         }
+
         // Store the users selection (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-selectedcategory', value);
     }
@@ -54,6 +61,7 @@ define(['jquery'], function ($) {
     function filterTopLevelCategory(e) {
         // Prevent the event from refreshing the page.
         e.preventDefault();
+
         var value = $("#coc-filtertoplevelcategory").val();
         if (value === "all") {
             $('.toplevelcategorydiv').removeClass('coc-hidden');
@@ -61,12 +69,13 @@ define(['jquery'], function ($) {
             $('.toplevelcategorydiv').addClass('coc-hidden');
             $('.coc-toplevelcategory-' + value).removeClass('coc-hidden');
         }
+
         // Store the users selection (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-selectedtoplevelcategory', value);
     }
 
     return {
-        init: function () {
+        initFilter: function () {
             $('#coc-filterterm').on('change', filterTerm);
             $('#coc-filterteacher').on('change', filterTeacher);
             $('#coc-filtercategory').on('change', filterCategory);

@@ -1,3 +1,11 @@
+/**
+ * Block "course overview (campus)" - JS code for hiding courses
+ *
+ * @package    block_course_overview_campus
+ * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 /*global define,M*/
 define(['jquery'], function ($) {
     "use strict";
@@ -16,6 +24,7 @@ define(['jquery'], function ($) {
             $('#coc-hiddencoursesmanagement-bottom').removeClass('coc-hidden');
         }
 
+        // Store the course status (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-hidecourse-' + e.data.course, 1);
     }
 
@@ -27,6 +36,7 @@ define(['jquery'], function ($) {
         $('#coc-hidecourse-' + e.data.course).removeClass('coc-hidden');
         $('#coc-course-' + e.data.course).removeClass('coc-hidden');
 
+        // Store the course status (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-hidecourse-' + e.data.course, 0);
     }
 
