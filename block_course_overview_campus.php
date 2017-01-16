@@ -1337,17 +1337,25 @@ class block_course_overview_campus extends block_base {
 
             // Include YUI for hiding courses with AJAX
             if ($coc_config->enablehidecourses) {
-                $PAGE->requires->yui_module('moodle-block_course_overview_campus-hidecourse', 'M.block_course_overview_campus.initHideCourse', array(array('courses'=>trim($yui_courseslist), 'editing'=>$manage)));
+                $PAGE->requires->js_call_amd('block_course_overview_campus/hidecourse', 'initHideCourse', [
+                    [
+                        'courses' => trim($yui_courseslist), 'editing' => $manage
+                    ]
+                ]);
             }
 
             // Include YUI for hiding course news with AJAX
             if ($coc_config->enablecoursenews) {
-                $PAGE->requires->yui_module('moodle-block_course_overview_campus-hidenews', 'M.block_course_overview_campus.initHideNews', array(array('courses'=>trim($yui_coursenewslist))));
+                $PAGE->requires->js_call_amd('block_course_overview_campus/hidenews', 'initHideNews', [
+                    [
+                        'courses' => trim($yui_coursenewslist)
+                    ]
+                ]);
             }
 
             // Include YUI for filtering courses with AJAX
             if ($coc_config->teachercoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->categorycoursefilter == true || $coc_config->toplevelcategorycoursefilter == true) {
-                $PAGE->requires->yui_module('moodle-block_course_overview_campus-filter', 'M.block_course_overview_campus.initFilter', array());
+                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'init');
             }
         }
 
