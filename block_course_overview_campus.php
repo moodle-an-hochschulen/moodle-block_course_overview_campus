@@ -728,23 +728,23 @@ class block_course_overview_campus extends block_base {
                     $filtercount++;
                 }
                 if ($filtercount == 1) {
-                    $filterwidth = 'span12';
+                    $filterwidth = 'span12 col-md-12';
                 }
                 else if ($filtercount == 2) {
-                    $filterwidth = 'span6';
+                    $filterwidth = 'span6 col-md-6';
                 }
                 else if ($filtercount == 3) {
-                    $filterwidth = 'span4';
+                    $filterwidth = 'span4 col-md-4';
                 }
                 else if ($filtercount == 4) {
-                    $filterwidth = 'span3';
+                    $filterwidth = 'span3 col-md-6 col-lg-3';
                 }
                 else {
-                    $filterwidth = 'span12';
+                    $filterwidth = 'span12 col-md-12';
                 }
 
                 // Start section and form
-                echo '<div id="coc-filterlist" class="row-fluid"><form method="post" action="">';
+                echo '<div id="coc-filterlist" class="container-fluid"><form method="post" action="">';
 
                 // Show term filter
                 if ($coc_config->termcoursefilter == true) {
@@ -1199,7 +1199,7 @@ class block_course_overview_campus extends block_base {
                     // Create meta info code
                     // Hide metainfo on phones if configured
                     if ($coc_config->secondrowhideonphones == true) {
-                        $metainfo = '<br /><span class="coc-metainfo hidden-phone">('.implode($meta, '  |  ').')</span>';
+                        $metainfo = '<br /><span class="coc-metainfo hidden-phone hidden-sm-down">('.implode($meta, '  |  ').')</span>';
                     }
                     // Otherwise
                     else {
@@ -1238,7 +1238,7 @@ class block_course_overview_campus extends block_base {
                         foreach ($coursenews[$c->id] as $modname => $html) {
                             echo '<div class="coc-module">';
                                 // Output activity icon
-                                echo $OUTPUT->pix_icon('icon', $modname, 'mod_'.$modname, array('class'=>'iconlarge'));
+                                echo $OUTPUT->pix_icon('icon', $modname, 'mod_'.$modname, array('class'=>'iconlarge activityicon'));
 
                                 // Output activity introduction string
                                 if (get_string_manager()->string_exists("activityoverview", $modname)) {

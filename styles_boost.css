@@ -1,0 +1,14 @@
+/* Boost does not use the full container width for filter select widgets */
+.block_course_overview_campus.block .coc-filter select {
+    width: 100%;
+}
+
+/* Course list appearance has to be defined separate for Boost because otherwise we would break Clean */
+#coc-courselist .coursebox {
+    margin: 0 5px;
+    padding: 0;
+}
+
+#coc-courselist .coursebox h3 {
+    font-size: 1.143rem;
+}

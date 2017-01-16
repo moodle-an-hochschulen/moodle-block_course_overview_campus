@@ -31,6 +31,8 @@
 /* Filter item appearance */
 #coc-filterlist {
     padding-bottom: 20px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #coc-filterlist .coc-filter {
@@ -68,7 +70,7 @@
 
 /* Course news appearance */
 #coc-courselist .coc-coursenews {
-    border-left: 1px dashed grey;
+    border-left: 1px dashed lightgrey;
     margin: 10px 0 0 30px;
     padding: 0 0 0 10px;
 }
