@@ -98,8 +98,8 @@ if ($hassiteconfig) {
         $settingspage->add(new admin_setting_heading('block_course_overview_campus/listentriessettingheading', get_string('listentriessettingheading', 'block_course_overview_campus', null, true), ''));
 
         // Possible course name modes
-        $coursenamemodes[1] = get_string('fullnamecourse');
-        $coursenamemodes[2] = get_string('shortnamecourse');
+        $coursenamemodes[1] = get_string('fullnamecourse', 'core', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
+        $coursenamemodes[2] = get_string('shortnamecourse', 'core', null, true);
 
         $settingspage->add(new admin_setting_configselect('block_course_overview_campus/firstrowcoursename', get_string('firstrowcoursename', 'block_course_overview_campus', null, true),
                             get_string('firstrowcoursename_desc', 'block_course_overview_campus', null, true), $coursenamemodes[1], $coursenamemodes));
@@ -195,8 +195,8 @@ if ($hassiteconfig) {
                             get_string('noteachertext_desc', 'block_course_overview_campus', null, true), get_string('noteacher', 'block_course_overview_campus', null, true), PARAM_TEXT));
 
         // Possible settings for parent teacher roles
-        $teacherrolesparentmodes[1] = get_string('yes');
-        $teacherrolesparentmodes[2] = get_string('no');
+        $teacherrolesparentmodes[1] = get_string('yes', 'core', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
+        $teacherrolesparentmodes[2] = get_string('no', 'core', null, true);
         $teacherrolesparentmodes[3] = get_string('teacherrolesparentcapability', 'block_course_overview_campus', null, true);
 
         $settingspage->add(new admin_setting_configselect('block_course_overview_campus/teacherrolesparent', get_string('teacherrolesparent', 'block_course_overview_campus', null, true),
@@ -292,7 +292,7 @@ if ($hassiteconfig) {
         }
 
         // Possible term modes
-        $termmodes[1] = get_string('academicyear_desc', 'block_course_overview_campus', null, true);
+        $termmodes[1] = get_string('academicyear_desc', 'block_course_overview_campus', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
         $termmodes[2] = get_string('semester_desc', 'block_course_overview_campus', null, true);
         $termmodes[3] = get_string('tertial_desc', 'block_course_overview_campus', null, true);
         $termmodes[4] = get_string('trimester_desc', 'block_course_overview_campus', null, true);
@@ -344,7 +344,7 @@ if ($hassiteconfig) {
         // Possible year positions for later use
         $termyearpos[1] = get_string('termyearposprefixspace_desc', 'block_course_overview_campus', null, true);
         $termyearpos[2] = get_string('termyearposprefixnospace_desc', 'block_course_overview_campus', null, true);
-        $termyearpos[3] = get_string('termyearpossuffixspace_desc', 'block_course_overview_campus', null, true);
+        $termyearpos[3] = get_string('termyearpossuffixspace_desc', 'block_course_overview_campus', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
         $termyearpos[4] = get_string('termyearpossuffixnospace_desc', 'block_course_overview_campus', null, true);
 
         $settingspage->add(new admin_setting_configselect('block_course_overview_campus/termyearpos', get_string('termyearpos', 'block_course_overview_campus', null, true),
@@ -352,7 +352,7 @@ if ($hassiteconfig) {
 
         // Possible year separators for later use
         $termyearseparation[1] = get_string('termyearseparationhyphen_desc', 'block_course_overview_campus', null, true);
-        $termyearseparation[2] = get_string('termyearseparationslash_desc', 'block_course_overview_campus', null, true);
+        $termyearseparation[2] = get_string('termyearseparationslash_desc', 'block_course_overview_campus', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
         $termyearseparation[3] = get_string('termyearseparationunderscore_desc', 'block_course_overview_campus', null, true);
         $termyearseparation[4] = get_string('termyearseparationnosecondyear_desc', 'block_course_overview_campus', null, true);
 
