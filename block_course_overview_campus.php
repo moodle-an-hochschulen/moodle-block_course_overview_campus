@@ -1293,7 +1293,10 @@ class block_course_overview_campus extends block_base {
             /***                 OUTPUT FOR HIDDEN COURSES MANAGEMENT                     ***/
             /********************************************************************************/
 
-            echo $hidemanagebox;
+            // Do only if course hiding is enabled
+            if ($coc_config->enablehidecourses) {
+                echo $hidemanagebox;
+            }
 
 
 
