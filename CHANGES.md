@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2017-01-16 - Convert YUI to jQuery + AMD - Credits to Davo Smith
 * 2017-01-12 - Move Changelog from README.md to CHANGES.md
 
 ### v3.1-r2
