@@ -495,7 +495,7 @@ class block_course_overview_campus extends block_base {
                                 $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', u.alternatename, r.sortorder', 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
                             }
                         }
                         // If depending on moodle/course:reviewotherusers capability
