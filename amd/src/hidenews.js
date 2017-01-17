@@ -6,7 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/*global define,M*/
+/* This comment is just there to keep grunt satisfied and won't be processed at runtime */
+/* global define, M */
+
 define(['jquery'], function ($) {
     "use strict";
 
