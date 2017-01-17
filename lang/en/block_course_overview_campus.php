@@ -74,7 +74,7 @@ $string['secondrowshowcategoryname_desc'] = 'Show the course\'s parent category 
 $string['secondrowshowshortname'] = 'Second row: Show short name';
 $string['secondrowshowshortname_desc'] = 'Show the course\'s short name in a second row of the course overview list entry';
 $string['secondrowshowteachername'] = 'Second row: Show teacher name';
-$string['secondrowshowteachername_desc'] = 'Show the teacher\'s name(s) in a second row of the course overview list entry';
+$string['secondrowshowteachername_desc'] = 'Show the teacher\'s name(s) in a second row of the course overview list entry. If there is more then one teacher, the names will be sorted first by the <a href="/admin/roles/manage.php">global order of roles</a> and second by the teachers\' last names';
 $string['secondrowshowteachernamestyle'] = 'Second row: Style of teacher name';
 $string['secondrowshowteachernamestyle_desc'] = 'Define how the teacher\'s name should be displayed in the second row of the course overview list entry<br /><em>This setting is only processed when show teacher name is activated</em>';
 $string['secondrowshowtermname'] = 'Second row: Show term name';
