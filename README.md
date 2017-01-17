@@ -32,7 +32,7 @@ Usage & Settings
 
 After installing block_course_overview_campus with its default settings and adding it to your frontpage, it behaves like block_course_overview from moodle core. Additionally, news from your courses can be folded and unfolded and courses can be hidden from the course list.
 
-To make use of the advanced features of the block, please visit Plugins -> Blocks -> Course overview on campus.
+To make use of the advanced features of the block, please visit Site administration -> Plugins -> Blocks -> Course overview on campus.
 
 There, you find multiple settings pages:
 
@@ -81,7 +81,7 @@ Data sources
 The parent category filter is filled with the main category of each of the user's courses.
 
 Example:
-If the course's category path is Category A -> Category B -> Category C -> Course, the filter will contain an extry with Category C.
+If the course's category path is Category A -> Category B -> Category C -> Course, the filter will contain an entry with Category C.
 
 
 ### 2. Top level category filter
@@ -89,7 +89,7 @@ If the course's category path is Category A -> Category B -> Category C -> Cours
 The top level filter is filled with the top level category of each of the user's courses.
 
 Example:
-If the course's category path is Category A -> Category B -> Category C -> Course, the filter will contain an extry with Category A.
+If the course's category path is Category A -> Category B -> Category C -> Course, the filter will contain an entry with Category A.
 
 ### 3. Teacher filter
 
@@ -107,8 +107,8 @@ During the development of Moodle, there have been added several features added t
 
 * In block_course_overview in Moodle 2.4+, a user is able to sort his course list by drag and drop. We decided to not adopt this feature for block_course_overview_campus because we think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list remains sorted by full course name.
 * In block_course_overview in Moodle 2.4+, a user is able to limit the length of his course list with a block setting. We decided to not adopt this feature for block_course_overview_campus because we think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list always shows all courses which have passed the selected course filters.
-* In block_course_overview in Moodle 2.4+, the administrator can configure the block to show Metacourse children. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
-* In block_course_overview in Moodle 2.4+, the administrator can configure the block to show a welcome message. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let me know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
+* In block_course_overview in Moodle 2.4+, the administrator can configure the block to show Metacourse children. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let us know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
+* In block_course_overview in Moodle 2.4+, the administrator can configure the block to show a welcome message. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let us know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
 * In block_course_overview in Moodle 2.4+, course news are grouped by modules and each module can be collapsed / expanded. We decided to stick with the behaviour of block_course_overview_campus to collapse / expand course news as a whole, but we added some nice icons for each module to the course news list.
 * In Moodle core since Moodle 2.2+, there is a setting "courselistshortnames" which controls the displaying of course names. This setting is also processed in block_course_overview. We decided to ignore this core setting and to stick to block_course_overview_campus's internal course display control settings.
 
@@ -146,7 +146,7 @@ Right-to-left support
 ---------------------
 
 This plugin has not been tested with Moodle's support for right-to-left (RTL) languages.
-If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send me a pull request on
+If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send us a pull request on
 github with modifications.
 
 
