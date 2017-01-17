@@ -1076,7 +1076,7 @@ class block_course_overview_campus extends block_base {
                 // Start filter by top level category div - later we use this div to filter the course
                 if ($coc_config->toplevelcategorycoursefilter == true) {
                     // Show course if it is within selected top level category or all categories are selected or if hidden courses are currently shown
-                    if ($c->categoryid == $selectedtoplevelcategory || $selectedtoplevelcategory == 'all' || $manage == true) {
+                    if ($c->toplevelcategoryid == $selectedtoplevelcategory || $selectedtoplevelcategory == 'all' || $manage == true) {
                         echo '<div class="toplevelcategorydiv coc-toplevelcategory-'.$c->toplevelcategoryid.'">';
                     }
                     // Otherwise hide the course with CSS
