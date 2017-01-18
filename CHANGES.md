@@ -4,7 +4,7 @@ moodle-block_course_overview_campus
 Changes
 -------
 
-### Unreleased
+### v3.2-r1
 
 * 2017-01-17 - Bugfix: Top level category filter did not show lower-level courses on first page load
 * 2017-01-16 - Adapt course list appearance to Bootstrap 4 (used by theme_boost)
