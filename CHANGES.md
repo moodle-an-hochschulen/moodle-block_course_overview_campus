@@ -4,6 +4,10 @@ moodle-block_course_overview_campus
 Changes
 -------
 
+### Unreleased
+
+* 2017-01-27 - Bugfix: Set filter correctly after using the browser's back functionality - Credits to Davo Smith
+
 ### v3.2-r1
 
 * 2017-01-17 - Bugfix: Top level category filter did not show lower-level courses on first page load
