@@ -1357,8 +1357,16 @@ class block_course_overview_campus extends block_base {
             }
 
             // Include JS for filtering courses with AJAX
+            $options = [
+                'initialsettings' => [
+                    'Term' => $selectedterm,
+                    'Teacher' => $selectedteacher,
+                    'Category' => $selectedcategory,
+                    'TopLevelCategory' => $selectedtoplevelcategory,
+                ],
+            ];
             if ($coc_config->teachercoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->categorycoursefilter == true || $coc_config->toplevelcategorycoursefilter == true) {
-                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'initFilter');
+                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'initFilter', [$options]);
             }
         }
 

@@ -14,7 +14,9 @@ define(['jquery'], function ($) {
 
     function filterTerm(e) {
         // Prevent the event from refreshing the page.
-        e.preventDefault();
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
         var value = $('#coc-filterterm').val();
         if (value === "all") {
@@ -30,7 +32,9 @@ define(['jquery'], function ($) {
 
     function filterTeacher(e) {
         // Prevent the event from refreshing the page.
-        e.preventDefault();
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
         var value = $("#coc-filterteacher").val();
         if (value === "all") {
@@ -46,7 +50,9 @@ define(['jquery'], function ($) {
 
     function filterCategory(e) {
         // Prevent the event from refreshing the page.
-        e.preventDefault();
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
         var value = $("#coc-filtercategory").val();
         if (value === "all") {
@@ -62,7 +68,9 @@ define(['jquery'], function ($) {
 
     function filterTopLevelCategory(e) {
         // Prevent the event from refreshing the page.
-        e.preventDefault();
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
         var value = $("#coc-filtertoplevelcategory").val();
         if (value === "all") {
@@ -76,12 +84,45 @@ define(['jquery'], function ($) {
         M.util.set_user_preference('block_course_overview_campus-selectedtoplevelcategory', value);
     }
 
+    function applyAllFilters(initialSettings) {
+        var setting, value, $el, elVal;
+        for (setting in initialSettings) {
+            if (initialSettings.hasOwnProperty(setting)) {
+                value = initialSettings[setting];
+                $el = $('#coc-filter' + setting.toLowerCase());
+                if ($el.length) {
+                    elVal = $el.val();
+                    if (elVal !== value) {
+                        switch (setting) {
+                        case 'Term':
+                            filterTerm();
+                            break;
+                        case 'Teacher':
+                            filterTeacher();
+                            break;
+                        case 'Category':
+                            filterCategory();
+                            break;
+                        case 'TopLevelCategory':
+                            filterTopLevelCategory();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     return {
-        initFilter: function () {
+        initFilter: function (opts) {
             $('#coc-filterterm').on('change', filterTerm);
             $('#coc-filterteacher').on('change', filterTeacher);
             $('#coc-filtercategory').on('change', filterCategory);
             $('#coc-filtertoplevelcategory').on('change', filterTopLevelCategory);
+
+            // Make sure any initial filter settings are applied (may be needed if the user
+            // has used the browser 'back' button).
+            applyAllFilters(opts.initialsettings);
         }
     };
 });
