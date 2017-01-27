@@ -1357,16 +1357,16 @@ class block_course_overview_campus extends block_base {
             }
 
             // Include JS for filtering courses with AJAX
-            $options = [
+            $js_filteroptions = [
                 'initialsettings' => [
-                    'Term' => $selectedterm,
-                    'Teacher' => $selectedteacher,
-                    'Category' => $selectedcategory,
-                    'TopLevelCategory' => $selectedtoplevelcategory,
+                    'term' => $selectedterm,
+                    'teacher' => $selectedteacher,
+                    'category' => $selectedcategory,
+                    'toplevelcategory' => $selectedtoplevelcategory,
                 ],
-            ];
+            ]; // Passing these options to the JS code is necessary for filtering the course list again when using browser 'back' button
             if ($coc_config->teachercoursefilter == true || $coc_config->termcoursefilter == true || $coc_config->categorycoursefilter == true || $coc_config->toplevelcategorycoursefilter == true) {
-                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'initFilter', [$options]);
+                $PAGE->requires->js_call_amd('block_course_overview_campus/filter', 'initFilter', [$js_filteroptions]);
             }
         }
 

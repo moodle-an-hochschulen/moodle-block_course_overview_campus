@@ -85,25 +85,25 @@ define(['jquery'], function ($) {
     }
 
     function applyAllFilters(initialSettings) {
-        var setting, value, $el, elVal;
+        var setting, value, $element, elementValue;
         for (setting in initialSettings) {
             if (initialSettings.hasOwnProperty(setting)) {
                 value = initialSettings[setting];
-                $el = $('#coc-filter' + setting.toLowerCase());
-                if ($el.length) {
-                    elVal = $el.val();
-                    if (elVal !== value) {
+                $element = $('#coc-filter' + setting);
+                if ($element.length) {
+                    elementValue = $element.val();
+                    if (elementValue !== value) {
                         switch (setting) {
-                        case 'Term':
+                        case 'term':
                             filterTerm();
                             break;
-                        case 'Teacher':
+                        case 'teacher':
                             filterTeacher();
                             break;
-                        case 'Category':
+                        case 'category':
                             filterCategory();
                             break;
-                        case 'TopLevelCategory':
+                        case 'toplevelcategory':
                             filterTopLevelCategory();
                             break;
                         }
@@ -114,7 +114,8 @@ define(['jquery'], function ($) {
     }
 
     return {
-        initFilter: function (opts) {
+        initFilter: function (options) {
+            // Add change listener to filter widgets.
             $('#coc-filterterm').on('change', filterTerm);
             $('#coc-filterteacher').on('change', filterTeacher);
             $('#coc-filtercategory').on('change', filterCategory);
@@ -122,7 +123,7 @@ define(['jquery'], function ($) {
 
             // Make sure any initial filter settings are applied (may be needed if the user
             // has used the browser 'back' button).
-            applyAllFilters(opts.initialsettings);
+            applyAllFilters(options.initialsettings);
         }
     };
 });
