@@ -4,7 +4,7 @@ moodle-block_course_overview_campus
 Changes
 -------
 
-### Unreleased
+### v3.2-r2
 
 * 2017-01-27 - Bugfix: Set filter correctly after using the browser's back functionality - Credits to Davo Smith
 
