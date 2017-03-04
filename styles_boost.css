@@ -1,14 +1,19 @@
-/* Boost does not use the full container width for filter select widgets */
-.block_course_overview_campus.block .coc-filter select {
-    width: 100%;
-}
+/* Below are styles which are only needed for Boost, but are not needed for Bootstrapbase */
 
-/* Course list appearance has to be defined separate for Boost because otherwise we would break Clean */
-#coc-courselist .coursebox {
-    margin: 0 5px;
-    padding: 0;
-}
-
-#coc-courselist .coursebox h3 {
+/* Boost makes h3 headings quite big, this is not desired for this block. */
+.block_course_overview_campus.block .coursebox h3 {
     font-size: 1.143rem;
+}
+
+
+
+/* Below are styles which are needed because Boost (BS 4) makes things different from Bootstrapbase (BS 2) */
+
+.path-my .block_course_overview_campus .coursebox {
+    margin: 0;
+}
+
+#coc-filterlist {
+    padding-left: 0;
+    padding-right: 0;
 }

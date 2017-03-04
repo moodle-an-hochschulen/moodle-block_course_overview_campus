@@ -19,8 +19,7 @@
 #coc-hiddencoursesmanagement-bottom,
 #coc-hiddencoursesmanagement-top {
     font-size: 90%;
-    padding: 0.5em 0;
-    text-align: center;
+    text-align: center; /* For some reason, the Bootstrap class text-center does not work here yet */
 }
 
 #coc-hiddencoursescount {
@@ -28,42 +27,25 @@
 }
 
 
-/* Filter item appearance */
-#coc-filterlist {
-    padding-bottom: 20px;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-#coc-filterlist .coc-filter {
-    font-size: 90%;
-    text-align: center;
-}
-
+/* Filter submit appearance */
 #coc-filtersubmit {
-    text-align: center;
+    text-align: center; /* For some reason, the Bootstrap class justify-content-center does not work here yet */
 }
 
-.jsenabled #coc-filtersubmit { /* Hide submit button when JS is enabled */
-    display: none;
+.jsenabled #coc-filtersubmit {
+    display: none; /* Hide submit button when JS is enabled */
 }
 
 
 /* Course list appearance */
-#coc-courselist .coursebox {
-    margin-bottom: 5px;
-    padding: 10px;
-    width: inherit;
-}
-
 #coc-courselist .coursebox h3 {
-    margin: 0;
-    padding: 0 0 0 20px;
+    margin: 0; /* Remove standard margin from h3 heading*/
+    padding: 0 0 0 20px; /* Add left padding to place the course news icon there */
 }
 
 #coc-courselist .coc-metainfo {
     font-size: 85%;
-    font-weight: normal !important;
+    font-weight: normal !important; /* To prevent the text from being shown in bold as it's still a h3 heading*/
     white-space: pre-wrap; /* To support multiple whitespaces before and after pipe */
 }
 
@@ -77,31 +59,4 @@
 
 #coc-courselist .coursebox .iconlarge {
     float: left;
-}
-
-#coc-courselist .coursebox .overview .name {
-    font-size: inherit;
-    margin: 0;
-}
-
-#coc-courselist .coursebox .overview .info,
-#coc-courselist .coursebox .overview .details  {
-    margin: 0;
-    width: 100%;
-}
-
-#coc-courselist .coursebox .overview {
-    margin: 0 0 10px 34px;
-}
-
-#coc-courselist .coursebox .overview:last-child {
-    margin-bottom: 0;
-}
-
-#coc-courselist .coursebox .coc-module {
-    margin-bottom: 20px;
-}
-
-#coc-courselist .coursebox .coc-module:last-child {
-    margin-bottom: 0;
 }

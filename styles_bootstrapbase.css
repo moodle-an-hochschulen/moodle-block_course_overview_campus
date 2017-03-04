@@ -1,4 +1,18 @@
+/* Below are styles which are only needed for Bootstrapbase, but are not needed for Boost */
+
 /* Bootstrapbase makes h3 headings uppercase, this is not desired for this block. */
-.block_course_overview_campus.block .content h3 {
+.block_course_overview_campus.block .coursebox h3 {
     text-transform: none;
+}
+
+
+
+/* Below are styles which are needed because Boost (BS 4) makes things different from Bootstrapbase (BS 2) */
+.block_course_overview_campus .row {
+    margin-left: 0;
+}
+
+.block_course_overview_campus .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
 }

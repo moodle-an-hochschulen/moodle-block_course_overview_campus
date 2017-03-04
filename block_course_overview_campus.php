@@ -728,34 +728,35 @@ class block_course_overview_campus extends block_base {
                     $filtercount++;
                 }
                 if ($filtercount == 1) {
-                    $filterwidth = 'span12 col-md-12';
+                    $filterwidth = 'span12 col-md-12'; // class 'span12' is used for Bootstrapbase and will be ignored by Boost
                 }
                 else if ($filtercount == 2) {
-                    $filterwidth = 'span6 col-md-6';
+                    $filterwidth = 'span6 col-md-6'; // class 'span6' is used for Bootstrapbase and will be ignored by Boost
                 }
                 else if ($filtercount == 3) {
-                    $filterwidth = 'span4 col-md-4';
+                    $filterwidth = 'span4 col-md-4'; // class 'span4' is used for Bootstrapbase and will be ignored by Boost
                 }
                 else if ($filtercount == 4) {
-                    $filterwidth = 'span3 col-md-6 col-lg-3';
+                    $filterwidth = 'span3 col-md-6 col-lg-3'; // class 'span3' is used for Bootstrapbase and will be ignored by Boost
                 }
                 else {
-                    $filterwidth = 'span12 col-md-12';
+                    $filterwidth = 'span12 col-md-12'; // class 'span12' is used for Bootstrapbase and will be ignored by Boost
                 }
 
                 // Start section and form
-                echo '<div id="coc-filterlist" class="container-fluid"><form method="post" action="">';
+                echo '<div id="coc-filterlist" class="container-fluid"><div class="row"><form method="post" action="">';
 
                 // Show term filter
                 if ($coc_config->termcoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.'">';
+                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
 
                     // Show filter description
-                    echo format_string($coc_config->termcoursefilterdisplayname);
-                    if ($coc_config->termcoursefilterdisplayname != '')
-                        echo '<br />';
+                    if ($coc_config->termcoursefilterdisplayname != '') {
+                        echo '<label for="coc-filterterm">'.format_string($coc_config->termcoursefilterdisplayname).'</label>';
+                    }
 
-                    echo '<select name="coc-term" id="coc-filterterm" class="input-block-level">';
+                    // Show filter widget
+                    echo '<select name="coc-term" id="coc-filterterm" class="input-block-level form-control">'; // class 'input-block-level' is used for Bootstrapbase and will be ignored by Boost
 
                     // Remember in this variable if selected term was displayed or not
                     $selectedtermdisplayed = false;
@@ -820,15 +821,15 @@ class block_course_overview_campus extends block_base {
 
                 // Show top level category filter
                 if ($coc_config->toplevelcategorycoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.'">';
+                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
 
                     // Show filter description
-                    echo format_string($coc_config->toplevelcategorycoursefilterdisplayname);
                     if ($coc_config->toplevelcategorycoursefilterdisplayname != '') {
-                        echo '<br />';
+                        echo '<label for="coc-filtertoplevelcategory">'.format_string($coc_config->toplevelcategorycoursefilterdisplayname).'</label>';
                     }
 
-                    echo '<select name="coc-toplevelcategory" id="coc-filtertoplevelcategory" class="input-block-level">';
+                    // Show filter widget
+                    echo '<select name="coc-toplevelcategory" id="coc-filtertoplevelcategory" class="input-block-level form-control">'; // class 'input-block-level' is used for Bootstrapbase and will be ignored by Boost
 
                     // Remember in this variable if selected top level category was displayed or not
                     $selectedtoplevelcategorydisplayed = false;
@@ -889,15 +890,15 @@ class block_course_overview_campus extends block_base {
 
                 // Show parent category filter
                 if ($coc_config->categorycoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.'">';
+                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
 
                     // Show filter description
-                    echo format_string($coc_config->categorycoursefilterdisplayname);
                     if ($coc_config->categorycoursefilterdisplayname != '') {
-                        echo '<br />';
+                        echo '<label for="coc-filtercategory">'.format_string($coc_config->categorycoursefilterdisplayname).'</label>';
                     }
 
-                    echo '<select name="coc-category" id="coc-filtercategory" class="input-block-level">';
+                    // Show filter widget
+                    echo '<select name="coc-category" id="coc-filtercategory" class="input-block-level form-control">'; // class 'input-block-level' is used for Bootstrapbase and will be ignored by Boost
 
                     // Remember in this variable if selected parent category was displayed or not
                     $selectedcategorydisplayed = false;
@@ -940,15 +941,15 @@ class block_course_overview_campus extends block_base {
 
                 // Show teacher filter
                 if ($coc_config->teachercoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.'">';
+                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
 
                     // Show filter description
-                    echo format_string($coc_config->teachercoursefilterdisplayname);
                     if ($coc_config->teachercoursefilterdisplayname != '') {
-                        echo '<br />';
+                        echo '<label for="coc-filterteacher">'.format_string($coc_config->teachercoursefilterdisplayname).'</label>';
                     }
 
-                    echo '<select name="coc-teacher" id="coc-filterteacher" class="input-block-level">';
+                    // Show filter widget
+                    echo '<select name="coc-teacher" id="coc-filterteacher" class="input-block-level form-control">'; // class 'input-block-level' is used for Bootstrapbase and will be ignored by Boost
 
                     // Remember in this variable if selected teacher was displayed or not
                     $selectedteacherdisplayed = false;
@@ -989,10 +990,10 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // End section and form
-                echo '</form></div>';
+                echo '</form></div></div>';
 
                 // Show submit button for Non-JavaScript interaction
-                echo '<div id="coc-filtersubmit" class="row-fluid"><input type="submit" value="'.get_string('submitfilter', 'block_course_overview_campus').'" /></div>';
+                echo '<div id="coc-filtersubmit" class="container-fluid m-b-1"><div class="row"><input type="submit" value="'.get_string('submitfilter', 'block_course_overview_campus').'" class="btn btn-primary" /></div></div>';
             }
 
 
@@ -1008,21 +1009,21 @@ class block_course_overview_campus extends block_base {
                     // And hidden courses managing isn't active
                     if ($manage == false) {
                         // Create and remember bottom box for course hide management
-                        $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                        $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="container-fluid"><div class="row">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div></div>';
                     }
                     // And hidden courses managing is active
                     else {
                         // Create and output top box for course hide management
-                        echo '<div id="coc-hiddencoursesmanagement-top" class="row-fluid"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+                        echo '<div id="coc-hiddencoursesmanagement-top" class="container-fluid"><div class="row"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div></div>';
 
                         // Create and remember bottom box for course hide management
-                        $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div>';
+                        $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="container-fluid"><div class="row"><a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 0)).'">'.get_string('stopmanaginghiddencourses', 'block_course_overview_campus').'</a></div></div>';
                     }
                 }
                 // I have no hidden courses
                 else {
                     // Create and remember bottom box for course hide management to appear via JS as soon as a course is hidden
-                    $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="row-fluid coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div>';
+                    $hidemanagebox = '<div id="coc-hiddencoursesmanagement-bottom" class="container-fluid"><div class="row coc-hidden">'.get_string('youhave', 'block_course_overview_campus').' <span id="coc-hiddencoursescount">'.$hiddencourses.'</span> '.get_string('hiddencourses', 'block_course_overview_campus').' | <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => 1)).'">'.get_string('managehiddencourses', 'block_course_overview_campus').'</a></div></div>';
                 }
             }
 
@@ -1033,7 +1034,7 @@ class block_course_overview_campus extends block_base {
             /********************************************************************************/
 
             // Start section
-            echo '<div id="coc-courselist" class="row-fluid">';
+            echo '<div id="coc-courselist" class="container-fluid m-b-1">';
 
             // Show courses
             foreach ($courses as $c) {
@@ -1042,11 +1043,11 @@ class block_course_overview_campus extends block_base {
 
                 // Start course div as visible if it isn't hidden or if hidden courses are currently shown
                 if (!$coc_config->enablehidecourses || ($c->hidecourse == 0) || $manage == true) {
-                    echo '<div id="coc-course-'.$c->id.'" class="coc-course">';
+                    echo '<div id="coc-course-'.$c->id.'" class="row coc-course">';
                 }
                 // Otherwise start course div as hidden
                 else {
-                    echo '<div id="coc-course-'.$c->id.'" class="coc-course coc-hidden">';
+                    echo '<div id="coc-course-'.$c->id.'" class="row coc-course coc-hidden">';
                 }
 
                 // Start filter by term div - later we use this div to filter the course
@@ -1199,7 +1200,7 @@ class block_course_overview_campus extends block_base {
                     // Create meta info code
                     // Hide metainfo on phones if configured
                     if ($coc_config->secondrowhideonphones == true) {
-                        $metainfo = '<br /><span class="coc-metainfo hidden-phone hidden-sm-down">('.implode($meta, '  |  ').')</span>';
+                        $metainfo = '<br /><span class="coc-metainfo hidden-phone hidden-sm-down">('.implode($meta, '  |  ').')</span>'; // class 'hidden-phone' is used for Bootstrapbase and will be ignored by Boost
                     }
                     // Otherwise
                     else {
