@@ -4,7 +4,7 @@ moodle-block_course_overview_campus
 Changes
 -------
 
-### Unreleased
+### v3.2-r3
 
 * 2017-03-04 - Change the styling of the block even more to Bootstrap 4
 
