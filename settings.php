@@ -24,8 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(dirname(__FILE__) . '/lib.php');
-
 if ($hassiteconfig) {
     // Empty $settings to prevent a single settings page from being created by lib/classes/plugininfo/block.php  because we will create several settings pages now
     $settings = null;
@@ -77,6 +75,10 @@ if ($hassiteconfig) {
 
     // Create full settings page structure
     else if ($ADMIN->fulltree) {
+        // Include local library
+        require_once(dirname(__FILE__) . '/locallib.php');
+
+
         // Settings page: General
         $settingspage = new admin_settingpage('block_course_overview_campus_general', get_string('settingspage_general', 'block_course_overview_campus', null, true));
 

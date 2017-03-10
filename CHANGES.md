@@ -4,6 +4,13 @@ moodle-block_course_overview_campus
 Changes
 -------
 
+### Unreleased
+
+* 2017-03-10 - Don't show course news when hidden courses management is active
+* 2017-03-10 - Bugfix: The hidden courses management box was partly broken after the styling changes in v3.2-r3
+* 2017-03-10 - Bugfix: The fallback for browsers with JavaScript disabled was broken after the styling changes in v3.2-r3
+* 2017-03-10 - Restructure code in several areas, especially to support our companion plugin local_boostcoc; No functionality change
+
 ### v3.2-r3
 
 * 2017-03-04 - Change the styling of the block even more to Bootstrap 4

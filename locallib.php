@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block "course overview (campus)" - Library
+ * Block "course overview (campus)" - Local library
  *
  * @package    block_course_overview_campus
  * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
@@ -23,6 +23,148 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Get my courses from DB
+ *
+ * @return array
+ */
+function block_course_overview_campus_get_my_courses() {
+    // Get my courses in alphabetical order
+    $courses = enrol_get_my_courses('id, shortname', 'fullname ASC');
+
+    // Remove frontpage course, if enrolled, from courses list
+    $site = get_site();
+    if (array_key_exists($site->id, $courses)) {
+        unset($courses[$site->id]);
+    }
+
+    return $courses;
+}
+
+
+/**
+ * Check if course is hidden according to the hide courses feature
+ *
+ * @param course $course
+ * @return boolean
+ */
+function block_course_overview_campus_course_hidden_by_hidecourses($course) {
+    // Course is visible if it isn't hidden
+    if (get_user_preferences('block_course_overview_campus-hidecourse-'.$course->id, 0) == 0) {
+        return false;
+    // Otherwise it is hidden
+    } else {
+        return true;
+    }
+}
+
+
+/**
+ * Check if course news are hidden for this course
+ *
+ * @param course $course
+ * @return boolean
+ */
+function block_course_overview_campus_coursenews_hidden($course) {
+    // Course news are hidden if the user wanted it for this course or if they are hidden by default
+    if (get_user_preferences('block_course_overview_campus-hidenews-'.$course->id, get_config('block_course_overview_campus', 'coursenewsdefault')) == 1) {
+        return true;
+    // Otherwise it is visible
+    } else {
+        return false;
+    }
+}
+
+
+/**
+ * Check if course is hidden according to the term course filter
+ *
+ * @param course $course
+ * @param string $selectedterm
+ * @return boolean
+ */
+function block_course_overview_campus_course_hidden_by_termcoursefilter($course, $selectedterm) {
+    // Course is visible if it is within selected term or all terms are selected
+    if ($course->term == $selectedterm || $selectedterm == 'all') {
+        return false;
+    // Otherwise it is hidden
+    } else {
+        return true;
+    }
+}
+
+
+/**
+ * Check if course is hidden according to the parent category course filter
+ *
+ * @param course $course
+ * @param string $selectedcategory
+ * @return boolean
+ */
+function block_course_overview_campus_course_hidden_by_categorycoursefilter($course, $selectedcategory) {
+    // Course is visible if it is within selected parent category or all categories are selected
+    if ($course->categoryid == $selectedcategory || $selectedcategory == 'all') {
+        return false;
+    // Otherwise it is hidden
+    } else {
+        return true;
+    }
+}
+
+
+/**
+ * Check if course is hidden according to the top level category course filter
+ *
+ * @param course $course
+ * @param string $selectedtoplevelcategory
+ * @return boolean
+ */
+function block_course_overview_campus_course_hidden_by_toplevelcategorycoursefilter($course, $selectedtoplevelcategory) {
+    // Course is visible if it is within selected top level category or all categories are selected
+    if ($course->toplevelcategoryid == $selectedtoplevelcategory || $selectedtoplevelcategory == 'all') {
+        return false;
+    // Otherwise it is hidden
+    } else {
+        return true;
+    }
+}
+
+
+/**
+ * Check if course is visible according to the teacher course filter
+ *
+ * @param course $course
+ * @param string $selectedteacher
+ * @return boolean
+ */
+function block_course_overview_campus_course_hidden_by_teachercoursefilter($course, $selectedteacher) {
+    // Course is visible if it has the selected teacher or all teachers are selected
+    if (isset($course->teachers[$selectedteacher]) || $selectedteacher == 'all') {
+        return false;
+    // Otherwise it is hidden
+    } else {
+        return true;
+    }
+}
+
+
+/**
+ * Check if course is hidden according to any (preprocessed!) filter
+ *
+ * @param course $course
+ * @return boolean
+ */
+function block_course_overview_campus_course_hidden_by_anyfilter($course) {
+    // Check if there is any reason to hide the course
+    $hidecourse = (isset($course->termcoursefiltered) && $course->termcoursefiltered) ||
+                    (isset($course->categorycoursefiltered) && $course->categorycoursefiltered == true) ||
+                    (isset($course->toplevelcategorycoursefiltered) && $course->toplevelcategorycoursefiltered == true) ||
+                    (isset($course->teachercoursefiltered) && $course->teachercoursefiltered == true);
+
+    return $hidecourse;
+}
+
 
 /**
  * Display overview for courses (copied from /blocks/course_overview/locallib.php)
@@ -64,7 +206,9 @@ function block_course_overview_campus_get_overviews($courses, $skip) {
  * @param object $coc_config The config object
  * @return bool
  */
-function block_course_overview_campus_check_term_config($coc_config) {
+function block_course_overview_campus_check_term_config() {
+    $coc_config = get_config('block_course_overview_campus');
+
     if ($coc_config->termmode == 1) {
         return true;
     }
@@ -96,7 +240,7 @@ function block_course_overview_campus_check_term_config($coc_config) {
  * @return string String with concatenated teacher names
  */
 function block_course_overview_campus_get_teachername_string($teachers) {
-    global $coc_config;
+    $coc_config = get_config('block_course_overview_campus');
 
     // If given array is empty, return empty string
     if (empty($teachers))
@@ -150,7 +294,7 @@ function block_course_overview_campus_get_teachername_string($teachers) {
  * @return string String with the term's displayname
  */
 function block_course_overview_campus_get_term_displayname($termname, $year, $year2='') {
-    global $coc_config;
+    $coc_config = get_config('block_course_overview_campus');
 
     // Build the first year - second year combination
     $displayname = $year;
@@ -252,4 +396,52 @@ function block_course_overview_campus_compare_categories($a, $b) {
         // This should never happen
         return 0;
     }
+}
+
+
+/**
+ * Remember the not shown courses for local_boostcoc
+ *
+ * @param array $courses
+ */
+function block_course_overview_campus_remember_notshowncourses_for_local_boostcoc($courses) {
+    // Do only if local_boostcoc is installed
+    if (block_course_overview_campus_check_local_boostcoc() == true) {
+        // Get all courses which are not shown (because they are hidden by any filter or by the hide courses feature) and store their IDs in an array
+        $notshowncourses = array();
+        foreach ($courses as $c) {
+            if ((block_course_overview_campus_course_hidden_by_anyfilter($c) == true || block_course_overview_campus_course_hidden_by_hidecourses($c)) == true) {
+                $notshowncourses[] = $c->id;
+            }
+        }
+
+        // Convert not shown courses array to JSON
+        $jsonstring = json_encode($notshowncourses);
+
+        // Store the current status of not shown courses (Uses AJAX to save to the database).
+        set_user_preference('local_boostcoc-notshowncourses', $jsonstring);
+    }
+}
+
+
+
+/**
+ * Check if our companion plugin local_boostcoc is installed
+ *
+ * @return boolean
+ */
+function block_course_overview_campus_check_local_boostcoc() {
+    global $CFG;
+
+    static $local_boostcoc_installed;
+
+    if (!isset($local_boostcoc_installed)) {
+        if (file_exists($CFG->dirroot.'/local/boostcoc/lib.php')) {
+            $local_boostcoc_installed = true;
+        } else {
+            $local_boostcoc_installed = false;
+        }
+    }
+
+    return $local_boostcoc_installed;
 }

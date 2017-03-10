@@ -17,13 +17,15 @@ define(['jquery'], function ($) {
         // Prevent the event from refreshing the page
         e.preventDefault();
 
-        $('#coc-hidecourse-' + e.data.course).addClass('coc-hidden');
-        $('#coc-showcourse-' + e.data.course).removeClass('coc-hidden');
-        if (e.data.editing === 0) {
-            $('#coc-course-' + e.data.course).addClass('coc-hidden');
+        if (e.data.manage === 1) {
+            $('#coc-hidecourseicon-' + e.data.course).addClass('coc-hidden');
+            $('#coc-showcourseicon-' + e.data.course).removeClass('coc-hidden');
+        }
+        if (e.data.manage === 0) {
+            $('.coc-hidecourse-' + e.data.course).addClass('coc-hidden');
             hiddenCount = parseInt($('#coc-hiddencoursescount').html(), 10);
             $('#coc-hiddencoursescount').html(hiddenCount + 1);
-            $('#coc-hiddencoursesmanagement-bottom').removeClass('coc-hidden');
+            $('#coc-hiddencoursesmanagement-bottom .row').removeClass('coc-hidden');
         }
 
         // Store the course status (Uses AJAX to save to the database).
@@ -34,22 +36,49 @@ define(['jquery'], function ($) {
         // Prevent the event from refreshing the page
         e.preventDefault();
 
-        $('#coc-showcourse-' + e.data.course).addClass('coc-hidden');
-        $('#coc-hidecourse-' + e.data.course).removeClass('coc-hidden');
-        $('#coc-course-' + e.data.course).removeClass('coc-hidden');
+        if (e.data.manage === 1) {
+            $('#coc-showcourseicon-' + e.data.course).addClass('coc-hidden');
+            $('#coc-hidecourseicon-' + e.data.course).removeClass('coc-hidden');
+        }
 
         // Store the course status (Uses AJAX to save to the database).
         M.util.set_user_preference('block_course_overview_campus-hidecourse-' + e.data.course, 0);
     }
 
+    function localBoostCOCRemember() {
+        // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array
+        var notshowncourses = new Array();
+        $('.coc-course').each(function(index, element) {
+            if ($(element).height() == 0) {
+                notshowncourses.push(element.id.replace('coc-course-', ''));
+            }
+        });
+
+        // Convert not shown courses array to JSON
+        var jsonstring = JSON.stringify(notshowncourses);
+
+        // Store the current status of not shown courses (Uses AJAX to save to the database).
+        M.util.set_user_preference('local_boostcoc-notshowncourses', jsonstring);
+    }
+
     return {
         initHideCourse: function (params) {
             var i;
-
             var courses = params.courses.split(" ");
             for (i = 0; i<courses.length; i++) {
-                $('#coc-hidecourse-' + courses[i]).on('click', {course: courses[i], editing: params.editing}, hideCourse);
-                $('#coc-showcourse-' + courses[i]).on('click', {course: courses[i]}, showCourse);
+                // Add change listener to hide courses widgets.
+                $('#coc-hidecourseicon-' + courses[i]).on('click', {course: courses[i], manage: params.manage}, hideCourse);
+                // Add change listener to show courses widgets.
+                $('#coc-showcourseicon-' + courses[i]).on('click', {course: courses[i], manage: params.manage}, showCourse);
+                // Add change listener to show / hide courses widgets for local_boostcoc.
+                // Do this only when hidden courses management isn't active. This way, the notshowncourses will not be remembered on
+                // the server until the user finishes hidden courses management. While working in hidden courses management in one
+                // browser tab, the nav drawer in a second browser tab would still show the old status. But we accept this because
+                // otherwise we would have to implement a second localBoostCOCRemember detection algorithm for hidden courses
+                // management.
+                if (params.local_boostcoc == true && params.manage == false) {
+                    $('#coc-hidecourseicon-' + courses[i]).on('click', localBoostCOCRemember);
+                }
             }
         }
     };

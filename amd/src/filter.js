@@ -113,17 +113,39 @@ define(['jquery'], function ($) {
         }
     }
 
+    function localBoostCOCRemember() {
+        // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array
+        var notshowncourses = new Array();
+        $('.coc-course').each(function(index, element) {
+            if ($(element).height() == 0) {
+                notshowncourses.push(element.id.replace('coc-course-', ''));
+            }
+        });
+
+        // Convert not shown courses array to JSON
+        var jsonstring = JSON.stringify(notshowncourses);
+
+        // Store the current status of not shown courses (Uses AJAX to save to the database).
+        M.util.set_user_preference('local_boostcoc-notshowncourses', jsonstring);
+    }
+
     return {
-        initFilter: function (options) {
+        initFilter: function (params) {
             // Add change listener to filter widgets.
             $('#coc-filterterm').on('change', filterTerm);
             $('#coc-filterteacher').on('change', filterTeacher);
             $('#coc-filtercategory').on('change', filterCategory);
             $('#coc-filtertoplevelcategory').on('change', filterTopLevelCategory);
 
+            // Add change listener to filter widgets for local_boostcoc.
+            if (params.local_boostcoc == true) {
+                $('#coc-filterterm, #coc-filterteacher, #coc-filtercategory, #coc-filtertoplevelcategory').on('change',
+                        localBoostCOCRemember);
+            }
+
             // Make sure any initial filter settings are applied (may be needed if the user
             // has used the browser 'back' button).
-            applyAllFilters(options.initialsettings);
+            applyAllFilters(params.initialsettings);
         }
     };
 });
