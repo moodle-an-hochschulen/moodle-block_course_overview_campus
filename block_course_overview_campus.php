@@ -462,6 +462,7 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Teacher information
+                $courseteachers = [];
                 if ($coc_config->teachercoursefilter == true || $coc_config->secondrowshowteachername == true) {
 
                     // Get course teachers based on global teacher roles
@@ -525,6 +526,13 @@ class block_course_overview_campus extends block_base {
                     }
                     else {
                         $courseteachers = array();
+                    }
+
+                    // Adjust $courseteachers to be indexed by userid (removing duplicates).
+                    $tmp = $courseteachers;
+                    $courseteachers = [];
+                    foreach ($tmp as $teacher) {
+                        $courseteachers[$teacher->id] = $teacher;
                     }
 
                     // Remember course teachers for later use
