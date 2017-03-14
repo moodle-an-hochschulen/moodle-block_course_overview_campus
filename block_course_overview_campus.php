@@ -469,8 +469,10 @@ class block_course_overview_campus extends block_base {
 
                         // Get all user name fields for SQL query in a proper way
                         $allnames = get_all_user_name_fields(true, 'u');
+                        $teacherfields = 'ra.id AS raid, u.id, '.$allnames.', r.sortorder';
 
                         // Check if we have to check for suspended teachers
+                        $extrawhere = '';
                         if ($coc_config->teacherroleshidesuspended == 1) {
                             // Build extra where clause for SQL query
                             $now = round(time(), -2); // improves db caching
@@ -482,35 +484,43 @@ class block_course_overview_campus extends block_base {
                         if ($coc_config->teacherrolesparent == 1) {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
-                                $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
+                                $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields,
+                                                                 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields,
+                                                                 'u.lastname, u.firstname');
                             }
                         }
                         // If no
                         else if ($coc_config->teacherrolesparent == 2) {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
-                                $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
+                                $courseteachers = get_role_users($teacherroles, $context, false, $teacherfields,
+                                                                 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, false, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, false, $teacherfields,
+                                                                 'u.lastname, u.firstname');
                             }
                         }
                         // If depending on moodle/course:reviewotherusers capability
                         else if ($coc_config->teacherrolesparent == 3) {
                             // If we have to check for suspended teachers
+                            $reviewothers = has_capability('moodle/course:reviewotherusers', $context);
                             if ($coc_config->teacherroleshidesuspended == 1) {
-                                $courseteachers = get_role_users($teacherroles, $context, has_capability('moodle/course:reviewotherusers', $context), 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
+                                $courseteachers = get_role_users($teacherroles, $context, $reviewothers, $teacherfields,
+                                                                 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, has_capability('moodle/course:reviewotherusers', $context), 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, $reviewothers, $teacherfields,
+                                                                 'u.lastname, u.firstname');
                             }
                         }
                         // Should not happen
                         else {
-                            $courseteachers = get_role_users($teacherroles, $context, true, 'ra.id, u.id, '.$allnames.', r.sortorder', 'u.lastname, u.firstname');
+                            $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields,
+                                                             'u.lastname, u.firstname');
                         }
                     }
                     else {
