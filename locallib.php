@@ -30,10 +30,10 @@ defined('MOODLE_INTERNAL') || die();
  * @return array
  */
 function block_course_overview_campus_get_my_courses() {
-    // Get my courses in alphabetical order
+    // Get my courses in alphabetical order.
     $courses = enrol_get_my_courses('id, shortname', 'fullname ASC');
 
-    // Remove frontpage course, if enrolled, from courses list
+    // Remove frontpage course, if enrolled, from courses list.
     $site = get_site();
     if (array_key_exists($site->id, $courses)) {
         unset($courses[$site->id]);
@@ -50,10 +50,10 @@ function block_course_overview_campus_get_my_courses() {
  * @return boolean
  */
 function block_course_overview_campus_course_hidden_by_hidecourses($course) {
-    // Course is visible if it isn't hidden
+    // Course is visible if it isn't hidden.
     if (get_user_preferences('block_course_overview_campus-hidecourse-'.$course->id, 0) == 0) {
         return false;
-    // Otherwise it is hidden
+    // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -67,10 +67,11 @@ function block_course_overview_campus_course_hidden_by_hidecourses($course) {
  * @return boolean
  */
 function block_course_overview_campus_coursenews_hidden($course) {
-    // Course news are hidden if the user wanted it for this course or if they are hidden by default
-    if (get_user_preferences('block_course_overview_campus-hidenews-'.$course->id, get_config('block_course_overview_campus', 'coursenewsdefault')) == 1) {
+    // Course news are hidden if the user wanted it for this course or if they are hidden by default.
+    if (get_user_preferences('block_course_overview_campus-hidenews-'.$course->id,
+            get_config('block_course_overview_campus', 'coursenewsdefault')) == 1) {
         return true;
-    // Otherwise it is visible
+    // Otherwise it is visible.
     } else {
         return false;
     }
@@ -85,10 +86,10 @@ function block_course_overview_campus_coursenews_hidden($course) {
  * @return boolean
  */
 function block_course_overview_campus_course_hidden_by_termcoursefilter($course, $selectedterm) {
-    // Course is visible if it is within selected term or all terms are selected
+    // Course is visible if it is within selected term or all terms are selected.
     if ($course->term == $selectedterm || $selectedterm == 'all') {
         return false;
-    // Otherwise it is hidden
+    // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -103,10 +104,10 @@ function block_course_overview_campus_course_hidden_by_termcoursefilter($course,
  * @return boolean
  */
 function block_course_overview_campus_course_hidden_by_categorycoursefilter($course, $selectedcategory) {
-    // Course is visible if it is within selected parent category or all categories are selected
+    // Course is visible if it is within selected parent category or all categories are selected.
     if ($course->categoryid == $selectedcategory || $selectedcategory == 'all') {
         return false;
-    // Otherwise it is hidden
+    // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -121,10 +122,10 @@ function block_course_overview_campus_course_hidden_by_categorycoursefilter($cou
  * @return boolean
  */
 function block_course_overview_campus_course_hidden_by_toplevelcategorycoursefilter($course, $selectedtoplevelcategory) {
-    // Course is visible if it is within selected top level category or all categories are selected
+    // Course is visible if it is within selected top level category or all categories are selected.
     if ($course->toplevelcategoryid == $selectedtoplevelcategory || $selectedtoplevelcategory == 'all') {
         return false;
-    // Otherwise it is hidden
+    // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -139,10 +140,10 @@ function block_course_overview_campus_course_hidden_by_toplevelcategorycoursefil
  * @return boolean
  */
 function block_course_overview_campus_course_hidden_by_teachercoursefilter($course, $selectedteacher) {
-    // Course is visible if it has the selected teacher or all teachers are selected
+    // Course is visible if it has the selected teacher or all teachers are selected.
     if (isset($course->teachers[$selectedteacher]) || $selectedteacher == 'all') {
         return false;
-    // Otherwise it is hidden
+    // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -156,7 +157,7 @@ function block_course_overview_campus_course_hidden_by_teachercoursefilter($cour
  * @return boolean
  */
 function block_course_overview_campus_course_hidden_by_anyfilter($course) {
-    // Check if there is any reason to hide the course
+    // Check if there is any reason to hide the course.
     $hidecourse = (isset($course->termcoursefiltered) && $course->termcoursefiltered) ||
                     (isset($course->categorycoursefiltered) && $course->categorycoursefiltered == true) ||
                     (isset($course->toplevelcategorycoursefiltered) && $course->toplevelcategorycoursefiltered == true) ||
@@ -167,18 +168,18 @@ function block_course_overview_campus_course_hidden_by_anyfilter($course) {
 
 
 /**
- * Display overview for courses (copied from /blocks/course_overview/locallib.php)
+ * Get course news for courses (copied from /blocks/course_overview/locallib.php)
  *
- * @param array $courses courses for which overview needs to be shown
+ * @param array $courses courses for which course news need to be shown
  * @return array html overview
  */
 function block_course_overview_campus_get_overviews($courses, $skip) {
     $htmlarray = array();
     if ($modules = get_plugin_list_with_function('mod', 'print_overview')) {
-        // Remove modules which should be skipped
+        // Remove modules which should be skipped.
         $skipmodules = explode(',', $skip);
         if (is_array($skipmodules)) {
-            foreach($skipmodules as $s) {
+            foreach ($skipmodules as $s) {
                 unset($modules[$s]);
             }
         }
@@ -211,23 +212,25 @@ function block_course_overview_campus_check_term_config() {
 
     if ($coc_config->termmode == 1) {
         return true;
-    }
-    else if ($coc_config->termmode == 2 &&
-        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) < intval(date('z', strtotime('2003-'.$coc_config->term2startday)))) {
+    } else if ($coc_config->termmode == 2 &&
+        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) <
+                intval(date('z', strtotime('2003-'.$coc_config->term2startday)))) {
             return true;
-    }
-    else if ($coc_config->termmode == 3 &&
-        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) < intval(date('z', strtotime('2003-'.$coc_config->term2startday))) &&
-        intval(date('z', strtotime('2003-'.$coc_config->term2startday))) < intval(date('z', strtotime('2003-'.$coc_config->term3startday)))) {
+    } else if ($coc_config->termmode == 3 &&
+        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) <
+                intval(date('z', strtotime('2003-'.$coc_config->term2startday))) &&
+        intval(date('z', strtotime('2003-'.$coc_config->term2startday))) <
+                intval(date('z', strtotime('2003-'.$coc_config->term3startday)))) {
             return true;
-    }
-    else if ($coc_config->termmode == 4 &&
-        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) < intval(date('z', strtotime('2003-'.$coc_config->term2startday))) &&
-        intval(date('z', strtotime('2003-'.$coc_config->term2startday))) < intval(date('z', strtotime('2003-'.$coc_config->term3startday))) &&
-        intval(date('z', strtotime('2003-'.$coc_config->term3startday))) < intval(date('z', strtotime('2003-'.$coc_config->term4startday)))) {
+    } else if ($coc_config->termmode == 4 &&
+        intval(date('z', strtotime('2003-'.$coc_config->term1startday))) <
+                intval(date('z', strtotime('2003-'.$coc_config->term2startday))) &&
+        intval(date('z', strtotime('2003-'.$coc_config->term2startday))) <
+                intval(date('z', strtotime('2003-'.$coc_config->term3startday))) &&
+        intval(date('z', strtotime('2003-'.$coc_config->term3startday))) <
+                intval(date('z', strtotime('2003-'.$coc_config->term4startday)))) {
             return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -236,58 +239,59 @@ function block_course_overview_campus_check_term_config() {
 /**
  * Take array of teacher objects and return a string of names, sorted by relevance and name
  *
- * @param array $teachers Array of teachers
- * @return string String with concatenated teacher names
+ * @param array $teachers array of teachers
+ * @return string string with concatenated teacher names
  */
 function block_course_overview_campus_get_teachername_string($teachers) {
     $coc_config = get_config('block_course_overview_campus');
 
-    // If given array is empty, return empty string
-    if (empty($teachers))
+    // If given array is empty, return empty string.
+    if (empty($teachers)) {
         return '';
+    }
 
-    // Sort all teachers by relevance and name, return empty string when sorting fails
+    // Sort all teachers by relevance and name, return empty string when sorting fails.
     $success = usort($teachers, "block_course_overview_campus_compare_teachers");
     if (!$success) {
         return '';
     }
 
-    // The array may contain duplicates as a teacher might have more than one role
+    // The teachers array may contain duplicates as a teacher might have more than one role in a course.
     // We could run a fancy duplicate elimination now, but we will only rewrite the array in reverse order indexed by userid,
-    // this way existing teachers will be eliminated by their own duplicate with higher relevance
+    // this way existing teachers will be eliminated by their own duplicate with higher relevance.
     $teacherstmp = $teachers;
     $teachers = [];
     foreach (array_reverse($teacherstmp) as $teacher) {
         $teachers[$teacher->id] = $teacher;
     }
 
-    // Get all teachers' names as an array according the teacher name style setting
+    // Get all teachers' names as an array according the teacher name style setting.
     $teachernames = array_map(function($obj) {
         global $coc_config;
 
-        // Display fullname
+        // Display fullname.
         if ($coc_config->secondrowshowteachernamestyle == 1) {
             return $obj->firstname.' '.$obj->lastname;
         }
-        // Display lastname
+        // Display lastname.
         else if ($coc_config->secondrowshowteachernamestyle == 2) {
             return $obj->lastname;
         }
-        // Display firstname
+        // Display firstname.
         else if ($coc_config->secondrowshowteachernamestyle == 3) {
             return $obj->firstname;
         }
-        // Display fullnamedisplay
+        // Display fullnamedisplay.
         else if ($coc_config->secondrowshowteachernamestyle == 4) {
             return fullname($obj);
         }
-        // Fallback: Display lastname
+        // Fallback: Display lastname.
         else {
             return $obj->lastname;
         }
     }, $teachers);
 
-    // Implode teachers' names to a single string
+    // Implode teachers' names to a single string.
     $teachernames = implode(", ", $teachernames);
 
     return $teachernames;
@@ -299,55 +303,55 @@ function block_course_overview_campus_get_teachername_string($teachers) {
  *
  * @param string $termname The term's name
  * @param string $year The term's year
- * @param string $year2 The term's second year (optional)(
+ * @param string $year2 The term's second year (optional)
  * @return string String with the term's displayname
  */
 function block_course_overview_campus_get_term_displayname($termname, $year, $year2='') {
     $coc_config = get_config('block_course_overview_campus');
 
-    // Build the first year - second year combination
+    // Build the first year - second year combination.
     $displayname = $year;
     if ($year2 != '') {
-        // Hyphen separation
+        // Hyphen separation.
         if ($coc_config->termyearseparation == 1) {
             $displayname = $year.'-'.$year2;
         }
-        // Slash separation
+        // Slash separation.
         else if ($coc_config->termyearseparation == 2) {
             $displayname = $year.'/'.$year2;
         }
-        // Underscore separation
+        // Underscore separation.
         else if ($coc_config->termyearseparation == 3) {
             $displayname = $year.'_'.$year2;
         }
-        // No second year
+        // No second year.
         else if ($coc_config->termyearseparation == 4) {
             $displayname = $year;
         }
-        // This shouldn't happen
+        // This shouldn't happen.
         else {
             $displayname = $year.'/'.$year2;
         }
     }
 
-    // Add the term name
-    // Prefix with space
+    // Add the term name.
+    // Prefix with space.
     if ($coc_config->termyearpos == 1) {
         $displayname = $displayname.' '.$termname;
     }
-    // Prefix without space
+    // Prefix without space.
     else if ($coc_config->termyearpos == 2) {
         $displayname = $displayname.$termname;
     }
-    // Suffix with space
+    // Suffix with space.
     else if ($coc_config->termyearpos == 3) {
         $displayname = $termname.' '.$displayname;
     }
-    // Suffix without space
+    // Suffix without space.
     else if ($coc_config->termyearpos == 4) {
         $displayname = $termname.$displayname;
     }
-    // This shouldn't happen
+    // This shouldn't happen.
     else {
         $displayname = $termname. ' '.$termname;
     }
@@ -364,19 +368,16 @@ function block_course_overview_campus_get_term_displayname($termname, $year, $ye
  * @return int
  */
 function block_course_overview_campus_compare_teachers($a, $b) {
-    // compare relevance of teachers' roles
+    // Compare relevance of teachers' roles.
     if ($a->sortorder < $b->sortorder) {
         return -1;
-    }
-    else if ($a->sortorder > $b->sortorder) {
+    } else if ($a->sortorder > $b->sortorder) {
         return 1;
-    }
-    else if ($a->sortorder == $b->sortorder) {
-        // teachers' roles are equal, then compare lastnames
+    } else if ($a->sortorder == $b->sortorder) {
+        // Teachers' roles are equal, then compare lastnames.
         return strcasecmp($a->lastname, $b->lastname);
-    }
-    else {
-        // This should never happen
+    } else {
+        // This should never happen.
         return 0;
     }
 }
@@ -390,19 +391,16 @@ function block_course_overview_campus_compare_teachers($a, $b) {
  * @return int
  */
 function block_course_overview_campus_compare_categories($a, $b) {
-    // compare sortorder of categories
+    // Compare sortorder of categories.
     if ($a->sortorder < $b->sortorder) {
         return -1;
-    }
-    else if ($a->sortorder > $b->sortorder) {
+    } else if ($a->sortorder > $b->sortorder) {
         return 1;
-    }
-    else if ($a->sortorder == $b->sortorder) {
-        // Category sortorders are equal - this shouldn't happen, but if it does then compare category names alphabetically
+    } else if ($a->sortorder == $b->sortorder) {
+        // Category sortorders are equal - this shouldn't happen, but if it does then compare category names alphabetically.
         return strcasecmp(format_string($a->name), format_string($b->name));
-    }
-    else {
-        // This should never happen
+    } else {
+        // This should never happen.
         return 0;
     }
 }
@@ -414,17 +412,19 @@ function block_course_overview_campus_compare_categories($a, $b) {
  * @param array $courses
  */
 function block_course_overview_campus_remember_notshowncourses_for_local_boostcoc($courses) {
-    // Do only if local_boostcoc is installed
+    // Do only if local_boostcoc is installed.
     if (block_course_overview_campus_check_local_boostcoc() == true) {
-        // Get all courses which are not shown (because they are hidden by any filter or by the hide courses feature) and store their IDs in an array
+        // Get all courses which are not shown (because they are hidden by any filter or by the hide courses feature)
+        // and store their IDs in an array.
         $notshowncourses = array();
         foreach ($courses as $c) {
-            if ((block_course_overview_campus_course_hidden_by_anyfilter($c) == true || block_course_overview_campus_course_hidden_by_hidecourses($c)) == true) {
+            if ((block_course_overview_campus_course_hidden_by_anyfilter($c) == true ||
+                    block_course_overview_campus_course_hidden_by_hidecourses($c)) == true) {
                 $notshowncourses[] = $c->id;
             }
         }
 
-        // Convert not shown courses array to JSON
+        // Convert not shown courses array to JSON.
         $jsonstring = json_encode($notshowncourses);
 
         // Store the current status of not shown courses (Uses AJAX to save to the database).

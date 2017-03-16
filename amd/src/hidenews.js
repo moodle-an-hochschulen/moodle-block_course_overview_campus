@@ -12,9 +12,11 @@
 define(['jquery'], function ($) {
     "use strict";
 
-    function hideNewsCourse(e) {
-        // Prevent the event from refreshing the page
-        e.preventDefault();
+    function hideNews(e) {
+        // Prevent the event from refreshing the page.
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
         $('#coc-coursenews-' + e.data.course).addClass('coc-hidden');
         $('#coc-hidenewsicon-' + e.data.course).addClass('coc-hidden');
@@ -25,8 +27,10 @@ define(['jquery'], function ($) {
     }
 
     function showNews(e) {
-        // Prevent the event from refreshing the page
-        e.preventDefault();
+        // Prevent the event from refreshing the page.
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
         $('#coc-coursenews-' + e.data.course).removeClass('coc-hidden');
         $('#coc-hidenewsicon-' + e.data.course).removeClass('coc-hidden');
@@ -40,9 +44,9 @@ define(['jquery'], function ($) {
         initHideNews: function (params) {
             var i;
             var courses = params.courses.split(" ");
-            for (i = 0; i<courses.length; i++) {
+            for (i = 0; i < courses.length; i++) {
                 // Add change listener to hide course news widgets.
-                $('#coc-hidenewsicon-' + courses[i]).on('click', {course: courses[i]}, hideNewsCourse);
+                $('#coc-hidenewsicon-' + courses[i]).on('click', {course: courses[i]}, hideNews);
                 // Add change listener to show course news widgets.
                 $('#coc-shownewsicon-' + courses[i]).on('click', {course: courses[i]}, showNews);
             }

@@ -14,13 +14,17 @@ define(['jquery'], function ($) {
 
     function hideCourse(e) {
         var hiddenCount;
-        // Prevent the event from refreshing the page
-        e.preventDefault();
+        // Prevent the event from refreshing the page.
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
+        // When hidden course managing is active.
         if (e.data.manage === 1) {
             $('#coc-hidecourseicon-' + e.data.course).addClass('coc-hidden');
             $('#coc-showcourseicon-' + e.data.course).removeClass('coc-hidden');
         }
+        // When hidden course managing is not active.
         if (e.data.manage === 0) {
             $('.coc-hidecourse-' + e.data.course).addClass('coc-hidden');
             hiddenCount = parseInt($('#coc-hiddencoursescount').html(), 10);
@@ -33,9 +37,12 @@ define(['jquery'], function ($) {
     }
 
     function showCourse(e) {
-        // Prevent the event from refreshing the page
-        e.preventDefault();
+        // Prevent the event from refreshing the page.
+        if (e !== undefined) {
+            e.preventDefault();
+        }
 
+        // When hidden course managing is active.
         if (e.data.manage === 1) {
             $('#coc-showcourseicon-' + e.data.course).addClass('coc-hidden');
             $('#coc-hidecourseicon-' + e.data.course).removeClass('coc-hidden');
@@ -46,7 +53,7 @@ define(['jquery'], function ($) {
     }
 
     function localBoostCOCRemember() {
-        // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array
+        // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array.
         var notshowncourses = new Array();
         $('.coc-course').each(function(index, element) {
             if ($(element).height() == 0) {
@@ -54,7 +61,7 @@ define(['jquery'], function ($) {
             }
         });
 
-        // Convert not shown courses array to JSON
+        // Convert not shown courses array to JSON.
         var jsonstring = JSON.stringify(notshowncourses);
 
         // Store the current status of not shown courses (Uses AJAX to save to the database).
@@ -65,7 +72,7 @@ define(['jquery'], function ($) {
         initHideCourse: function (params) {
             var i;
             var courses = params.courses.split(" ");
-            for (i = 0; i<courses.length; i++) {
+            for (i = 0; i < courses.length; i++) {
                 // Add change listener to hide courses widgets.
                 $('#coc-hidecourseicon-' + courses[i]).on('click', {course: courses[i], manage: params.manage}, hideCourse);
                 // Add change listener to show courses widgets.
@@ -83,4 +90,3 @@ define(['jquery'], function ($) {
         }
     };
 });
-

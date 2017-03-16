@@ -94,18 +94,18 @@ define(['jquery'], function ($) {
                     elementValue = $element.val();
                     if (elementValue !== value) {
                         switch (setting) {
-                        case 'term':
-                            filterTerm();
-                            break;
-                        case 'teacher':
-                            filterTeacher();
-                            break;
-                        case 'category':
-                            filterCategory();
-                            break;
-                        case 'toplevelcategory':
-                            filterTopLevelCategory();
-                            break;
+                            case 'term':
+                                filterTerm();
+                                break;
+                            case 'teacher':
+                                filterTeacher();
+                                break;
+                            case 'category':
+                                filterCategory();
+                                break;
+                            case 'toplevelcategory':
+                                filterTopLevelCategory();
+                                break;
                         }
                     }
                 }
@@ -114,7 +114,7 @@ define(['jquery'], function ($) {
     }
 
     function localBoostCOCRemember() {
-        // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array
+        // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array.
         var notshowncourses = new Array();
         $('.coc-course').each(function(index, element) {
             if ($(element).height() == 0) {
@@ -122,7 +122,7 @@ define(['jquery'], function ($) {
             }
         });
 
-        // Convert not shown courses array to JSON
+        // Convert not shown courses array to JSON.
         var jsonstring = JSON.stringify(notshowncourses);
 
         // Store the current status of not shown courses (Uses AJAX to save to the database).
