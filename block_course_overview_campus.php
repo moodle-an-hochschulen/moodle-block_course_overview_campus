@@ -470,7 +470,6 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Teacher information
-                $courseteachers = [];
                 if ($coc_config->teachercoursefilter == true || $coc_config->secondrowshowteachername == true) {
 
                     // Get course teachers based on global teacher roles
@@ -478,14 +477,16 @@ class block_course_overview_campus extends block_base {
 
                         // Get all user name fields for SQL query in a proper way
                         $allnames = get_all_user_name_fields(true, 'u');
-                        $teacherfields = 'ra.id AS raid, u.id, '.$allnames.', r.sortorder';
+                        $teacherfields = 'ra.id AS raid, u.id, '.$allnames.', r.sortorder'; // Moodle would complain about two columns called id with a "Did you remember to make the first column something unique in your call to get_records? Duplicate value 'xxx' found in column 'id'." debug message. That's why we alias one column to a name different than id.
+                        $teachersortfields = 'u.lastname, u.firstname';
 
                         // Check if we have to check for suspended teachers
-                        $extrawhere = '';
                         if ($coc_config->teacherroleshidesuspended == 1) {
                             // Build extra where clause for SQL query
                             $now = round(time(), -2); // improves db caching
                             $extrawhere = 'ue.status = '.ENROL_USER_ACTIVE.' AND e.status = '.ENROL_INSTANCE_ENABLED.' AND ue.timestart < '.$now.' AND (ue.timeend = 0 OR ue.timeend > '.$now.')';
+                        } else {
+                            $extrawhere = '';
                         }
 
                         // Check if we have to include teacher roles from parent contexts
@@ -493,54 +494,40 @@ class block_course_overview_campus extends block_base {
                         if ($coc_config->teacherrolesparent == 1) {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
-                                $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields,
-                                                                 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
+                                $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields, $teachersortfields, false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields,
-                                                                 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields, $teachersortfields);
                             }
                         }
                         // If no
                         else if ($coc_config->teacherrolesparent == 2) {
                             // If we have to check for suspended teachers
                             if ($coc_config->teacherroleshidesuspended == 1) {
-                                $courseteachers = get_role_users($teacherroles, $context, false, $teacherfields,
-                                                                 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
+                                $courseteachers = get_role_users($teacherroles, $context, false, $teacherfields, $teachersortfields, false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, false, $teacherfields,
-                                                                 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, false, $teacherfields, $teachersortfields);
                             }
                         }
                         // If depending on moodle/course:reviewotherusers capability
                         else if ($coc_config->teacherrolesparent == 3) {
                             // If we have to check for suspended teachers
-                            $reviewothers = has_capability('moodle/course:reviewotherusers', $context);
+                            $hasreviewotherscapability = has_capability('moodle/course:reviewotherusers', $context);
                             if ($coc_config->teacherroleshidesuspended == 1) {
-                                $courseteachers = get_role_users($teacherroles, $context, $reviewothers, $teacherfields,
-                                                                 'u.lastname, u.firstname', false, '', '', '', $extrawhere);
+                                $courseteachers = get_role_users($teacherroles, $context, $hasreviewotherscapability, $teacherfields, $teachersortfields, false, '', '', '', $extrawhere);
                             }
                             else {
-                                $courseteachers = get_role_users($teacherroles, $context, $reviewothers, $teacherfields,
-                                                                 'u.lastname, u.firstname');
+                                $courseteachers = get_role_users($teacherroles, $context, $hasreviewotherscapability, $teacherfields, $teachersortfields);
                             }
                         }
                         // Should not happen
                         else {
-                            $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields,
-                                                             'u.lastname, u.firstname');
+                            $courseteachers = get_role_users($teacherroles, $context, true, $teacherfields, $teachersortfields);
                         }
                     }
                     else {
                         $courseteachers = array();
-                    }
-
-                    // Adjust $courseteachers to be indexed by userid (removing duplicates).
-                    $tmp = $courseteachers;
-                    $courseteachers = [];
-                    foreach ($tmp as $teacher) {
-                        $courseteachers[$teacher->id] = $teacher;
                     }
 
                     // Remember course teachers for later use
