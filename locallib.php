@@ -256,15 +256,6 @@ function block_course_overview_campus_get_teachername_string($teachers) {
         return '';
     }
 
-    // The teachers array may contain duplicates as a teacher might have more than one role in a course.
-    // We could run a fancy duplicate elimination now, but we will only rewrite the array in reverse order indexed by userid,
-    // this way existing teachers will be eliminated by their own duplicate with higher relevance.
-    $teacherstmp = $teachers;
-    $teachers = [];
-    foreach (array_reverse($teacherstmp) as $teacher) {
-        $teachers[$teacher->id] = $teacher;
-    }
-
     // Get all teachers' names as an array according the teacher name style setting.
     $teachernames = array_map(function($obj) {
         global $coc_config;

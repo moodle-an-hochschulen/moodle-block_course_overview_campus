@@ -552,6 +552,16 @@ class block_course_overview_campus extends block_base {
                         $courseteachers = array();
                     }
 
+                    // The way we use get_role_users(), the teachers array may now contain duplicates as a teacher might have more
+                    // than one role in a course and is indexed by ra.id instead of u.id (which we expect later).
+                    // We will rewrite the array in reverse order indexed by userid, this way existing teachers will be eliminated
+                    // by their own duplicate with higher relevance.
+                    $courseteacherstmp = $courseteachers;
+                    $courseteachers = [];
+                    foreach (array_reverse($courseteacherstmp) as $teacher) {
+                        $courseteachers[$teacher->id] = $teacher;
+                    }
+
                     // Remember course teachers for later use.
                     $c->teachers = $courseteachers;
                 }
