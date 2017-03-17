@@ -400,6 +400,9 @@ function block_course_overview_campus_compare_categories($a, $b) {
 /**
  * Remember the not shown courses for local_boostcoc
  *
+ * Basically, this is remembered by the JavaScript filters directly when they are applied in the browser, but we want a fallback
+ * when javascript is off
+ *
  * @param array $courses
  */
 function block_course_overview_campus_remember_notshowncourses_for_local_boostcoc($courses) {
@@ -418,11 +421,52 @@ function block_course_overview_campus_remember_notshowncourses_for_local_boostco
         // Convert not shown courses array to JSON.
         $jsonstring = json_encode($notshowncourses);
 
-        // Store the current status of not shown courses (Uses AJAX to save to the database).
+        // Store the current status of not shown courses.
         set_user_preference('local_boostcoc-notshowncourses', $jsonstring);
     }
 }
 
+
+/**
+ * Remember the active filters for local_boostcoc
+ *
+ * Basically, this is remembered by the JavaScript filters directly when they are applied in the browser, but we want a fallback
+ * when javascript is off.
+ * Unfortunately, at page load local_boostcoc changes the nav drawer _before_ this function can store changed filters, thus the
+ * fallback when javascript is off has a lag.
+ *
+ * @param array $courses
+ */
+function block_course_overview_campus_remember_activefilters_for_local_boostcoc($hiddencoursescounter) {
+    // Do only if local_boostcoc is installed.
+    if (block_course_overview_campus_check_local_boostcoc() == true) {
+        $coc_config = get_config('block_course_overview_campus');
+
+        // Check all filters if they are enabled and active filters (value != all) and check the fact that there are hidden courses and store them in an array.
+        $activefilters = array();
+        if ($coc_config->termcoursefilter == true && get_user_preferences('block_course_overview_campus-selectedterm') != 'all') {
+            $activefilters[] = 'filterterm';
+        }
+        if ($coc_config->categorycoursefilter == true && get_user_preferences('block_course_overview_campus-selectedcategory') != 'all') {
+            $activefilters[] = 'filtercategory';
+        }
+        if ($coc_config->toplevelcategorycoursefilter == true && get_user_preferences('block_course_overview_campus-selectedtoplevelcategory') != 'all') {
+            $activefilters[] = 'filtertoplevelcategory';
+        }
+        if ($coc_config->teachercoursefilter == true && get_user_preferences('block_course_overview_campus-selectedteacher') != 'all') {
+            $activefilters[] = 'filterteacher';
+        }
+        if ($hiddencoursescounter > 0) {
+            $activefilters[] = 'hidecourses';
+        }
+
+        // Convert active filters array to JSON.
+        $jsonstring = json_encode($activefilters);
+
+        // Store the current status of active filters.
+        set_user_preference('local_boostcoc-activefilters', $jsonstring);
+    }
+}
 
 
 /**

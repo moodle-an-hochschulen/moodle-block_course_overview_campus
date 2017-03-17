@@ -1471,13 +1471,19 @@ class block_course_overview_campus extends block_base {
             /***                             LOCAL_BOOSTCOC                               ***/
             /********************************************************************************/
 
-            // Do only if local_boostcoc is installed.
-            if (block_course_overview_campus_check_local_boostcoc() == true) {
-                // Remember the not shown courses for local_boostcoc, but only if hidden courses managing is not active.
+            // Do only if local_boostcoc is installed and if hidden courses managing is not active.
+            if (block_course_overview_campus_check_local_boostcoc() == true && $param_manage == 0) {
+                // Remember the not shown courses for local_boostcoc.
                 block_course_overview_campus_remember_notshowncourses_for_local_boostcoc($courses);
 
                 // Verify that we can also remember the not shown courses for local_boostcoc by AJAX.
                 user_preference_allow_ajax_update('local_boostcoc-notshowncourses', PARAM_TEXT);
+
+                // Remember the active filters for local_boostcoc.
+                block_course_overview_campus_remember_activefilters_for_local_boostcoc($hiddencoursescounter);
+
+                // Verify that we can also remember the active filters for local_boostcoc by AJAX.
+                user_preference_allow_ajax_update('local_boostcoc-activefilters', PARAM_TEXT);
             }
         }
 
