@@ -402,6 +402,8 @@ function block_course_overview_campus_compare_categories($a, $b) {
  *
  * Basically, this is remembered by the JavaScript filters directly when they are applied in the browser, but we want a fallback
  * when javascript is off
+ * Unfortunately, at page load local_boostcoc can only change the nav drawer _before_ this function can store its data, thus the
+ * fallback when javascript is off has a lag.
  *
  * @param array $courses
  */
@@ -432,7 +434,7 @@ function block_course_overview_campus_remember_notshowncourses_for_local_boostco
  *
  * Basically, this is remembered by the JavaScript filters directly when they are applied in the browser, but we want a fallback
  * when javascript is off.
- * Unfortunately, at page load local_boostcoc changes the nav drawer _before_ this function can store changed filters, thus the
+ * Unfortunately, at page load local_boostcoc can only change the nav drawer _before_ this function can store its data, thus the
  * fallback when javascript is off has a lag.
  *
  * @param array $courses
