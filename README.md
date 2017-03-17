@@ -126,6 +126,14 @@ block_course_overview_campus should work with all Bootstrap based Moodle themes.
 block_course_overview_campus provides a fallback for browsers with JavaScript disabled.
 
 
+Companion plugin local_boostcoc
+-------------------------------
+
+Since the release of Moodle 3.2, Moodle core ships with a shiny new theme called "Boost". While Boost does many things right and better than the legacy theme Clean, it also has some fixed behaviours which don't make sense for all Moodle installations. One of these behaviours is the fact that the mycourses list in the nav drawer (the menu which appears when you click on the hamburger menu button) is non-collapsible, always contains all of my courses and can hardly be configured by administrators.
+
+We have created local_boostcoc as a companion plugin to block_course_overview_campus which does its best to add support for filtering and hiding courses to the mycourses list in the nav drawer. local_boostcoc is published on http://moodle.org/plugins/view/local_boostcoc and on https://github.com/moodleuulm/moodle-local_boostcoc.
+
+
 Further information
 -------------------
 
