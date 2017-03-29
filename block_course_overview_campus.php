@@ -86,14 +86,14 @@ class block_course_overview_campus extends block_base {
 
 
         // Process GET parameters.
-        $param_hidecourse = optional_param('coc-hidecourse', 0, PARAM_INT);
-        $param_showcourse = optional_param('coc-showcourse', 0, PARAM_INT);
-        $param_hidenews = optional_param('coc-hidenews', 0, PARAM_INT);
-        $param_shownews = optional_param('coc-shownews', 0, PARAM_INT);
-        $param_term = optional_param('coc-term', null, PARAM_TEXT);
-        $param_category = optional_param('coc-category', null, PARAM_TEXT);
-        $param_toplevelcategory = optional_param('coc-toplevelcategory', null, PARAM_TEXT);
-        $param_teacher = optional_param('coc-teacher', null, PARAM_TEXT);
+        $param_hidecourse = optional_param('coc-hidecourse', 0, PARAM_BOOL);
+        $param_showcourse = optional_param('coc-showcourse', 0, PARAM_BOOL);
+        $param_hidenews = optional_param('coc-hidenews', 0, PARAM_BOOL);
+        $param_shownews = optional_param('coc-shownews', 0, PARAM_BOOL);
+        $param_term = optional_param('coc-term', null, PARAM_ALPHANUMEXT);
+        $param_category = optional_param('coc-category', null, PARAM_ALPHANUM);
+        $param_toplevelcategory = optional_param('coc-toplevelcategory', null, PARAM_ALPHANUM);
+        $param_teacher = optional_param('coc-teacher', null, PARAM_ALPHANUM);
         $param_manage = optional_param('coc-manage', 0, PARAM_BOOL);
 
 
@@ -1411,25 +1411,25 @@ class block_course_overview_campus extends block_base {
             // Verify that course displaying parameters are updatable by AJAX.
             foreach ($courses as $c) {
                 if ($coc_config->enablehidecourses) {
-                    user_preference_allow_ajax_update('block_course_overview_campus-hidecourse-'.$c->id, PARAM_INT);
+                    user_preference_allow_ajax_update('block_course_overview_campus-hidecourse-'.$c->id, PARAM_BOOL);
                 }
                 if ($coc_config->enablecoursenews && $param_manage == 0) {
-                    user_preference_allow_ajax_update('block_course_overview_campus-hidenews-'.$c->id, PARAM_INT);
+                    user_preference_allow_ajax_update('block_course_overview_campus-hidenews-'.$c->id, PARAM_BOOL);
                 }
             }
 
             // Verify that filter parameters are updatable by AJAX.
             if ($coc_config->termcoursefilter == true) {
-                user_preference_allow_ajax_update('block_course_overview_campus-selectedterm', PARAM_TEXT);
+                user_preference_allow_ajax_update('block_course_overview_campus-selectedterm', PARAM_ALPHANUMEXT);
             }
             if ($coc_config->teachercoursefilter == true) {
-                user_preference_allow_ajax_update('block_course_overview_campus-selectedteacher', PARAM_TEXT);
+                user_preference_allow_ajax_update('block_course_overview_campus-selectedteacher', PARAM_ALPHANUM);
             }
             if ($coc_config->categorycoursefilter == true) {
-                user_preference_allow_ajax_update('block_course_overview_campus-selectedcategory', PARAM_TEXT);
+                user_preference_allow_ajax_update('block_course_overview_campus-selectedcategory', PARAM_ALPHANUM);
             }
             if ($coc_config->toplevelcategorycoursefilter == true) {
-                user_preference_allow_ajax_update('block_course_overview_campus-selectedtoplevelcategory', PARAM_TEXT);
+                user_preference_allow_ajax_update('block_course_overview_campus-selectedtoplevelcategory', PARAM_ALPHANUM);
             }
 
             // Include JS for hiding courses with AJAX.
