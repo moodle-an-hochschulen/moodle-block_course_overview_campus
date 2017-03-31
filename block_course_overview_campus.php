@@ -1477,13 +1477,13 @@ class block_course_overview_campus extends block_base {
                 block_course_overview_campus_remember_notshowncourses_for_local_boostcoc($courses);
 
                 // Verify that we can also remember the not shown courses for local_boostcoc by AJAX.
-                user_preference_allow_ajax_update('local_boostcoc-notshowncourses', PARAM_TEXT);
+                user_preference_allow_ajax_update('local_boostcoc-notshowncourses', PARAM_RAW);
 
                 // Remember the active filters for local_boostcoc.
                 block_course_overview_campus_remember_activefilters_for_local_boostcoc($hiddencoursescounter);
 
                 // Verify that we can also remember the active filters for local_boostcoc by AJAX.
-                user_preference_allow_ajax_update('local_boostcoc-activefilters', PARAM_TEXT);
+                user_preference_allow_ajax_update('local_boostcoc-activefilters', PARAM_RAW);
             }
         }
 
