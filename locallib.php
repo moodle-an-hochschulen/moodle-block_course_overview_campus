@@ -53,7 +53,8 @@ function block_course_overview_campus_course_hidden_by_hidecourses($course) {
     // Course is visible if it isn't hidden.
     if (get_user_preferences('block_course_overview_campus-hidecourse-'.$course->id, 0) == 0) {
         return false;
-    // Otherwise it is hidden.
+
+        // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -71,7 +72,8 @@ function block_course_overview_campus_coursenews_hidden($course) {
     if (get_user_preferences('block_course_overview_campus-hidenews-'.$course->id,
             get_config('block_course_overview_campus', 'coursenewsdefault')) == 1) {
         return true;
-    // Otherwise it is visible.
+
+        // Otherwise it is visible.
     } else {
         return false;
     }
@@ -89,7 +91,8 @@ function block_course_overview_campus_course_hidden_by_termcoursefilter($course,
     // Course is visible if it is within selected term or all terms are selected.
     if ($course->term == $selectedterm || $selectedterm == 'all') {
         return false;
-    // Otherwise it is hidden.
+
+        // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -107,7 +110,8 @@ function block_course_overview_campus_course_hidden_by_categorycoursefilter($cou
     // Course is visible if it is within selected parent category or all categories are selected.
     if ($course->categoryid == $selectedcategory || $selectedcategory == 'all') {
         return false;
-    // Otherwise it is hidden.
+
+        // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -125,7 +129,8 @@ function block_course_overview_campus_course_hidden_by_toplevelcategorycoursefil
     // Course is visible if it is within selected top level category or all categories are selected.
     if ($course->toplevelcategoryid == $selectedtoplevelcategory || $selectedtoplevelcategory == 'all') {
         return false;
-    // Otherwise it is hidden.
+
+        // Otherwise it is hidden.
     } else {
         return true;
     }
@@ -143,7 +148,8 @@ function block_course_overview_campus_course_hidden_by_teachercoursefilter($cour
     // Course is visible if it has the selected teacher or all teachers are selected.
     if (isset($course->teachers[$selectedteacher]) || $selectedteacher == 'all') {
         return false;
-    // Otherwise it is hidden.
+
+        // Otherwise it is hidden.
     } else {
         return true;
     }

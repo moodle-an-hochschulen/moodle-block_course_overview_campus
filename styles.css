@@ -45,7 +45,7 @@
 
 #coc-courselist .coc-metainfo {
     font-size: 85%;
-    font-weight: normal !important; /* To prevent the text from being shown in bold as it's still a h3 heading*/
+    font-weight: normal; /* To prevent the text from being shown in bold as it's still a h3 heading*/
     white-space: pre-wrap; /* To support multiple whitespaces before and after pipe */
 }
 

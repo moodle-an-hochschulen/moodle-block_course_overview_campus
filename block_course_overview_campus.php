@@ -292,12 +292,9 @@ class block_course_overview_campus extends block_base {
                         // If term doesn't start on January 1st and course start date's day comes before term start day,
                         // set course term to course start date's year + former year.
                         else {
-                            $courseterm->id = ($coursestartyear-1).'-'.$coursestartyear;
+                            $courseterm->id = ($coursestartyear - 1).'-'.$coursestartyear;
                             $courseterm->name = block_course_overview_campus_get_term_displayname($coc_config->term1name, ($coursestartyear - 1), $coursestartyear);
                         }
-
-                        // Discard date information.
-                        unset($courseyday, $courseyear, $term1startday);
                     }
                     // "Semester" mode.
                     else if ($coc_config->termmode == 2) {
@@ -331,9 +328,6 @@ class block_course_overview_campus extends block_base {
                                 $courseterm->name = block_course_overview_campus_get_term_displayname($coc_config->term2name, $coursestartyear, ($coursestartyear + 1));
                             }
                         }
-
-                        // Discard date information.
-                        unset($courseyday, $courseyear, $term1startday, $term2startday);
                     }
                     // "Tertial" mode.
                     else if ($coc_config->termmode == 3) {
@@ -374,9 +368,6 @@ class block_course_overview_campus extends block_base {
                                 $courseterm->name = block_course_overview_campus_get_term_displayname($coc_config->term3name, $coursestartyear, ($coursestartyear + 1));
                             }
                         }
-
-                        // Discard date information.
-                        unset($courseyday, $courseyear, $term1startday, $term2startday, $term3startday);
                     }
                     // "Trimester" mode.
                     else if ($coc_config->termmode == 4) {
@@ -424,9 +415,6 @@ class block_course_overview_campus extends block_base {
                                 $courseterm->name = block_course_overview_campus_get_term_displayname($coc_config->term4name, $coursestartyear, ($coursestartyear + 1));
                             }
                         }
-
-                        // Discard date information.
-                        unset($courseyday, $courseyear, $term1startday, $term2startday, $term3startday, $term4startday);
                     }
                     // This should never happen.
                     else {
@@ -670,7 +658,7 @@ class block_course_overview_campus extends block_base {
                 else if ($coc_config->termmode == '2') {
                     // If current day comes before first term start day and there are courses this term,
                     // set selected term to second term of former year.
-                    if (intval(date('z')) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$coc_config->term1startday))) && isset($filterterms[(date('Y')-1).'-2'])) {
+                    if (intval(date('z')) < intval(date('z', strtotime(date('Y', $c->startdate).'-'.$coc_config->term1startday))) && isset($filterterms[(date('Y') - 1).'-2'])) {
                         $selectedterm = (date('Y') - 1).'-2';
                     }
                     // If current day comes on or after first term start day but before second term start day and there are courses
