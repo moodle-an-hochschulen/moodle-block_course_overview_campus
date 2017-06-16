@@ -7,6 +7,7 @@ Changes
 ### Unreleased
 
 * 2017-06-16 - Bugfix: Prevent debug notice when there are no modules supporting the print_overview() function
+* 2017-05-29 - Add Travis CI support
 
 ### v3.2-r5
 

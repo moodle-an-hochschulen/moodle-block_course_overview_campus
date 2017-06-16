@@ -1,6 +1,8 @@
 moodle-block_course_overview_campus
 ===================================
 
+[![Build Status](https://travis-ci.org/moodleuulm/moodle-block_course_overview_campus.svg?branch=master)](https://travis-ci.org/moodleuulm/moodle-block_course_overview_campus)
+
 Moodle block which provides all functionality of block_course_overview, provides additional filters to be used on university campuses as well as the possibility to hide courses and course news from the course list
 
 
