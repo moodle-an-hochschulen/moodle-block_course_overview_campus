@@ -227,6 +227,7 @@ if ($hassiteconfig) {
 
         // Get activities which provide course news.
         $modules = get_plugin_list_with_function('mod', 'print_overview');
+        $modchoices = array();
         foreach ($modules as $m => $f) {
             $modchoices[$m] = get_string('pluginname', $m);
         }

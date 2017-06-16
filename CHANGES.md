@@ -4,6 +4,10 @@ moodle-block_course_overview_campus
 Changes
 -------
 
+### Unreleased
+
+* 2017-06-16 - Bugfix: Prevent debug notice when there are no modules supporting the print_overview() function
+
 ### v3.2-r5
 
 * 2017-05-05 - Improve README.md
