@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function ($) {
+define(['jquery'], function($) {
     "use strict";
 
     function filterTerm(e) {
@@ -147,7 +147,7 @@ define(['jquery'], function ($) {
     }
 
     return {
-        initFilter: function (params) {
+        initFilter: function(params) {
             // Add change listener to filter widgets.
             $('#coc-filterterm').on('change', filterTerm);
             $('#coc-filterteacher').on('change', filterTeacher);

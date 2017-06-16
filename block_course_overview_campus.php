@@ -24,32 +24,67 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class block_course_overview_campus
+ *
+ * @package    block_course_overview_campus
+ * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_course_overview_campus extends block_base {
 
+    /**
+     * init function
+     * @return void
+     */
     public function init() {
         $this->title = get_string('pluginname', 'block_course_overview_campus');
     }
 
+    /**
+     * specialization function
+     * @return void
+     */
     public function specialization() {
         $this->title = format_string(get_config('block_course_overview_campus', 'blocktitle'));
     }
 
+    /**
+     * applicable_formats function
+     * @return array
+     */
     public function applicable_formats() {
         return array('my-index' => true, 'my' => true, 'site-index' => true);
     }
 
+    /**
+     * has_config function
+     * @return bool
+     */
     public function has_config() {
         return true;
     }
 
+    /**
+     * instance_allow_multiple function
+     * @return bool
+     */
     public function instance_allow_multiple() {
         return false;
     }
 
+    /**
+     * instance_can_be_hidden function
+     * @return bool
+     */
     public function instance_can_be_hidden() {
         return false;
     }
 
+    /**
+     * get_content function
+     * @return string
+     */
     public function get_content() {
         global $coc_config, $USER, $CFG, $DB, $PAGE, $OUTPUT;
 

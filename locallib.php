@@ -177,6 +177,7 @@ function block_course_overview_campus_course_hidden_by_anyfilter($course) {
  * Get course news for courses (copied from /blocks/course_overview/locallib.php)
  *
  * @param array $courses courses for which course news need to be shown
+ * @param array $skip modules which should be skipped
  * @return array html overview
  */
 function block_course_overview_campus_get_overviews($courses, $skip) {
@@ -210,7 +211,6 @@ function block_course_overview_campus_get_overviews($courses, $skip) {
 /**
  * Check if the configured term dates make sense
  *
- * @param object $coc_config The config object
  * @return bool
  */
 function block_course_overview_campus_check_term_config() {
@@ -443,7 +443,7 @@ function block_course_overview_campus_remember_notshowncourses_for_local_boostco
  * Unfortunately, at page load local_boostcoc can only change the nav drawer _before_ this function can store its data, thus the
  * fallback when javascript is off has a lag.
  *
- * @param array $courses
+ * @param int $hiddencoursescounter
  */
 function block_course_overview_campus_remember_activefilters_for_local_boostcoc($hiddencoursescounter) {
     // Do only if local_boostcoc is installed.

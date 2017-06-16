@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function ($) {
+define(['jquery'], function($) {
     "use strict";
 
     function hideCourse(e) {
@@ -86,7 +86,7 @@ define(['jquery'], function ($) {
     }
 
     return {
-        initHideCourse: function (params) {
+        initHideCourse: function(params) {
             var i;
             var courses = params.courses.split(" ");
             for (i = 0; i < courses.length; i++) {
