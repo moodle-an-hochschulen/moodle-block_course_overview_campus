@@ -914,12 +914,9 @@ class block_course_overview_campus extends block_base {
                     }
                     // Sort full category information array by sortorder.
                     $success = usort($filtertoplevelcategoriesfullinfo, "block_course_overview_campus_compare_categories");
-                    // If sorting was not successful, return old array.
-                    if (!$success) {
-                        return $filtertoplevelcategories;
-                    }
-                    // If sorting was successful, return new array with same data structure like the old one.
-                    else {
+                    // If sorting was successful, create new array with same data structure like the old one.
+                    // Otherwise just leave the old array as it is (should not happen).
+                    if ($success) {
                         $filtertoplevelcategories = array();
                         foreach ($filtertoplevelcategoriesfullinfo as $ftl) {
                             $filtertoplevelcategories[$ftl->id] = format_string($ftl->name);
