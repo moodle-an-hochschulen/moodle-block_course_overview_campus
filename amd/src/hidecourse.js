@@ -9,6 +9,9 @@
 define(['jquery'], function($) {
     "use strict";
 
+    /**
+     * Function to hide a course from the course list.
+     */
     function hideCourse(e) {
         var hiddenCount;
         // Prevent the event from refreshing the page.
@@ -33,6 +36,9 @@ define(['jquery'], function($) {
         M.util.set_user_preference('block_course_overview_campus-hidecourse-' + e.data.course, 1);
     }
 
+    /**
+     * Function to show a course in the course list.
+     */
     function showCourse(e) {
         // Prevent the event from refreshing the page.
         if (e !== undefined) {
@@ -49,6 +55,9 @@ define(['jquery'], function($) {
         M.util.set_user_preference('block_course_overview_campus-hidecourse-' + e.data.course, 0);
     }
 
+    /**
+     * Function to remember the not shown courses for local_boostcoc.
+     */
     function localBoostCOCRememberNotShownCourses() {
         // Get all course nodes which are not shown (= invisible = their height is 0) and store their IDs in an array.
         var notshowncourses = new Array();
@@ -65,6 +74,9 @@ define(['jquery'], function($) {
         M.util.set_user_preference('local_boostcoc-notshowncourses', jsonstring);
     }
 
+    /**
+     * Function to remember the active filters for local_boostcoc.
+     */
     function localBoostCOCRememberActiveFilters() {
         // Get all active filters (value != all) and the fact that hidden courses are present and store them in an array.
         var activefilters = new Array();

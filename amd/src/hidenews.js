@@ -9,6 +9,9 @@
 define(['jquery'], function($) {
     "use strict";
 
+    /**
+     * Function to hide news from a course.
+     */
     function hideNews(e) {
         // Prevent the event from refreshing the page.
         if (e !== undefined) {
@@ -23,6 +26,9 @@ define(['jquery'], function($) {
         M.util.set_user_preference('block_course_overview_campus-hidenews-' + e.data.course, 1);
     }
 
+    /**
+     * Function to show news for a course.
+     */
     function showNews(e) {
         // Prevent the event from refreshing the page.
         if (e !== undefined) {

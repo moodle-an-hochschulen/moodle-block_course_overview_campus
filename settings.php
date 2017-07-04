@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// @codingStandardsIgnoreFile
+// Let codechecker ignore this file. This legacy code is not fully compliant to Moodle coding style but working and well documented.
+
 if ($hassiteconfig) {
     // Empty $settings to prevent a single settings page from being created by lib/classes/plugininfo/block.php
     // because we will create several settings pages now.

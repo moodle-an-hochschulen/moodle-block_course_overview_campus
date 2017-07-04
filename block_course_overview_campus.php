@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// @codingStandardsIgnoreFile
+// Let codechecker ignore this file. This legacy code is not fully compliant to Moodle coding style but working and well documented.
+
 /**
  * Class block_course_overview_campus
  *
