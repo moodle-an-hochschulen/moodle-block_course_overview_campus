@@ -1,0 +1,10 @@
+{
+    "name": "moodleuulm/moodle-block_course_overview_campus",
+    "type": "moodle-block",
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "extra": {
+        "installer-name": "course_overview_campus"
+    }
+}
