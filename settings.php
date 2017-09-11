@@ -90,7 +90,7 @@ if ($hassiteconfig) {
     // Create full settings page structure.
     else if ($ADMIN->fulltree) {
         // Include local library.
-        require_once(dirname(__FILE__) . '/locallib.php');
+        require_once(__DIR__ . '/locallib.php');
 
 
         // Settings page: General.

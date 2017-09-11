@@ -102,7 +102,7 @@ class block_course_overview_campus extends block_base {
         }
 
         // Include local library.
-        require_once(dirname(__FILE__) . '/locallib.php');
+        require_once(__DIR__ . '/locallib.php');
 
         // Get plugin config.
         $coc_config = get_config('block_course_overview_campus');
@@ -114,7 +114,7 @@ class block_course_overview_campus extends block_base {
         /********************************************************************************/
 
         // Include local library.
-        require_once(dirname(__FILE__) . '/locallib.php');
+        require_once(__DIR__ . '/locallib.php');
 
 
         // Check if the configured term dates make sense, if not disable term filter.
