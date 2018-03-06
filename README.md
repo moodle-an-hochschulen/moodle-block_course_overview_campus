@@ -102,6 +102,12 @@ As described in the "Usage & Settings" section of this file, you should configur
 
 As described in the "Usage & Settings" section of this file, you should configure block_course_overview_campus according to your campus course of the year. After that, block_course_overview_campus maps each course to a term by looking at the course's start date. This term is filled into the term filter.
 
+### 5. Course news
+
+The course news feature displays course news from the activities within each of your courses. This is done by using the *_print_overview() hook which is implemented by most of Moodle core's and third party activity modules. 
+
+Please note that the *_print_overview() hook was deprecated in Moodle core when the MyOverview block was introduced. If you have enabled course news in block_course_overview_campus and if you have also enabled debugging with DEVELOPER level, you will see deprecation warnings whenever block_course_overview_campus calls a *_print_overview() function. For now, this does not mean that the course news feature is already broken. Moodle core will remove the *_print_overview() functions in Moodle 3.7. Third party developers might decide to remove the functions upfront from their activity modules. By then, we will either change the inner workings of the course news feature to a modern mechanism or we will remove the course news feature.  
+
 
 Block placement
 ---------------
