@@ -105,7 +105,7 @@ if ($hassiteconfig) {
         $settingspage->add(new admin_setting_configtext('block_course_overview_campus/blocktitle',
                 get_string('blocktitle', 'block_course_overview_campus', null, true),
                 get_string('blocktitle_desc', 'block_course_overview_campus', null, true),
-                get_string('pluginname', 'block_course_overview', null, true),
+                get_string('blocktitledefault', 'block_course_overview_campus', null, true),
                 PARAM_TEXT));
 
         // Add settings page to the admin settings category.

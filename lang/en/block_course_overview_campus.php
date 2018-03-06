@@ -30,6 +30,7 @@ $string['all'] = 'All';
 $string['appearancesettingheading'] = 'Appearance';
 $string['blocktitle'] = 'Block title';
 $string['blocktitle_desc'] = 'This display name is shown as the title of the block';
+$string['blocktitledefault'] = 'Course overview';
 $string['category'] = 'Parent category';
 $string['categorycoursefilter'] = 'Activate parent category filter';
 $string['categorycoursefilter_desc'] = 'Allow users to filter courses by parent category';
