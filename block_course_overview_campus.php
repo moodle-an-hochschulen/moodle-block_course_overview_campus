@@ -944,8 +944,6 @@ class block_course_overview_campus extends block_base {
                     $selectedtoplevelcategorydisplayed = false;
 
                     // Sort top level category filter by category sort order.
-                    // Create empty array for sorted categories.
-                    $filtertoplevelcategoriessortorder = array();
                     // Fetch full category information for each category.
                     foreach ($filtertoplevelcategories as $ftl_key => $ftl_value) {
                         $filtertoplevelcategoriesfullinfo[] = $coursecategories[$ftl_key];
