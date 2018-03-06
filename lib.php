@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block "course overview (campus)" - Version file
+ * Block "course overview (campus)" - library
  *
  * @package    block_course_overview_campus
  * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
@@ -24,8 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_course_overview_campus';
-$plugin->version = 2018030600;
-$plugin->release = 'v3.2-r6';
-$plugin->requires = 2017051500;
-$plugin->maturity = MATURITY_STABLE;
+/**
+ * Get icon mapping for font-awesome.
+ */
+function block_course_overview_campus_get_fontawesome_icon_map() {
+    return [
+            'block_course_overview_campus:expanded' => 'fa-minus-square',
+            'block_course_overview_campus:collapsed' => 'fa-plus-square',
+            'block_course_overview_campus:hide' => 'fa-toggle-on fa-lg',
+            'block_course_overview_campus:show' => 'fa-toggle-off fa-lg',
+    ];
+}

@@ -1213,23 +1213,15 @@ class block_course_overview_campus extends block_base {
                         // If course news are hidden.
                         if ($c->hidenews == false) {
                             echo '<div class="hidenewsicon">
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenewsicon-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">
-                                        <img src="'.$OUTPUT->pix_url('t/expanded').'" alt="'.get_string('hidenews', 'block_course_overview_campus').'" />
-                                    </a>
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownewsicon-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">
-                                        <img src="'.$OUTPUT->pix_url('t/collapsed').'" alt="'.get_string('shownews', 'block_course_overview_campus').'" />
-                                    </a>
+                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenewsicon-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('expanded', get_string('hidenews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
+                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownewsicon-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('collapsed', get_string('shownews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
                                 </div>';
                         }
                         // If course news are visible.
                         else {
                             echo '<div class="hidenewsicon">
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenewsicon-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">
-                                        <img src="'.$OUTPUT->pix_url('t/expanded').'" alt="'.get_string('hidenews', 'block_course_overview_campus').'" />
-                                    </a>
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownewsicon-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">
-                                        <img src="'.$OUTPUT->pix_url('t/collapsed').'" alt="'.get_string('shownews', 'block_course_overview_campus').'" />
-                                    </a>
+                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenewsicon-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('expanded', get_string('hidenews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
+                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownewsicon-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('collapsed', get_string('shownews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
                                 </div>';
                         }
                     }
@@ -1240,23 +1232,15 @@ class block_course_overview_campus extends block_base {
                     // If course is hidden.
                     if (block_course_overview_campus_course_hidden_by_hidecourses($c, 0) == false) { // We can't rely on $c->hidecourse here because otherwise the icon would always be t/show.
                         echo '<div class="hidecourseicon">
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourseicon-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
-                                    <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
-                                </a>
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourseicon-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">
-                                    <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
-                                </a>
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourseicon-'.$c->id.'" title="'.get_string('hidecourse', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('hide', get_string('hidecourse', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourseicon-'.$c->id.'" class="coc-hidden" title="'.get_string('showcourse', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('show', get_string('showcourse', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
                             </div>';
                     }
                     // If course is visible.
                     else {
                         echo '<div class="hidecourseicon">
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourseicon-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">
-                                    <img src="'.$OUTPUT->pix_url('t/hide').'" class="icon" alt="'.get_string('hidecourse', 'block_course_overview_campus').'" />
-                                </a>
-                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourseicon-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">
-                                    <img src="'.$OUTPUT->pix_url('t/show').'" class="icon" alt="'.get_string('showcourse', 'block_course_overview_campus').'" />
-                                </a>
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => $c->id, 'coc-showcourse' => '')).'" id="coc-hidecourseicon-'.$c->id.'" class="coc-hidden" title="'.get_string('hidecourse', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('hide', get_string('hidecourse', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
+                                <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidecourse' => '', 'coc-showcourse' => $c->id)).'" id="coc-showcourseicon-'.$c->id.'" title="'.get_string('showcourse', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('show', get_string('showcourse', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
                             </div>';
                     }
                 }
