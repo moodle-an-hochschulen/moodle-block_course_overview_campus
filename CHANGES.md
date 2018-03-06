@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2018-03-06 - Activity icons should be rendered with image_icon() and not with pix_icon anymore.
 * 2018-03-06 - pix_url() is deprecated in Moodle 3.3, change to pix_icon() and fontawesome icons.
 * 2017-12-12 - Prepare compatibility for Moodle 3.3, no functionality change.
 

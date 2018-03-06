@@ -1323,7 +1323,7 @@ class block_course_overview_campus extends block_base {
                         foreach ($coursenews[$c->id] as $modname => $html) {
                             echo '<div class="coc-module">';
                                 // Output activity icon.
-                                echo $OUTPUT->pix_icon('icon', $modname, 'mod_'.$modname, array('class' => 'iconlarge activityicon'));
+                                echo $OUTPUT->image_icon('icon', $modname, 'mod_'.$modname, array('class' => 'iconlarge activityicon'));
 
                                 // Output activity introduction string.
                                 if (get_string_manager()->string_exists("activityoverview", $modname)) {
