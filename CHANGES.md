@@ -4,7 +4,7 @@ moodle-block_course_overview_campus
 Changes
 -------
 
-### Unreleased
+### v3.3-r1
 
 * 2018-03-07 - Add a nice slide animation when hiding a course.
 * 2018-03-06 - Add a note about the future of the course news feature to README.
