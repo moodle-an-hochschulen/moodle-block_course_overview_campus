@@ -21,15 +21,24 @@ define(['jquery'], function($) {
 
         // When hidden course managing is active.
         if (e.data.manage === 1) {
+            // Change the icon.
             $('#coc-hidecourseicon-' + e.data.course).addClass('coc-hidden');
             $('#coc-showcourseicon-' + e.data.course).removeClass('coc-hidden');
         }
         // When hidden course managing is not active.
         if (e.data.manage === 0) {
-            $('.coc-hidecourse-' + e.data.course).addClass('coc-hidden');
-            hiddenCount = parseInt($('#coc-hiddencoursescount').html(), 10);
-            $('#coc-hiddencoursescount').html(hiddenCount + 1);
-            $('#coc-hiddencoursesmanagement-bottom .row').removeClass('coc-hidden');
+            // Change the icon.
+            $('#coc-hidecourseicon-' + e.data.course).addClass('coc-hidden');
+            $('#coc-showcourseicon-' + e.data.course).removeClass('coc-hidden');
+
+            // Use a nice slide animation to make clear where the course is going.
+            var courseId = e.data.course;
+            $('.coc-hidecourse-' + e.data.course).slideUp(function() {
+                $('.coc-hidecourse-' + courseId).addClass('coc-hidden');
+                hiddenCount = parseInt($('#coc-hiddencoursescount').html(), 10);
+                $('#coc-hiddencoursescount').html(hiddenCount + 1);
+                $('#coc-hiddencoursesmanagement-bottom .row').removeClass('coc-hidden');
+            });
         }
 
         // Store the course status (Uses AJAX to save to the database).
@@ -47,6 +56,7 @@ define(['jquery'], function($) {
 
         // When hidden course managing is active.
         if (e.data.manage === 1) {
+            // Change the icon.
             $('#coc-showcourseicon-' + e.data.course).addClass('coc-hidden');
             $('#coc-hidecourseicon-' + e.data.course).removeClass('coc-hidden');
         }

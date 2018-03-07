@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2018-03-07 - Add a nice slide animation when hiding a course.
 * 2018-03-06 - Add a note about the future of the course news feature to README.
 * 2018-03-06 - Bugfix: Add a default title string to this plugin instead of fetching it from block_course_overview which is EOL.
 * 2018-03-06 - Activity icons should be rendered with image_icon() and not with pix_icon anymore.
