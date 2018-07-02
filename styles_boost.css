@@ -2,11 +2,18 @@
 
 /* Boost makes h3 headings quite big, this is not desired for this block. */
 .block_course_overview_campus.block .coursebox h3 {
-    font-size: 1.143rem;
+    font-size: 1.0rem;
 }
 
 
 /* Below are styles which are needed because Boost (BS 4) makes things different from Bootstrapbase (BS 2) */
+
+#coc-courselist .row,
+#coc-hiddencoursesmanagement-top .row,
+#coc-hiddencoursesmanagement-bottom .row {
+    display: block; /* Revert the flex model from BS 4 stable for the course list items and controls to circumvent redesign
+                       of this block. This isn't nice but ok for the time being. */
+}
 
 .path-my .block_course_overview_campus .coursebox {
     margin: 0;

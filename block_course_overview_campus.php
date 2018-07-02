@@ -859,7 +859,7 @@ class block_course_overview_campus extends block_base {
 
                 // Show term filter.
                 if ($coc_config->termcoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
+                    echo '<div class="coc-filter '.$filterwidth.' mb-3">';
 
                     // Show filter description.
                     if ($coc_config->termcoursefilterdisplayname != '') {
@@ -930,7 +930,7 @@ class block_course_overview_campus extends block_base {
 
                 // Show top level category filter.
                 if ($coc_config->toplevelcategorycoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
+                    echo '<div class="coc-filter '.$filterwidth.' mb-3">';
 
                     // Show filter description.
                     if ($coc_config->toplevelcategorycoursefilterdisplayname != '') {
@@ -994,7 +994,7 @@ class block_course_overview_campus extends block_base {
 
                 // Show parent category filter.
                 if ($coc_config->categorycoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
+                    echo '<div class="coc-filter '.$filterwidth.' mb-3">';
 
                     // Show filter description.
                     if ($coc_config->categorycoursefilterdisplayname != '') {
@@ -1045,7 +1045,7 @@ class block_course_overview_campus extends block_base {
 
                 // Show teacher filter.
                 if ($coc_config->teachercoursefilter == true) {
-                    echo '<div class="coc-filter '.$filterwidth.' m-b-1">';
+                    echo '<div class="coc-filter '.$filterwidth.' mb-3">';
 
                     // Show filter description.
                     if ($coc_config->teachercoursefilterdisplayname != '') {
@@ -1096,7 +1096,7 @@ class block_course_overview_campus extends block_base {
                 echo '</div></div>';
 
                 // Show submit button for Non-JavaScript interaction.
-                echo '<div id="coc-filtersubmit" class="container-fluid m-b-1"><div class="row"><input type="submit" value="'.get_string('submitfilter', 'block_course_overview_campus').'" class="btn btn-primary" /></div></div>';
+                echo '<div id="coc-filtersubmit" class="container-fluid mb-3"><div class="row"><input type="submit" value="'.get_string('submitfilter', 'block_course_overview_campus').'" class="btn btn-primary" /></div></div>';
 
                 // End form.
                 echo '</form>';
@@ -1123,7 +1123,7 @@ class block_course_overview_campus extends block_base {
             /********************************************************************************/
 
             // Start section.
-            echo '<div id="coc-courselist" class="container-fluid m-b-1">';
+            echo '<div id="coc-courselist" class="container-fluid mb-3">';
 
             // Show courses.
             foreach ($courses as $c) {
