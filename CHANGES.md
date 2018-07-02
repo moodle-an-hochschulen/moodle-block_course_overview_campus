@@ -4,7 +4,7 @@ moodle-block_course_overview_campus
 Changes
 -------
 
-### Unreleased
+### v3.5-r1
 
 * 2018-07-02 - Fix some visual flaws and changes which came with BS 4 stable.
 * 2018-05-29 - Check compatibility for Moodle 3.5, no functionality change.
