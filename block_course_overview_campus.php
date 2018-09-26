@@ -515,7 +515,7 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Teacher information.
-                if ($coc_config->teachercoursefilter == true || $coc_config->secondrowshowteachername == true) {
+                if ($coc_config->teachercoursefilter == true || $coc_config->secondrowshowteachername == true || $coc_config->prioritizemyteachedcourses == true) {
 
                     // Get course teachers based on global teacher roles.
                     if (count($teacherroles) > 0) {

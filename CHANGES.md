@@ -4,6 +4,10 @@ moodle-block_course_overview_campus
 Changes
 -------
 
+### Unreleased
+
+* 2018-08-26 - Bugfix: There might be a debug message when prioritizemyteachedcourses setting is enabled.
+
 ### v3.5-r1
 
 * 2018-07-02 - Fix some visual flaws and changes which came with BS 4 stable.
