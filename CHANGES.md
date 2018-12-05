@@ -4,6 +4,10 @@ moodle-block_course_overview_campus
 Changes
 -------
 
+### Unreleased
+
+* 2018-12-05 - Changed travis.yml due to upstream changes.
+
 ### v3.5-r2
 
 * 2018-08-26 - Bugfix: There might be a debug message when prioritizemyteachedcourses setting is enabled.
