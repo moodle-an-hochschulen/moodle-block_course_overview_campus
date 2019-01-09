@@ -218,6 +218,9 @@ function block_course_overview_campus_get_overviews($courses, $skip) {
  */
 function block_course_overview_campus_check_term_config() {
     $coc_config = get_config('block_course_overview_campus');
+    if (!isset($coc_config->termmode)) {
+        return false;
+    }
 
     if ($coc_config->termmode == 1) {
         return true;

@@ -1294,7 +1294,7 @@ class block_course_overview_campus extends block_base {
                 }
 
                 // Output course link.
-                if ($coc_config->firstrowcoursename == 2) {
+                if (isset($coc_config->firstrowcoursename) && $coc_config->firstrowcoursename == 2) {
                     echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), $c->shortname.$metainfo, $attributes), 3);
                 }
                 else {
