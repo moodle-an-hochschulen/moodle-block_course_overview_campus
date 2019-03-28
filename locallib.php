@@ -184,8 +184,13 @@ function block_course_overview_campus_course_hidden_by_anyfilter($course) {
  * @return array html overview
  */
 function block_course_overview_campus_get_overviews($courses, $skip) {
+    global $CFG;
+
     $htmlarray = array();
-    if ($modules = get_plugin_list_with_function('mod', 'print_overview')) {
+
+    // The hooks for fetching the course news will be removed in Moodle 3.7 (see MDL-57487).
+    // So, we fetch course news only on Moodle 3.6.
+    if ((int)$CFG->branch < 37 && $modules = get_plugin_list_with_function('mod', 'print_overview')) {
         // Remove modules which should be skipped.
         $skipmodules = explode(',', $skip);
         if (is_array($skipmodules)) {
