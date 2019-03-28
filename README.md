@@ -9,7 +9,7 @@ Moodle block which provides all functionality of block_course_overview, provides
 Requirements
 ------------
 
-This plugin requires Moodle 3.5+
+This plugin requires Moodle 3.6+
 
 
 Motivation for this plugin
