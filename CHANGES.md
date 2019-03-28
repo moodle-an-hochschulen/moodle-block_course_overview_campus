@@ -4,7 +4,7 @@ moodle-block_course_overview_campus
 Changes
 -------
 
-### Unreleased
+### v3.6-r1
 
 * 2019-03-28 - Remove user preferences when being uninstalled.
 * 2019-03-28 - Prepare the plugin that the hooks for fetching the course news will be removed in Moodle 3.7. If installed on Moodle 3.7, this plugin will silently disable the course news feature even if it is enabled in the plugin settings.
