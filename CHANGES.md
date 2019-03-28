@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-03-28 - Remove user preferences when being uninstalled.
 * 2019-03-28 - Prepare the plugin that the hooks for fetching the course news will be removed in Moodle 3.7. If installed on Moodle 3.7, this plugin will silently disable the course news feature even if it is enabled in the plugin settings.
 * 2019-03-28 - Check compatibility for Moodle 3.6, no functionality change.
 * 2018-12-05 - Changed travis.yml due to upstream changes.
