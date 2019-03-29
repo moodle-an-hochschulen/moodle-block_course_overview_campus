@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Plugin uninstall steps.
+ */
 function xmldb_block_course_overview_campus_uninstall() {
     global $DB;
 
