@@ -4,6 +4,10 @@ moodle-block_course_overview_campus
 Changes
 -------
 
+### Unreleased
+
+* 2019-06-12 - Prepare compatibility for Moodle 3.7.
+
 ### v3.6-r1
 
 * 2019-03-28 - Remove user preferences when being uninstalled.
