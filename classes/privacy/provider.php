@@ -57,8 +57,6 @@ class provider implements \core_privacy\local\metadata\provider,
                 'privacy:metadata:preference:selectedtoplevelcategory');
         $collection->add_user_preference('block_course_overview_campus-hidecourse-',
                 'privacy:metadata:preference:hidecourse');
-        $collection->add_user_preference('block_course_overview_campus-hidenews-',
-                'privacy:metadata:preference:hidenews');
         $collection->add_user_preference('local_boostcoc-notshowncourses',
                 'privacy:metadata:preference:local_boostcoc-notshowncourses');
         $collection->add_user_preference('local_boostcoc-activefilters',
@@ -104,9 +102,6 @@ class provider implements \core_privacy\local\metadata\provider,
             } else if (strpos($name, 'block_course_overview_campus-hide') === 0) {
                 if (strpos($name, 'block_course_overview_campus-hidecourse-') === 0) {
                     $descriptionidentifier = 'privacy:request:preference:hidecourse';
-                    $item = substr($name, strlen('block_course_overview_campus-hidecourse-'));
-                } else if (strpos($name, 'block_course_overview_campus-hidenews-') === 0) {
-                    $descriptionidentifier = 'privacy:request:preference:hidenews';
                     $item = substr($name, strlen('block_course_overview_campus-hidecourse-'));
                 }
 

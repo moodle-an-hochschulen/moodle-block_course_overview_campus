@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-06-12 - Remove course news functionality as it does not work anymore from Moodle 3.7 on.
 * 2019-06-12 - Prepare compatibility for Moodle 3.7.
 
 ### v3.6-r1

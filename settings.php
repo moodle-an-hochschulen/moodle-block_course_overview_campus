@@ -55,11 +55,6 @@ if ($hassiteconfig) {
                 get_string('settingspage_hidecourses', 'block_course_overview_campus', null, true));
         $ADMIN->add('block_course_overview_campus', $settingspage);
 
-        // Settings page: Course news.
-        $settingspage = new admin_settingpage('block_course_overview_campus_coursenews',
-                get_string('settingspage_coursenews', 'block_course_overview_campus', null, true));
-        $ADMIN->add('block_course_overview_campus', $settingspage);
-
         // Settings page: Teacher roles.
         $settingspage = new admin_settingpage('block_course_overview_campus_teacherroles',
                 get_string('settingspage_teacherroles', 'block_course_overview_campus', null, true));
@@ -203,43 +198,6 @@ if ($hassiteconfig) {
                 get_string('enablehidecourses', 'block_course_overview_campus', null, true),
                 get_string('enablehidecourses_desc', 'block_course_overview_campus', null, true),
                 1));
-
-        // Add settings page to the admin settings category.
-        $ADMIN->add('block_course_overview_campus', $settingspage);
-
-
-
-        // Settings page: Course news.
-        $settingspage = new admin_settingpage('block_course_overview_campus_coursenews',
-                get_string('settingspage_coursenews', 'block_course_overview_campus', null, true));
-
-        // Course news.
-        $settingspage->add(new admin_setting_heading('block_course_overview_campus/coursenewsheading',
-                get_string('coursenewsheading', 'block_course_overview_campus', null, true),
-                ''));
-
-        $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/enablecoursenews',
-                get_string('enablecoursenews', 'block_course_overview_campus', null, true),
-                get_string('enablecoursenews_desc', 'block_course_overview_campus', null, true),
-                1));
-
-        $settingspage->add(new admin_setting_configcheckbox('block_course_overview_campus/coursenewsdefault',
-                get_string('coursenewsdefault', 'block_course_overview_campus', null, true),
-                get_string('coursenewsdefault_desc', 'block_course_overview_campus', null, true),
-                0));
-
-        // Get activities which provide course news.
-        $modules = get_plugin_list_with_function('mod', 'print_overview');
-        $modchoices = array();
-        foreach ($modules as $m => $f) {
-            $modchoices[$m] = get_string('pluginname', $m);
-        }
-
-        $settingspage->add(new admin_setting_configmultiselect('block_course_overview_campus/skipcoursenews',
-                get_string('skipcoursenews', 'block_course_overview_campus', null, true),
-                get_string('skipcoursenews_desc', 'block_course_overview_campus', null, true),
-                array(),
-                $modchoices));
 
         // Add settings page to the admin settings category.
         $ADMIN->add('block_course_overview_campus', $settingspage);

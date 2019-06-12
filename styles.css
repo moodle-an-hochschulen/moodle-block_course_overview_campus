@@ -4,16 +4,12 @@
     margin-left: 20px;
 }
 
-.block_course_overview_campus .hidenewsicon {
-    float: left;
-}
-
 .block_course_overview_campus a:first-of-type > .icon {
     margin-left: inherit; /* Get rid of a unneeded Moodle core behaviour here */
 }
 
 
-/* Used for hiding courses and news in courselist */
+/* Used for hiding courses in courselist */
 .coc-hidden {
     display: none;
 }
@@ -44,23 +40,11 @@
 /* Course list appearance */
 #coc-courselist .coursebox h3 {
     margin: 0; /* Remove standard margin from h3 heading*/
-    padding: 0 0 0 30px; /* Add left padding to place the course news icon there */
+    padding: 0 0 0 .5rem; /* Keep some of the left padding where the course news icon was previously */
 }
 
 #coc-courselist .coc-metainfo {
     font-size: 85%;
     font-weight: normal; /* To prevent the text from being shown in bold as it's still a h3 heading*/
     white-space: pre-wrap; /* To support multiple whitespaces before and after pipe */
-}
-
-
-/* Course news appearance */
-#coc-courselist .coc-coursenews {
-    border-left: 1px dashed lightgrey;
-    margin: 10px 0 0 40px;
-    padding: 0 0 0 10px;
-}
-
-#coc-courselist .coursebox .iconlarge {
-    float: left;
 }

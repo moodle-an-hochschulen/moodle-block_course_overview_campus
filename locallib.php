@@ -65,25 +65,6 @@ function block_course_overview_campus_course_hidden_by_hidecourses($course) {
 
 
 /**
- * Check if course news are hidden for this course
- *
- * @param course $course
- * @return boolean
- */
-function block_course_overview_campus_coursenews_hidden($course) {
-    // Course news are hidden if the user wanted it for this course or if they are hidden by default.
-    if (get_user_preferences('block_course_overview_campus-hidenews-'.$course->id,
-            get_config('block_course_overview_campus', 'coursenewsdefault')) == 1) {
-        return true;
-
-        // Otherwise it is visible.
-    } else {
-        return false;
-    }
-}
-
-
-/**
  * Check if course is hidden according to the term course filter
  *
  * @param course $course
@@ -173,46 +154,6 @@ function block_course_overview_campus_course_hidden_by_anyfilter($course) {
                     (isset($course->teachercoursefiltered) && $course->teachercoursefiltered == true);
 
     return $hidecourse;
-}
-
-
-/**
- * Get course news for courses (copied from /blocks/course_overview/locallib.php)
- *
- * @param array $courses courses for which course news need to be shown
- * @param array $skip modules which should be skipped
- * @return array html overview
- */
-function block_course_overview_campus_get_overviews($courses, $skip) {
-    global $CFG;
-
-    $htmlarray = array();
-
-    // The hooks for fetching the course news will be removed in Moodle 3.7 (see MDL-57487).
-    // So, we fetch course news only on Moodle 3.6.
-    if ((int)$CFG->branch < 37 && $modules = get_plugin_list_with_function('mod', 'print_overview')) {
-        // Remove modules which should be skipped.
-        $skipmodules = explode(',', $skip);
-        if (is_array($skipmodules)) {
-            foreach ($skipmodules as $s) {
-                unset($modules[$s]);
-            }
-        }
-
-        // Split courses list into batches with no more than MAX_MODINFO_CACHE_SIZE courses in one batch.
-        // Otherwise we exceed the cache limit in get_fast_modinfo() and rebuild it too often.
-        if (defined('MAX_MODINFO_CACHE_SIZE') && MAX_MODINFO_CACHE_SIZE > 0 && count($courses) > MAX_MODINFO_CACHE_SIZE) {
-            $batches = array_chunk($courses, MAX_MODINFO_CACHE_SIZE, true);
-        } else {
-            $batches = array($courses);
-        }
-        foreach ($batches as $courses) {
-            foreach ($modules as $fname) {
-                $fname($courses, $htmlarray);
-            }
-        }
-    }
-    return $htmlarray;
 }
 
 

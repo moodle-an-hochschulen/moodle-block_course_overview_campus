@@ -3,7 +3,7 @@ moodle-block_course_overview_campus
 
 [![Build Status](https://travis-ci.org/moodleuulm/moodle-block_course_overview_campus.svg?branch=master)](https://travis-ci.org/moodleuulm/moodle-block_course_overview_campus)
 
-Moodle block which provides all functionality of block_course_overview, provides additional filters to be used on university campuses as well as the possibility to hide courses and course news from the course list
+Moodle block which provides all functionality of block_course_overview, provides additional filters to be used on university campuses as well as the possibility to hide courses from the course list
 
 
 Requirements
@@ -32,7 +32,7 @@ Usage & Settings
 
 After installing the plugin, it can be directly used by users and can be added to the Moodle dashboard and to the Moodle frontpage.
 
-Initially, it behaves like block_course_overview from moodle core. Additionally, news from your courses can be folded and unfolded and courses can be hidden from the course list.
+Initially, it behaves like block_course_overview from moodle core. Additionally, courses can be hidden from the course list.
 
 To make use of the advanced features of the block, please visit:
 Site administration -> Plugins -> Blocks -> Course overview on campus
@@ -51,27 +51,23 @@ On this settings page, you can change the appearance of the course overview list
 
 On this settings page, you can enable (default) or disable the system for hiding courses from the course overview list.
 
-### 4. Course news
-
-On this settings page, you can configure if the course list should also show course news. Additionally, you can configure which and how course news are displayed.
-
-### 5. Teacher roles
+### 4. Teacher roles
 
 On this settings page, you can define which roles in a course will be displayed besides the course's name as teacher and get listed in the teacher filter.
 
-### 6. Parent category filter
+### 5. Parent category filter
 
 On this settings page, you can activate and configure a filter which enables your users to filter their courses by parent category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
-### 7. Top level category filter
+### 6. Top level category filter
 
 On this settings page, you can activate and configure a filter which enables your users to filter their courses by top level category. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
-### 8. Teacher filter
+### 7. Teacher filter
 
 On this settings page, you can activate and configure a filter which enables your users to filter their courses by teacher. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
-### 9. Term filter
+### 8. Term filter
 
 On this settings page, you can activate and configure a filter which enables your users to filter their courses by term. As soon as the filter is activated and the setting is saved, the filter appears in the block view.
 
@@ -102,12 +98,6 @@ As described in the "Usage & Settings" section of this file, you should configur
 
 As described in the "Usage & Settings" section of this file, you should configure block_course_overview_campus according to your campus course of the year. After that, block_course_overview_campus maps each course to a term by looking at the course's start date. This term is filled into the term filter.
 
-### 5. Course news
-
-The course news feature displays course news from the activities within each of your courses. This is done by using the *_print_overview() hook which is implemented by most of Moodle core's and third party activity modules. 
-
-Please note that the *_print_overview() hook was deprecated in Moodle core when the MyOverview block was introduced. If you have enabled course news in block_course_overview_campus and if you have also enabled debugging with DEVELOPER level, you will see deprecation warnings whenever block_course_overview_campus calls a *_print_overview() function. For Moodle 3.6, this does not mean that the course news feature is already broken. However, Moodle core will remove the *_print_overview() functions in Moodle 3.7 (see MDL-57487). If installed on Moodle 3.7, this plugin will silently disable the course news feature even if it is enabled in the plugin settings.  
-
 
 Block placement
 ---------------
@@ -126,7 +116,6 @@ During the development of Moodle, there have been added several features added t
 * In block_course_overview in Moodle 2.4+, a user is able to limit the length of his course list with a block setting. We decided to not adopt this feature for block_course_overview_campus because we think this would conflict with the filtering / hiding feature and confuse users. In block_course_overview_campus, the course list always shows all courses which have passed the selected course filters.
 * In block_course_overview in Moodle 2.4+, the administrator can configure the block to show Metacourse children. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let us know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
 * In block_course_overview in Moodle 2.4+, the administrator can configure the block to show a welcome message. We decided to not adopt this feature for block_course_overview_campus because we have no need for this. If you need this feature, please let us know on https://github.com/moodleuulm/moodle-block_course_overview_campus/issues
-* In block_course_overview in Moodle 2.4+, course news are grouped by modules and each module can be collapsed / expanded. We decided to stick with the behaviour of block_course_overview_campus to collapse / expand course news as a whole, but we added some nice icons for each module to the course news list.
 * In Moodle core since Moodle 2.2+, there is a setting "courselistshortnames" which controls the displaying of course names. This setting is also processed in block_course_overview. We decided to ignore this core setting and to stick to block_course_overview_campus's internal course display control settings.
 * In contrast to the Moodle core block_course_overview, this block doesn't support MNet courses and wasn't tested with MNet Moodle installations.
 

@@ -126,8 +126,6 @@ class block_course_overview_campus extends block_base {
         // Process GET parameters.
         $param_hidecourse = optional_param('coc-hidecourse', 0, PARAM_BOOL);
         $param_showcourse = optional_param('coc-showcourse', 0, PARAM_BOOL);
-        $param_hidenews = optional_param('coc-hidenews', 0, PARAM_BOOL);
-        $param_shownews = optional_param('coc-shownews', 0, PARAM_BOOL);
         $param_term = optional_param('coc-term', null, PARAM_ALPHANUMEXT);
         $param_category = optional_param('coc-category', null, PARAM_ALPHANUM);
         $param_toplevelcategory = optional_param('coc-toplevelcategory', null, PARAM_ALPHANUM);
@@ -142,14 +140,6 @@ class block_course_overview_campus extends block_base {
             }
             if ($param_showcourse != 0) {
                 set_user_preference('block_course_overview_campus-hidecourse-'.$param_showcourse, 0);
-            }
-        }
-        if ($coc_config->enablecoursenews) {
-            if ($param_hidenews != 0) {
-                set_user_preference('block_course_overview_campus-hidenews-'.$param_hidenews, 1);
-            }
-            if ($param_shownews != 0) {
-                set_user_preference('block_course_overview_campus-hidenews-'.$param_shownews, 0);
             }
         }
 
@@ -230,20 +220,6 @@ class block_course_overview_campus extends block_base {
             ob_start();
 
 
-            // Get course news from my courses for later use.
-            if ($coc_config->enablecoursenews && $param_manage == 0) {
-                // Get lastaccess of my courses to support course news.
-                foreach ($courses as $c) {
-                    if (isset($USER->lastcourseaccess[$c->id])) {
-                        $courses[$c->id]->lastaccess = $USER->lastcourseaccess[$c->id];
-                    } else {
-                        $courses[$c->id]->lastaccess = 0;
-                    }
-                }
-                // Get course news html array.
-                $coursenews = block_course_overview_campus_get_overviews($courses, $coc_config->skipcoursenews);
-            }
-
             // Get all course categories for later use.
             $coursecategories = $DB->get_records('course_categories');
 
@@ -277,11 +253,6 @@ class block_course_overview_campus extends block_base {
 
             // Create string to remember courses for JS processing.
             $js_courseslist = ' ';
-
-            // Create string to remember course news for JS processing.
-            if ($coc_config->enablecoursenews && $param_manage == 0) {
-                $js_coursenewslist = ' ';
-            }
 
 
             // Now iterate over my courses and collect data about them.
@@ -629,11 +600,6 @@ class block_course_overview_campus extends block_base {
                 // Check if this course is hidden according to the teacher course filter.
                 if ($coc_config->teachercoursefilter == true) {
                     $courses[$c->id]->teachercoursefiltered = block_course_overview_campus_course_hidden_by_teachercoursefilter($c, $selectedteacher);
-                }
-
-                // Check if this course should show news or not.
-                if ($coc_config->enablecoursenews == true && $param_manage == 0) {
-                    $courses[$c->id]->hidenews = block_course_overview_campus_coursenews_hidden($c);
                 }
 
 
@@ -1205,26 +1171,6 @@ class block_course_overview_campus extends block_base {
                 // Start standard course overview coursebox.
                 echo $OUTPUT->box_start('coursebox');
 
-                // Output course news visibility control icons.
-                if ($coc_config->enablecoursenews && $param_manage == 0) {
-                    if (array_key_exists($c->id, $coursenews)) {
-                        // If course news are hidden.
-                        if ($c->hidenews == false) {
-                            echo '<div class="hidenewsicon">
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenewsicon-'.$c->id.'" title="'.get_string('hidenews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('expanded', get_string('hidenews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownewsicon-'.$c->id.'" class="coc-hidden" title="'.get_string('shownews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('collapsed', get_string('shownews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
-                                </div>';
-                        }
-                        // If course news are visible.
-                        else {
-                            echo '<div class="hidenewsicon">
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => $c->id, 'coc-shownews' => '')).'" id="coc-hidenewsicon-'.$c->id.'" class="coc-hidden" title="'.get_string('hidenews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('expanded', get_string('hidenews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
-                                    <a href="'.$CFG->wwwroot.$PAGE->url->out_as_local_url(true, array('coc-manage' => $param_manage, 'coc-hidenews' => '', 'coc-shownews' => $c->id)).'" id="coc-shownewsicon-'.$c->id.'" title="'.get_string('shownews', 'block_course_overview_campus').'">'.$OUTPUT->pix_icon('collapsed', get_string('shownews', 'block_course_overview_campus'), 'block_course_overview_campus').'</a>
-                                </div>';
-                        }
-                    }
-                }
-
                 // Output course visibility control icons.
                 if ($coc_config->enablehidecourses) {
                     // If course is hidden.
@@ -1301,44 +1247,6 @@ class block_course_overview_campus extends block_base {
                     echo $OUTPUT->heading(html_writer::link(new moodle_url('/course/view.php', array('id' => $c->id)), format_string($c->fullname).$metainfo, $attributes), 3);
                 }
 
-
-                // Output course news.
-                if ($coc_config->enablecoursenews && $param_manage == 0) {
-                    if (array_key_exists($c->id, $coursenews)) {
-                        // Remember course ID for JS processing.
-                        $js_coursenewslist .= $c->id.' ';
-
-                        // Start course news div as visible if the course's news aren't hidden.
-                        if ($c->hidenews == false) {
-                            echo '<div id="coc-coursenews-'.$c->id.'" class="coc-coursenews">';
-                        }
-                        // Otherwise start course news div as hidden.
-                        else {
-                            echo '<div id="coc-coursenews-'.$c->id.'" class="coc-coursenews coc-hidden">';
-                        }
-
-                        // Output the course's preformatted news HTML.
-                        foreach ($coursenews[$c->id] as $modname => $html) {
-                            echo '<div class="coc-module">';
-                                // Output activity icon.
-                                echo $OUTPUT->image_icon('icon', $modname, 'mod_'.$modname, array('class' => 'iconlarge activityicon'));
-
-                                // Output activity introduction string.
-                                if (get_string_manager()->string_exists("activityoverview", $modname)) {
-                                    echo '<div class="overview">'.get_string("activityoverview", $modname).'</div>';
-                                } else {
-                                    echo '<div class="overview">'.get_string("activityoverview", 'block_course_overview_campus', get_string('modulename', $modname)).'</div>';
-                                }
-
-                                // Output activity news.
-                                echo $html;
-                            echo '</div>';
-                        }
-
-                        // End course news div.
-                        echo '</div>';
-                    }
-                }
 
                 // End standard course overview coursebox.
                 echo $OUTPUT->box_end();
@@ -1418,9 +1326,6 @@ class block_course_overview_campus extends block_base {
                 if ($coc_config->enablehidecourses) {
                     user_preference_allow_ajax_update('block_course_overview_campus-hidecourse-'.$c->id, PARAM_BOOL);
                 }
-                if ($coc_config->enablecoursenews && $param_manage == 0) {
-                    user_preference_allow_ajax_update('block_course_overview_campus-hidenews-'.$c->id, PARAM_BOOL);
-                }
             }
 
             // Verify that filter parameters are updatable by AJAX.
@@ -1445,15 +1350,6 @@ class block_course_overview_campus extends block_base {
                     'manage' => $param_manage,
                     ];
                 $PAGE->requires->js_call_amd('block_course_overview_campus/hidecourse', 'initHideCourse', [$js_hidecoursesoptions]);
-            }
-
-            // Include JS for hiding course news with AJAX.
-            if ($coc_config->enablecoursenews && $param_manage == 0) {
-                $js_coursenewsoptions = [
-                    'courses' => trim($js_coursenewslist),
-                    ];
-
-                $PAGE->requires->js_call_amd('block_course_overview_campus/hidenews', 'initHideNews', [$js_coursenewsoptions]);
             }
 
             // Include JS for filtering courses with AJAX.
