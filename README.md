@@ -6,6 +6,14 @@ moodle-block_course_overview_campus
 Moodle block which provides all functionality of block_course_overview, provides additional filters to be used on university campuses as well as the possibility to hide courses from the course list
 
 
+:warning: End of life
+---------------------
+
+**This plugin has reached end of life.**
+
+This plugin is not actively maintained anymore for Moodle versions beyond 3.7. Please consider to replace it with block_myoverview in Moodle core.
+
+
 Requirements
 ------------
 
